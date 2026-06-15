@@ -10,15 +10,24 @@ So, I decided to make this project public, hoping it could inspire others to cre
 
 - Interactive envelope animation.
 - Animated letter-opening experience.
+- **Real 3D envelope**: drag (mouse or touch) to rotate it in any direction, with inertia, and see the back and sides.
+- **Sound effects** when you tap the envelope (paper rustle, soft chimes, rotation whoosh), generated in the browser, with no audio files.
+- Control bar: auto-rotate, reset view and sound on/off. Keyboard support (Enter/Space to open, arrow keys to rotate, Home to reset).
 - Personalized digital messages.
 - Simple and responsive design.
-- Lightweight implementation using web technologies.
+- Lightweight implementation using web technologies, no frameworks.
 
 ## 🛠️ Built With
 
 - HTML5
-- CSS3
-- JavaScript
+- CSS3 (3D transforms)
+- JavaScript (Pointer Events + Web Audio API)
+
+## ✏️ Customizing
+
+- Edit the letter text inside `.texto` in `index.html` (about 400 characters fit comfortably).
+- Colors live in the `:root` variables at the top of `style.css`.
+- Sounds are in the `Sound` object in `script.js`; tweak the notes in `open()` and `close()`.
 
 ## 🚀 Getting Started
 
