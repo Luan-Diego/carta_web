@@ -75,9 +75,9 @@
 
     <nav class="toolbar" aria-label="Controles">
         <button class="tool" id="btn-auto" type="button" aria-pressed="false" aria-label="Girar automaticamente" title="Girar automaticamente">
-            <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg>
+            <svg viewBox="0 0 24 24"><g class="i-rot"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></g><rect class="i-stop" x="7.5" y="7.5" width="9" height="9" rx="1.8"/></svg>
         </button>
-        <button class="tool" id="btn-reset" type="button" aria-label="Voltar à posição inicial" title="Voltar à posição inicial">
+        <button class="tool" id="btn-reset" type="button" aria-label="Voltar ao início e guardar a carta" title="Voltar ao início e guardar a carta">
             <svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="10" rx="1.5"/><path d="M5 8.5l7 5 7-5"/></svg>
         </button>
         <button class="tool" id="btn-sound" type="button" aria-pressed="true" aria-label="Som" title="Som">
@@ -305,7 +305,7 @@
   const INIT = { rx: 8, ry: -22 };
   const RX_MAX = 70;
   const AUTO_SPEED = 0.35;     // graus por frame (~21°/s)
-  const state = { rx: INIT.rx, ry: INIT.ry, vx: 0, vy: 0, target: null, dragging: false, auto: false };
+  const state = { rx: INIT.rx, ry: INIT.ry, vx: 0, vy: 0, target: null, dragging: false, auto: false, brake: false };
 
   let raf = 0;
   let last = 0;
@@ -336,11 +336,11 @@
         s.target = null;
       }
     } else {
-      if (s.auto && !reduceMotion) {
+      if (s.auto) {
         s.vy += (AUTO_SPEED - s.vy) * (1 - Math.pow(0.95, dt));
         s.vx *= Math.pow(0.94, dt);
       } else {
-        const f = Math.pow(0.94, dt);
+        const f = Math.pow(s.brake ? 0.8 : 0.94, dt);   // brake: parada rápida ao apertar "parar"
         s.vx *= f;
         s.vy *= f;
       }
@@ -414,6 +414,7 @@
       onModel: !!(e.target.closest && e.target.closest('.envelope'))
     };
     state.dragging = true;
+    state.brake = false;
     state.target = null;
     stage.classList.add('is-dragging');
     try { stage.setPointerCapture(e.pointerId); } catch (_) {}
@@ -485,18 +486,37 @@
     goTo(INIT.rx, INIT.ry + turns * 360);
   }
 
+  function setAuto(v) {
+    state.auto = v;
+    state.brake = !v;            // ao parar, freia rápido e fica estática
+    if (v) state.target = null;  // o giro automático assume
+    stage.classList.toggle('is-auto', v);
+    btnAuto.setAttribute('aria-pressed', String(v));
+    const label = v ? 'Parar giro' : 'Girar automaticamente';
+    btnAuto.setAttribute('aria-label', label);
+    btnAuto.title = label;
+    wake();
+  }
+
+  // guarda a carta no envelope (espera a animação atual terminar, se houver)
+  function closeEnvelope() {
+    if (!open) return;
+    const wait = busyUntil - performance.now();
+    if (wait > 0) setTimeout(() => { if (open) toggle(); }, wait + 30);
+    else toggle();
+  }
+
   btnAuto.addEventListener('click', () => {
     Sound.unlock();
-    state.auto = !state.auto;
-    btnAuto.setAttribute('aria-pressed', String(state.auto));
+    setAuto(!state.auto);
     Sound.ui();
-    wake();
   });
 
   btnReset.addEventListener('click', () => {
     Sound.unlock();
-    Sound.ui();
+    if (state.auto) setAuto(false);
     resetView();
+    if (open) closeEnvelope(); else Sound.ui();
   });
 
   function paintSoundButton() {
