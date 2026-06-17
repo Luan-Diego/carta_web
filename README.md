@@ -66,5 +66,5 @@ Feel free to explore the project, customize it, and make it your own.
 ---
 
 <p align="center">
-  Made with ❤️ and a little bit of code.
+  Made with a fury of the <b>Hawk</b>.
 </p>
