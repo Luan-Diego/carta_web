@@ -1,0 +1,52 @@
+/* ---------- Modo leitura (cobre o contêiner da carta, com rolagem) ---------- */
+.leitura{
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: rgba(40, 34, 22, .35);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: leitura-in .2s ease-out;
+}
+@keyframes leitura-in{ from{ opacity: 0; } to{ opacity: 1; } }
+
+.leitura-card{
+  width: min(560px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  background: var(--paper);
+  color: var(--txt-color);
+  border-radius: 6px;
+  padding: 36px 30px 30px;
+  box-shadow: 0 20px 60px rgba(40, 34, 22, .3);
+  font-size: 17px;
+  line-height: 1.7;
+  outline: none;
+}
+.leitura-card strong{ display: block; margin-bottom: 12px; font-size: 21px; }
+.leitura-card p{ margin: 0; }
+.leitura-card p + p{ margin-top: .9em; }
+.leitura-card .assinatura{ margin-top: 1.4em; text-align: right; font-style: italic; }
+
+.leitura-fechar{
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .85);
+  color: #2f2b22;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(40, 34, 22, .15);
+}
+.leitura-fechar:focus-visible{ outline: 2px solid #2f2b22; outline-offset: 2px; }

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="carregando">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f3f0e8">
+    <title>Letter to "your special person"!- By Your</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <main class="stage" id="stage" tabindex="0" role="button" aria-pressed="false"
+          aria-label="Envelope em 3D. Toque para abrir ou fechar. Arraste ou use as setas para girar.">
+
+        <!-- sombra no "chão" (fica fora do 3D) -->
+        <div class="shadow" id="shadow" aria-hidden="true"><i></i></div>
+
+        <div class="fit">
+            <div class="lift">
+                <div class="float">
+                    <div class="orbit" id="orbit">
+                        <div class="envelope">
+
+                            <!-- verso e interior do envelope -->
+                            <div class="face back-in"></div>
+                            <div class="face back-out"></div>
+
+                            <!-- espessura (bordas laterais e inferior) -->
+                            <div class="edge edge-l"></div>
+                            <div class="edge edge-r"></div>
+                            <div class="edge edge-b"></div>
+
+                            <!-- carta -->
+                            <div class="carta">
+                                <div class="sheet">
+                                    <div class="paper front">
+                                        <div class="texto" id="texto"></div>
+                                    </div>
+                                    <div class="paper rear"></div>
+                                </div>
+                            </div>
+
+                            <!-- frente (bolso) do envelope -->
+                            <div class="face front-pocket">
+                                <i class="f-left"></i>
+                                <i class="f-right"></i>
+                                <i class="f-bottom"></i>
+                            </div>
+
+                            <!-- aba + lacre em coração -->
+                            <div class="flap">
+                                <div class="flap-face flap-out"></div>
+                                <div class="flap-face flap-in"></div>
+                                <div class="selo" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <p class="hint" id="hint" aria-live="polite">Toque no envelope para abrir · arraste para girar</p>
+
+    <!-- Modo leitura: abre ao tocar na carta aberta -->
+    <div class="leitura" id="leitura" role="dialog" aria-modal="true" aria-label="Leitura da carta" hidden>
+        <button class="leitura-fechar" id="leitura-fechar" type="button" aria-label="Fechar leitura">&#10005;</button>
+        <article class="leitura-card" id="leitura-card" tabindex="-1"></article>
+    </div>
+
+    <nav class="toolbar" aria-label="Controles">
+        <button class="tool" id="btn-auto" type="button" aria-pressed="false" aria-label="Girar automaticamente" title="Girar automaticamente">
+            <svg viewBox="0 0 24 24"><g class="i-rot"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></g><rect class="i-stop" x="7.5" y="7.5" width="9" height="9" rx="1.8"/></svg>
+        </button>
+        <button class="tool" id="btn-reset" type="button" aria-label="Voltar ao início e guardar a carta" title="Voltar ao início e guardar a carta">
+            <svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="10" rx="1.5"/><path d="M5 8.5l7 5 7-5"/></svg>
+        </button>
+        <button class="tool" id="btn-sound" type="button" aria-pressed="true" aria-label="Som" title="Som">
+            <svg viewBox="0 0 24 24">
+                <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/>
+                <g class="waves"><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18 6.8a7.5 7.5 0 0 1 0 10.4"/></g>
+                <path class="slash" d="M16 9.5l5 5M21 9.5l-5 5"/>
+            </svg>
+        </button>
+    </nav>
+
+        <!-- ============================================================
+         PERSONALIZE AQUI: texto, cores e som da carta
+         ============================================================ -->
+    <script>
+/* =========================================================
+   Configuração da carta — edite este bloco para personalizar.
+   Qualquer campo removido ou inválido volta ao valor padrão.
+   ========================================================= */
+window.CARTA_CONFIG = {
+  // Título da aba do navegador
+  titulo: 'Uma carta para você',
+
+  carta: {
+    saudacao: 'Lorem ipsum,',
+    // Cada item da lista vira um parágrafo (cabem ~400 caracteres no total)
+    mensagem: [
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae id incidunt error corrupti neque? A, distinctio asperiores aut saepe pariatur quaerat aspernatur repellendus ea, earum, ad sit inventore doloremque deserunt..',
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, mollitia culpa. Facilis reiciendis perspiciatis, fugit fuga omnis nobis voluptates aut inventore. Odio fugiat in expedita nesciunt, qui magnam. Consectetur, ea.'
+    ],
+    // Deixe vazio ('') para não mostrar
+    assinatura: ''
+  },
+
+  // Cores em #hex, rgb() ou hsl()
+  cores: {
+    fundo1: '#f9f7f2',    // centro do fundo
+    fundo2: '#e7e2d6',    // bordas do fundo
+    envelope: '#e6cfa7',  // cor base do envelope (os outros tons são calculados)
+    papel: '#fffefa',     // papel da carta
+    texto: '#3f3b33',     // cor do texto
+    lacre: '#92161c'      // coração do lacre
+  },
+
+  // Som ligado ao abrir a página (o botão de som lembra a escolha de quem visita)
+  som: true
+};
+    </script>
+
+        <!-- Lógica da carta (não precisa mexer) -->
+    <script>
+/* =========================================================
+   Carta Web — rotação 3D + sons
+   Sem frameworks: CSS 3D transforms + Web Audio API.
+   Os sons são sintetizados no navegador (nenhum arquivo de
+   áudio é necessário, funciona offline).
+   ========================================================= */
+(() => {
+  'use strict';
+
+  const $ = (s) => document.querySelector(s);
+  const stage = $('#stage');
+  const orbit = $('#orbit');
+  const shadow = $('#shadow');
+  const hint = $('#hint');
+  const btnAuto = $('#btn-auto');
+  const btnReset = $('#btn-reset');
+  const btnSound = $('#btn-sound');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  /* ---------------------------------------------------------
+     CONFIGURAÇÃO (o bloco PERSONALIZE AQUI sobrescreve estes padrões)
+     --------------------------------------------------------- */
+  const DEFAULTS = {
+    titulo: 'Uma carta para você',
+    carta: {
+      saudacao: 'Lorem ipsum,',
+      mensagem: ['Lorem ipsum dolor sit amet consectetur adipisicing elit.'],
+      assinatura: ''
+    },
+    cores: {
+      fundo1: '#f9f7f2',
+      fundo2: '#e7e2d6',
+      envelope: '#e6cfa7',
+      papel: '#fffefa',
+      texto: '#3f3b33',
+      lacre: '#92161c'
+    },
+    som: true
+  };
+
+  // junta só as chaves conhecidas e do tipo certo (seguro para configs vindas de fora)
+  function merge(base, extra) {
+    const out = {};
+    Object.keys(base).forEach((k) => {
+      const b = base[k];
+      const v = extra && typeof extra === 'object' ? extra[k] : undefined;
+      if (b && typeof b === 'object' && !Array.isArray(b)) out[k] = merge(b, v);
+      else if (Array.isArray(b)) out[k] = Array.isArray(v) && v.every((x) => typeof x === 'string') ? v : b;
+      else out[k] = typeof v === typeof b ? v : b;
+    });
+    return out;
+  }
+
+  const COLOR_RE = /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%\/]+\)|hsla?\([\d\s.,%\/a-z]+\))$/i;
+  const safeColor = (v, fallback) => (typeof v === 'string' && COLOR_RE.test(v.trim()) ? v.trim() : fallback);
+
+  let CFG = merge(DEFAULTS, window.CARTA_CONFIG);
+
+  // monta o texto da carta (textContent, nunca innerHTML: o texto não executa HTML)
+  function buildLetter(box, c) {
+    box.textContent = '';
+    if (c.saudacao) {
+      const s = document.createElement('strong');
+      s.textContent = c.saudacao;
+      box.appendChild(s);
+    }
+    c.mensagem.forEach((t) => {
+      const p = document.createElement('p');
+      p.textContent = t;
+      box.appendChild(p);
+    });
+    if (c.assinatura) {
+      const p = document.createElement('p');
+      p.className = 'assinatura';
+      p.textContent = c.assinatura;
+      box.appendChild(p);
+    }
+  }
+
+  function applyConfig(cfg) {
+    document.title = cfg.titulo.slice(0, 120);
+
+    const rootStyle = document.documentElement.style;
+    const vars = { fundo1: '--bg-1', fundo2: '--bg-2', envelope: '--env-cover', papel: '--paper', texto: '--txt-color', lacre: '--heart-color' };
+    Object.keys(vars).forEach((k) => rootStyle.setProperty(vars[k], safeColor(cfg.cores[k], DEFAULTS.cores[k])));
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', safeColor(cfg.cores.fundo1, DEFAULTS.cores.fundo1));
+
+    // limites de tamanho (protege contra links gigantes)
+    const c = {
+      saudacao: cfg.carta.saudacao.slice(0, 80),
+      mensagem: cfg.carta.mensagem.slice(0, 8).map((t) => t.slice(0, 800)),
+      assinatura: cfg.carta.assinatura.slice(0, 80)
+    };
+    buildLetter($('#texto'), c);          // papel em 3D
+    buildLetter($('#leitura-card'), c);   // modo leitura
+  }
+
+  /* ---------------------------------------------------------
+     LINK PERSONALIZADO:  index.html#c=<j|z>.<base64url>
+     j = JSON puro, z = JSON comprimido (deflate). A parte # do
+     link nunca é enviada a nenhum servidor.
+     --------------------------------------------------------- */
+  const MAX_ENC = 12000;   // tamanho máximo aceito do trecho codificado
+  const MAX_JSON = 60000;  // tamanho máximo do JSON depois de descomprimir
+
+  const toB64u = (bytes) => {
+    let s = '';
+    for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  };
+  const fromB64u = (str) => {
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (str.length % 4) str += '=';
+    const bin = atob(str);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  };
+  const pipeBytes = async (bytes, stream) =>
+    new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+
+  async function encodeLink(cfg) {
+    const json = new TextEncoder().encode(JSON.stringify(merge(DEFAULTS, cfg)));
+    let tag = 'j';
+    let bytes = json;
+    if (typeof CompressionStream !== 'undefined') {
+      try { bytes = await pipeBytes(json, new CompressionStream('deflate-raw')); tag = 'z'; } catch (_) {}
+    }
+    return location.href.split('#')[0] + '#c=' + tag + '.' + toB64u(bytes);
+  }
+
+  async function decodeLink(payload) {
+    const m = /^([jz])\.([A-Za-z0-9_-]+)$/.exec(payload);
+    if (!m || payload.length > MAX_ENC) throw new Error('link inválido');
+    let bytes = fromB64u(m[2]);
+    if (m[1] === 'z') bytes = await pipeBytes(bytes, new DecompressionStream('deflate-raw'));
+    if (bytes.length > MAX_JSON) throw new Error('conteúdo grande demais');
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+
+  const readLinkParam = () => {
+    const m = /^#c=(.+)$/.exec(location.hash);
+    return m ? m[1] : null;
+  };
+
+  // ajuda temporária (até existir o editor): no console, CartaLink.gerar({ ... }).then(console.log)
+  window.CartaLink = { gerar: (cfg) => encodeLink(cfg) };
+
+  /* ---------------------------------------------------------
+     SOM (Web Audio API)
+     --------------------------------------------------------- */
+  const Sound = (() => {
+    let ctx = null, master = null, fx = null, noise = null, whoosh = null;
+    let enabled = true;
+
+    function init() {
+      if (ctx) return true;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return false;
+      ctx = new AC();
+
+      master = ctx.createGain();
+      master.gain.value = enabled ? 0.9 : 0;
+      master.connect(ctx.destination);
+
+      // eco suave para o brilho dos sinos
+      const delay = ctx.createDelay(1);
+      delay.delayTime.value = 0.23;
+      const fb = ctx.createGain();
+      fb.gain.value = 0.32;
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 2800;
+      fx = ctx.createGain();
+      fx.gain.value = 0.5;
+      fx.connect(delay);
+      delay.connect(lp);
+      lp.connect(fb);
+      fb.connect(delay);
+      lp.connect(master);
+
+      // ruído branco (base do farfalhar de papel e do "whoosh")
+      const len = ctx.sampleRate * 2;
+      noise = ctx.createBuffer(1, len, ctx.sampleRate);
+      const d = noise.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+
+      // "whoosh" contínuo, acompanha a velocidade do giro
+      const src = ctx.createBufferSource();
+      src.buffer = noise;
+      src.loop = true;
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.Q.value = 0.7;
+      bp.frequency.value = 500;
+      const g = ctx.createGain();
+      g.gain.value = 0;
+      src.connect(bp);
+      bp.connect(g);
+      g.connect(master);
+      src.start();
+      whoosh = { bp, g };
+      return true;
+    }
+
+    function unlock() {
+      if (!init()) return;
+      if (ctx.state === 'suspended') ctx.resume();
+    }
+
+    const ready = () => enabled && init();
+
+    /* --- sons básicos --- */
+    function thump(t, f = 180, vol = 0.3) {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(f, t);
+      o.frequency.exponentialRampToValueAtTime(f * 0.4, t + 0.14);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+      o.connect(g);
+      g.connect(master);
+      o.start(t);
+      o.stop(t + 0.25);
+    }
+
+    function tick(t, f = 1200, vol = 0.07) {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'triangle';
+      o.frequency.setValueAtTime(f, t);
+      o.frequency.exponentialRampToValueAtTime(f * 0.6, t + 0.05);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.004);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+      o.connect(g);
+      g.connect(master);
+      o.start(t);
+      o.stop(t + 0.08);
+    }
+
+    // farfalhar de papel: ruído filtrado com pequenos estalos aleatórios
+    function rustle(t, dur = 0.5, vol = 0.2, bright = 1) {
+      const src = ctx.createBufferSource();
+      src.buffer = noise;
+      const hp = ctx.createBiquadFilter();
+      hp.type = 'highpass';
+      hp.frequency.value = 1200 * bright;
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = 4200 * bright;
+      bp.Q.value = 0.6;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t);
+      const n = Math.max(4, Math.round(dur * 22));
+      for (let i = 0; i < n; i++) {
+        const x = i / n;
+        const tt = t + x * dur;
+        const a = vol * (0.25 + Math.random() * 0.75) * Math.pow(Math.sin(Math.PI * x), 0.7);
+        g.gain.setTargetAtTime(a, tt, 0.004);
+        g.gain.setTargetAtTime(a * 0.15, tt + 0.012, 0.01);
+      }
+      g.gain.setTargetAtTime(0, t + dur, 0.03);
+      src.connect(hp);
+      hp.connect(bp);
+      bp.connect(g);
+      g.connect(master);
+      src.start(t, Math.random() * 1.5, dur + 0.2);
+    }
+
+    // sino suave (fundamental + harmônicos)
+    function bell(t, f, vol = 0.1, dur = 1.8) {
+      [[1, 1, dur], [2.01, 0.28, dur * 0.5], [3.99, 0.1, dur * 0.25]].forEach(([mult, amp, decay]) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.value = f * mult;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(vol * amp, t + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
+        o.connect(g);
+        g.connect(master);
+        g.connect(fx);
+        o.start(t);
+        o.stop(t + decay + 0.05);
+      });
+    }
+
+    /* --- sons da interface --- */
+    return {
+      unlock,
+      isEnabled: () => enabled,
+      applyDefault(v) {                       // padrão do config; a escolha salva de quem visita vence
+        enabled = v !== false;
+        try { const saved = localStorage.getItem('carta:som'); if (saved) enabled = saved !== 'off'; } catch (_) {}
+        if (ctx) master.gain.value = enabled ? 0.9 : 0;
+      },
+      setEnabled(v) {
+        enabled = v;
+        try { localStorage.setItem('carta:som', v ? 'on' : 'off'); } catch (_) {}
+        if (ctx) master.gain.setTargetAtTime(v ? 0.9 : 0, ctx.currentTime, 0.03);
+      },
+      ui() {
+        if (!ready()) return;
+        tick(ctx.currentTime + 0.01, 1000, 0.09);
+      },
+      open() {
+        if (!ready()) return;
+        const t = ctx.currentTime + 0.03;
+        thump(t, 190, 0.34);                 // toque no lacre
+        tick(t + 0.01, 1400, 0.07);
+        rustle(t + 0.15, 0.55, 0.2, 1.1);    // aba abrindo
+        rustle(t + 0.8, 0.85, 0.26, 1);      // carta subindo
+        rustle(t + 1.55, 0.6, 0.18, 0.8);    // carta vindo para a frente
+        bell(t + 2.0, 783.99, 0.11, 1.8);    // arpejo final
+        bell(t + 2.14, 1174.66, 0.09, 2.2);
+        bell(t + 2.3, 1567.98, 0.06, 2.4);
+      },
+      close() {
+        if (!ready()) return;
+        const t = ctx.currentTime + 0.03;
+        thump(t, 170, 0.22);
+        rustle(t, 0.5, 0.18, 0.8);           // carta voltando
+        rustle(t + 0.5, 0.7, 0.2, 1);        // carta entrando no envelope
+        rustle(t + 1.15, 0.5, 0.16, 1.1);    // aba fechando
+        thump(t + 1.8, 150, 0.3);
+        bell(t + 1.85, 587.33, 0.07, 1.2);
+      },
+      speed(v) {
+        if (!ctx || !whoosh) return;
+        const now = ctx.currentTime;
+        const gain = enabled ? Math.min(0.05, Math.max(0, v - 0.5) * 0.004) : 0;
+        whoosh.g.gain.setTargetAtTime(gain, now, 0.06);
+        whoosh.bp.frequency.setTargetAtTime(350 + Math.min(v, 14) * 70, now, 0.06);
+      }
+    };
+  })();
+
+  /* ---------------------------------------------------------
+     ROTAÇÃO 3D (arraste, inércia, auto-giro, teclado)
+     --------------------------------------------------------- */
+  const INIT = { rx: 8, ry: -22 };
+  const RX_MAX = 70;
+  const AUTO_SPEED = 0.35;     // graus por frame (~21°/s)
+  const state = { rx: INIT.rx, ry: INIT.ry, vx: 0, vy: 0, target: null, dragging: false, auto: false, brake: false };
+
+  let raf = 0;
+  let last = 0;
+
+  function render() {
+    orbit.style.transform = 'rotateX(' + state.rx.toFixed(2) + 'deg) rotateY(' + state.ry.toFixed(2) + 'deg)';
+    const c = Math.abs(Math.cos(state.ry * Math.PI / 180));
+    shadow.style.setProperty('--sx', (0.5 + 0.5 * c).toFixed(3));
+  }
+
+  function tickFrame(now) {
+    const dt = Math.min(2.5, (now - last) / 16.667 || 1);
+    last = now;
+    const s = state;
+
+    if (s.dragging) {
+      const f = Math.pow(0.85, dt);
+      s.vx *= f;
+      s.vy *= f;
+    } else if (s.target) {
+      const k = 1 - Math.pow(0.88, dt);
+      s.rx += (s.target.rx - s.rx) * k;
+      s.ry += (s.target.ry - s.ry) * k;
+      s.vx = s.vy = 0;
+      if (Math.abs(s.target.rx - s.rx) < 0.05 && Math.abs(s.target.ry - s.ry) < 0.05) {
+        s.rx = s.target.rx;
+        s.ry = s.target.ry;
+        s.target = null;
+      }
+    } else {
+      if (s.auto) {
+        s.vy += (AUTO_SPEED - s.vy) * (1 - Math.pow(0.95, dt));
+        s.vx *= Math.pow(0.94, dt);
+      } else {
+        const f = Math.pow(s.brake ? 0.8 : 0.94, dt);   // brake: parada rápida ao apertar "parar"
+        s.vx *= f;
+        s.vy *= f;
+      }
+      s.rx += s.vx * dt;
+      s.ry += s.vy * dt;
+    }
+
+    if (Math.abs(s.rx) > RX_MAX) {
+      s.rx = clamp(s.rx, -RX_MAX, RX_MAX);
+      s.vx = 0;
+    }
+
+    render();
+    const speed = Math.hypot(s.vx, s.vy);
+    Sound.speed(s.dragging || s.target || s.auto || speed > 0.05 ? speed : 0);
+
+    if (s.dragging || s.target || s.auto || speed > 0.02) {
+      raf = requestAnimationFrame(tickFrame);
+    } else {
+      raf = 0;
+      Sound.speed(0);
+    }
+  }
+
+  function wake() {
+    if (raf) return;
+    last = performance.now();
+    raf = requestAnimationFrame(tickFrame);
+  }
+
+  function goTo(rx, ry) {
+    state.target = { rx: clamp(rx, -RX_MAX, RX_MAX), ry };
+    wake();
+  }
+
+  /* ---------------------------------------------------------
+     ABRIR / FECHAR
+     --------------------------------------------------------- */
+  let open = false;
+  let busyUntil = 0;
+
+  function toggle() {
+    const now = performance.now();
+    if (now < busyUntil) { Sound.ui(); return; }   // animação em andamento
+    open = !open;
+    busyUntil = now + (open ? 2400 : 1900);
+    stage.classList.toggle('is-open', open);
+    stage.setAttribute('aria-pressed', String(open));
+    hint.textContent = open
+      ? 'Toque na carta para ler · arraste para girar'
+      : 'Toque no envelope para abrir · arraste para girar';
+    if (open) Sound.open(); else Sound.close();
+  }
+
+  /* ---------------------------------------------------------
+     PONTEIRO (mouse e toque): arrastar gira, toque simples abre
+     --------------------------------------------------------- */
+  const DRAG_SENS = 0.45;
+  let down = null;
+
+  stage.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    Sound.unlock();
+    const now = performance.now();
+    down = {
+      id: e.pointerId,
+      x: e.clientX, y: e.clientY,
+      lx: e.clientX, ly: e.clientY,
+      t: now, lt: now,
+      moved: false,
+      onModel: !!(e.target.closest && e.target.closest('.envelope')),
+      onPaper: !!(e.target.closest && e.target.closest('.paper'))
+    };
+    state.dragging = true;
+    state.brake = false;
+    state.target = null;
+    stage.classList.add('is-dragging');
+    try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+    wake();
+  });
+
+  stage.addEventListener('pointermove', (e) => {
+    if (!down || e.pointerId !== down.id) return;
+    if (!down.moved) {
+      if (Math.hypot(e.clientX - down.x, e.clientY - down.y) < 6) return;
+      down.moved = true;
+    }
+    const now = performance.now();
+    const f = Math.max(0.5, (now - down.lt) / 16.667);
+    const dry = (e.clientX - down.lx) * DRAG_SENS;
+    const drx = -(e.clientY - down.ly) * DRAG_SENS;
+    state.ry += dry;
+    state.rx = clamp(state.rx + drx, -RX_MAX, RX_MAX);
+    state.vy = state.vy * 0.4 + (dry / f) * 0.6;
+    state.vx = state.vx * 0.4 + (drx / f) * 0.6;
+    down.lx = e.clientX;
+    down.ly = e.clientY;
+    down.lt = now;
+    render();
+  });
+
+  function endPointer(e) {
+    if (!down || e.pointerId !== down.id) return;
+    const now = performance.now();
+    const isTap = !down.moved && now - down.t < 600 && down.onModel && e.type === 'pointerup';
+    if (now - down.lt > 80) state.vx = state.vy = 0;   // parou antes de soltar: sem inércia
+    const tapPaper = down.onPaper;
+    state.dragging = false;
+    stage.classList.remove('is-dragging');
+    down = null;
+    if (isTap) {
+      state.vx = state.vy = 0;
+      if (open && tapPaper && now >= busyUntil) openReader();   // carta aberta: toque = ler
+      else toggle();                                            // envelope: abre / fecha
+    }
+    wake();
+  }
+  stage.addEventListener('pointerup', endPointer);
+  stage.addEventListener('pointercancel', endPointer);
+
+  /* ---------------------------------------------------------
+     TECLADO
+     --------------------------------------------------------- */
+  stage.addEventListener('keydown', (e) => {
+    Sound.unlock();
+    const base = state.target || { rx: state.rx, ry: state.ry };
+    switch (e.key) {
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        toggle();
+        break;
+      case 'ArrowLeft':  e.preventDefault(); goTo(base.rx, base.ry - 20); break;
+      case 'ArrowRight': e.preventDefault(); goTo(base.rx, base.ry + 20); break;
+      case 'ArrowUp':    e.preventDefault(); goTo(base.rx + 12, base.ry); break;
+      case 'ArrowDown':  e.preventDefault(); goTo(base.rx - 12, base.ry); break;
+      case 'Home':       e.preventDefault(); resetView(); break;
+      case 'l':
+      case 'L':          if (open) openReader(); break;
+    }
+  });
+
+  /* ---------------------------------------------------------
+     BARRA DE CONTROLES
+     --------------------------------------------------------- */
+  function resetView() {
+    const turns = Math.round((state.ry - INIT.ry) / 360);
+    goTo(INIT.rx, INIT.ry + turns * 360);
+  }
+
+  function setAuto(v) {
+    state.auto = v;
+    state.brake = !v;            // ao parar, freia rápido e fica estática
+    if (v) state.target = null;  // o giro automático assume
+    stage.classList.toggle('is-auto', v);
+    btnAuto.setAttribute('aria-pressed', String(v));
+    const label = v ? 'Parar giro' : 'Girar automaticamente';
+    btnAuto.setAttribute('aria-label', label);
+    btnAuto.title = label;
+    wake();
+  }
+
+  // guarda a carta no envelope (espera a animação atual terminar, se houver)
+  function closeEnvelope() {
+    if (!open) return;
+    const wait = busyUntil - performance.now();
+    if (wait > 0) setTimeout(() => { if (open) toggle(); }, wait + 30);
+    else toggle();
+  }
+
+  btnAuto.addEventListener('click', () => {
+    Sound.unlock();
+    setAuto(!state.auto);
+    Sound.ui();
+  });
+
+  btnReset.addEventListener('click', () => {
+    Sound.unlock();
+    if (state.auto) setAuto(false);
+    resetView();
+    if (open) closeEnvelope(); else Sound.ui();
+  });
+
+  function paintSoundButton() {
+    btnSound.setAttribute('aria-pressed', String(Sound.isEnabled()));
+  }
+  btnSound.addEventListener('click', () => {
+    Sound.unlock();
+    Sound.setEnabled(!Sound.isEnabled());
+    paintSoundButton();
+    Sound.ui();
+  });
+  paintSoundButton();
+
+  /* ---------------------------------------------------------
+     MODO LEITURA (tela cheia, com rolagem)
+     --------------------------------------------------------- */
+  const leitura = $('#leitura');
+  const leituraCard = $('#leitura-card');
+  const leituraFechar = $('#leitura-fechar');
+
+  function openReader() {
+    Sound.unlock();
+    leitura.hidden = false;
+    leituraCard.scrollTop = 0;
+    leituraFechar.focus();
+    Sound.ui();
+  }
+  function closeReader() {
+    leitura.hidden = true;
+    try { stage.focus({ preventScroll: true }); } catch (_) {}
+    Sound.ui();
+  }
+  leituraFechar.addEventListener('click', closeReader);
+  leitura.addEventListener('click', (e) => { if (e.target === leitura) closeReader(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !leitura.hidden) closeReader(); });
+
+  /* ---------------------------------------------------------
+     TAMANHO RESPONSIVO + ENTRADA
+     --------------------------------------------------------- */
+  function fitScale() {
+    const s = Math.min(window.innerWidth / 380, window.innerHeight / 600, 1.4);
+    stage.style.setProperty('--fit', Math.max(0.55, s).toFixed(3));
+  }
+  window.addEventListener('resize', fitScale);
+  fitScale();
+
+  if (reduceMotion) {
+    render();
+  } else {
+    // pequena animação de entrada: o envelope "chega" girando até a posição inicial
+    state.rx = 20;
+    state.ry = -80;
+    render();
+    goTo(INIT.rx, INIT.ry);
+  }
+  /* ---------------------------------------------------------
+     CARREGAMENTO: configuração do link (se houver) + libera a tela
+     --------------------------------------------------------- */
+  function ready(cfg) {
+    CFG = cfg;
+    applyConfig(CFG);
+    Sound.applyDefault(CFG.som);
+    paintSoundButton();
+    document.documentElement.classList.remove('carregando');
+  }
+
+  const fromLink = readLinkParam();
+  if (fromLink) {
+    decodeLink(fromLink)
+      .then((extra) => ready(merge(CFG, extra)))
+      .catch(() => ready(CFG));   // link inválido: mostra a carta padrão
+  } else {
+    ready(CFG);
+  }
+})();
+
+    </script>
+</body>
+</html>

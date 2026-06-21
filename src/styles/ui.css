@@ -1,0 +1,65 @@
+/* ---------- Dica e barra de controles ---------- */
+.hint{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: .02em;
+  color: #8a8472;
+  pointer-events: none;
+}
+
+.toolbar{
+  position: absolute;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 24px rgba(60, 50, 30, .12), 0 0 0 1px rgba(60, 50, 30, .06);
+  z-index: 5;
+}
+.tool{
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: #5b5648;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.tool:hover{ background: rgba(0, 0, 0, .05); }
+.tool:focus-visible{ outline: 2px solid #2f2b22; outline-offset: 2px; }
+.tool[aria-pressed="true"]{ background: #2f2b22; color: #fff; }
+.tool svg{
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* girar / parar */
+.btn-auto[aria-pressed="false"] .i-stop{ display: none; }
+.btn-auto[aria-pressed="true"] .i-rot{ display: none; }
+.btn-auto .i-stop{ fill: currentColor; }
+
+/* som ligado/desligado (o botão de som não fica "preenchido") */
+.btn-sound[aria-pressed="true"] .slash{ display: none; }
+.btn-sound[aria-pressed="false"] .waves{ display: none; }
+.btn-sound[aria-pressed="true"]{ background: transparent; color: #5b5648; }
+.btn-sound[aria-pressed="true"]:hover{ background: rgba(0, 0, 0, .05); }

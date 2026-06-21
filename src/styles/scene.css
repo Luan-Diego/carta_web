@@ -1,0 +1,90 @@
+/* ---------- Palco 3D ---------- */
+.stage{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  perspective: 1400px;
+  perspective-origin: 50% 42%;
+  touch-action: none;
+  cursor: grab;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  --fit: 1;
+}
+.stage.is-dragging{ cursor: grabbing; }
+.stage:focus-visible .envelope{ outline: 2px solid rgba(47, 43, 34, .35); outline-offset: 10px; }
+
+.fit{
+  position: relative;
+  width: 300px;
+  height: 230px;
+  transform: scale(var(--fit));
+  transform-style: preserve-3d;
+}
+
+/* desce o conjunto quando a carta sai, para manter tudo centralizado */
+.lift{
+  transform-style: preserve-3d;
+  transform: translateY(0);
+  transition: transform .8s var(--ease) .5s;
+}
+.is-open .lift{
+  transform: translateY(80px);
+  transition: transform .9s var(--ease) .8s;
+}
+
+.float{
+  transform-style: preserve-3d;
+  animation: float 5s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+@keyframes float{
+  from{ transform: translateY(-5px); }
+  to  { transform: translateY(7px); }
+}
+
+.orbit{
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform: rotateX(8deg) rotateY(-22deg);
+}
+
+/* ---------- Sombra no chão ---------- */
+.shadow{
+  position: absolute;
+  left: 50%;
+  top: calc(50% + (150px + var(--drop, 0px)) * var(--fit));
+  width: calc(260px * var(--fit));
+  height: calc(34px * var(--fit));
+  transform: translateX(-50%) scaleX(var(--sx, 1));
+  pointer-events: none;
+  transition: top .8s var(--ease) .5s;
+}
+.is-open .shadow{
+  --drop: 80px;
+  transition: top .9s var(--ease) .8s;
+}
+.shadow i{
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(closest-side, rgba(60, 50, 30, .26), rgba(60, 50, 30, 0));
+  animation: breathe 5s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+@keyframes breathe{
+  from{ transform: scale(1.04); opacity: 1; }
+  to  { transform: scale(.9);   opacity: .75; }
+}
+
+/* a flutuação só roda enquanto o giro automático está ligado */
+.is-auto .float,
+.is-auto .shadow i{ animation-play-state: running; }
+
+@media (prefers-reduced-motion: reduce){
+  .float, .shadow i{ animation: none; }
+}

@@ -1,0 +1,83 @@
+/* Formulário do editor */
+.ed-form{ display: grid; gap: 14px; align-content: start; }
+
+.ed-head h1{ margin: 0 0 4px; font-size: 26px; font-weight: 600; }
+.ed-head p{ margin: 0; color: var(--ed-muted); font-size: 14px; line-height: 1.5; }
+
+.ed-card{
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--ed-line);
+  border-radius: 12px;
+  background: var(--ed-card);
+  min-width: 0;
+}
+.ed-card legend{
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ed-muted);
+}
+
+.ed-card label{ display: grid; gap: 6px; font-size: 14px; }
+.ed-card small{ color: var(--ed-muted); font-size: 12px; line-height: 1.45; }
+
+.ed-card input[type="text"],
+.ed-card textarea{
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--ed-line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ed-text);
+  font: inherit;
+  font-size: 15px;
+}
+.ed-card textarea{ resize: vertical; line-height: 1.5; }
+.ed-card input:focus-visible,
+.ed-card textarea:focus-visible{ outline: 2px solid var(--ed-text); outline-offset: 1px; }
+
+.ed-colors{ display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.ed-card .ed-color{ display: flex; align-items: center; gap: 10px; }
+.ed-color input[type="color"]{
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--ed-line);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+}
+
+.ed-card .ed-check{ display: flex; align-items: center; gap: 10px; }
+.ed-check input{ width: 18px; height: 18px; accent-color: var(--ed-text); }
+
+.ed-card input.ed-link{ font-size: 13px; }
+.ed-error{ margin: 0; color: var(--ed-danger); font-size: 13px; }
+
+.ed-actions{ display: flex; flex-wrap: wrap; gap: 8px; }
+.ed-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--ed-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ed-text);
+  font: inherit;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ed-btn:hover{ background: #f4f2ec; }
+.ed-btn:focus-visible{ outline: 2px solid var(--ed-text); outline-offset: 2px; }
+.ed-btn:disabled{ opacity: .5; cursor: not-allowed; }
+.ed-btn.primary{ background: var(--ed-text); border-color: var(--ed-text); color: #fff; }
+.ed-btn.primary:hover:not(:disabled){ background: #1d1a14; }
+.ed-btn.ghost{ border-color: transparent; color: var(--ed-muted); }
