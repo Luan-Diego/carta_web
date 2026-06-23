@@ -8,7 +8,7 @@
   text-align: center;
   font-size: 13px;
   letter-spacing: .02em;
-  color: #8a8472;
+  color: var(--hint-color, #8a8472);
   pointer-events: none;
 }
 
@@ -52,6 +52,17 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+/* fundo escuro: barra translúcida e ícones claros */
+.player[data-tone="dark"] .toolbar{
+  background: rgba(255, 255, 255, .12);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .3), 0 0 0 1px rgba(255, 255, 255, .14);
+}
+.player[data-tone="dark"] .tool{ color: #e8e2d0; }
+.player[data-tone="dark"] .tool:hover{ background: rgba(255, 255, 255, .1); }
+.player[data-tone="dark"] .tool[aria-pressed="true"]{ background: #e8e2d0; color: #1d2540; }
+.player[data-tone="dark"] .btn-sound[aria-pressed="true"]{ background: transparent; color: #e8e2d0; }
+.player[data-tone="dark"] .btn-sound[aria-pressed="true"]:hover{ background: rgba(255, 255, 255, .1); }
 
 /* girar / parar */
 .btn-auto[aria-pressed="false"] .i-stop{ display: none; }

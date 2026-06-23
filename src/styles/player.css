@@ -8,3 +8,7 @@
   color: var(--txt-color);
   font-family: var(--font);
 }
+
+/* contraste conforme o fundo (data-tone vem de config/theme.js) */
+.player[data-tone="light"]{ --fx-color: rgba(120, 100, 60, .55); }
+.player[data-tone="dark"]{ --fx-color: rgba(255, 255, 255, .9); --hint-color: #d8d2c0; }

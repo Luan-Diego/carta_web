@@ -57,6 +57,27 @@
 .ed-check input{ width: 18px; height: 18px; accent-color: var(--ed-text); }
 
 .ed-card input.ed-link{ font-size: 13px; }
+
+/* grupos de opções (fundo, lacre, adesivo) */
+.ed-group{ display: grid; gap: 8px; }
+.ed-label{ font-size: 14px; }
+.ed-chips{ display: flex; flex-wrap: wrap; gap: 8px; }
+.ed-card .ed-chip{ display: inline-flex; position: relative; }
+.ed-chip input{ position: absolute; opacity: 0; pointer-events: none; }
+.ed-chip span{
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--ed-line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+.ed-chip span:hover{ background: #f4f2ec; }
+.ed-chip input:checked + span{ background: var(--ed-text); border-color: var(--ed-text); color: #fff; }
+.ed-chip input:focus-visible + span{ outline: 2px solid var(--ed-text); outline-offset: 2px; }
 .ed-error{ margin: 0; color: var(--ed-danger); font-size: 13px; }
 
 .ed-actions{ display: flex; flex-wrap: wrap; gap: 8px; }

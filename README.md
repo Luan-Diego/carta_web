@@ -14,6 +14,7 @@ So, I decided to make this project public, hoping it could inspire others to cre
 - Control bar: auto-rotate / stop, reset view (also puts the letter back in the envelope) and sound on/off.
 - Keyboard support: Enter/Space to open, arrow keys to rotate, Home to reset, `L` to read.
 - **Personalized links**: customize text and colors in the editor (`/criar/`) and share a link. Whoever opens it can only open the letter and interact with it; nothing can be changed.
+- **Look & feel options**: animated backgrounds (stars, falling petals, sparkles), seal shapes (heart, star, flower, initial), a dedication written on the envelope ("Para Maria") and an emoji sticker. The page adapts its contrast to light or dark backgrounds.
 - Responsive, and respects `prefers-reduced-motion`.
 
 ## 🛠️ Built With
@@ -47,7 +48,8 @@ npm run preview    # serve dist/ locally to check the build
 
 - **Default letter** (shown when the site is opened without a link): edit `src/config/carta.config.js` (title, greeting, paragraphs, signature, colors, sound).
 - **Personalized links**: open `/criar/`, change the text and colors with a live preview, and copy the link.
-- Invalid or missing fields fall back to the defaults in `src/config/defaults.js`.
+- Look & feel lives in the `visual` block (`fundo`, `lacre`, `inicial`, `para`, `adesivo`). The accepted values are listed in `src/config/options.js`; to add a new background, seal or sticker, add it there (and its CSS/markup).
+- Invalid or missing fields fall back to the defaults in `src/config/defaults.js`. Values outside the lists in `options.js` are ignored.
 - About 400 characters fit on the paper; the full text (up to 8 paragraphs of 800 characters) appears in reading mode.
 - The envelope needs only one base color; the other tones are derived from it in `src/styles/tokens.css`.
 
@@ -66,9 +68,10 @@ src/
   viewer.js           boots the letter: reads the link, validates, mounts
   editor.js           boots the editor
   views/              one component per page (LetterViewer, LetterEditor)
-  components/         EnvelopeScene (3D), LetterPlayer, ControlBar, ReadingMode, LetterContent
+  components/         EnvelopeScene (3D), LetterPlayer, ControlBar, ReadingMode, LetterContent,
+                      BackgroundLayer (stars/petals/sparkles), SealMark (seal shapes)
   composables/        useOrbit (rotation), useEnvelope (open/close), useFit (scale), useSound
-  config/             defaults, schema (validation), theme (CSS variables), carta.config (your letter)
+  config/             defaults, options (allowed looks), schema (validation), theme (CSS variables), carta.config (your letter)
   lib/                link (encode/decode), sound (Web Audio engine, no Vue)
   styles/             tokens, scene, envelope, ui, reader, player, editor... (all plain CSS)
 legacy/               the previous single-file version (index.html + style.css)

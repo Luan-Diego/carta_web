@@ -16,6 +16,27 @@ export function themeVars(cfg) {
   return out;
 }
 
+// Brilho (0 a 1) de uma cor #hex ou rgb(). Cor desconhecida conta como clara.
+function luminance(color) {
+  let r, g, b;
+  const hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color);
+  if (hex) {
+    let h = hex[1];
+    if (h.length === 3) h = [...h].map((c) => c + c).join('');
+    [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  } else {
+    const m = /^rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)/i.exec(color);
+    if (!m) return 1;
+    [r, g, b] = [m[1], m[2], m[3]].map(Number);
+  }
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+}
+
+// 'dark' ou 'light', conforme o fundo: ajusta cor da dica e dos efeitos para dar contraste
+export function toneOf(cfg) {
+  return (luminance(cfg.cores.fundo1) + luminance(cfg.cores.fundo2)) / 2 < 0.45 ? 'dark' : 'light';
+}
+
 // Página da carta: aplica o tema no documento inteiro, título e cor da barra do navegador
 export function applyTheme(cfg) {
   const root = document.documentElement;

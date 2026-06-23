@@ -16,6 +16,14 @@ export const DEFAULTS = {
     lacre: '#92161c', // coração do lacre
   },
   som: true,
+  // opções válidas em config/options.js
+  visual: {
+    fundo: 'gradiente', // gradiente | estrelas | petalas | brilhos
+    lacre: 'coracao', // coracao | estrela | flor | inicial
+    inicial: '', // letra(s) do lacre, quando lacre = 'inicial'
+    para: '', // dedicatória escrita no envelope (ex.: "Para Maria")
+    adesivo: '', // emoji colado no envelope ('' = nenhum)
+  },
 };
 
 // Limites de tamanho (protegem contra links gigantes)
@@ -25,4 +33,6 @@ export const LIMITS = {
   assinatura: 80,
   paragrafos: 8,
   paragrafo: 800,
+  inicial: 2,
+  para: 40,
 };

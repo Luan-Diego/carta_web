@@ -31,4 +31,13 @@ export const siteConfig = {
 
   // Som ligado ao abrir (o botão de som lembra a escolha de quem visita)
   som: true,
+
+  // Enfeites (opções válidas em ./options.js)
+  visual: {
+    fundo: 'gradiente', // gradiente | estrelas | petalas | brilhos
+    lacre: 'coracao', // coracao | estrela | flor | inicial
+    inicial: '', // letra(s) do lacre, quando lacre = 'inicial'
+    para: '', // escrito no envelope, ex.: 'Para Maria'
+    adesivo: '', // emoji no envelope, ex.: '🌹' ('' = nenhum)
+  },
 };

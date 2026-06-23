@@ -3,6 +3,7 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 import LetterPlayer from '../components/LetterPlayer.vue';
 import { useSound } from '../composables/useSound.js';
 import { siteConfig } from '../config/carta.config.js';
+import { ADESIVOS, FUNDOS, LACRES } from '../config/options.js';
 import { LIMITS, resolveConfig } from '../config/schema.js';
 import { encodeConfig, MAX_ENC } from '../lib/link.js';
 import '../styles/editor-form.css';
@@ -26,6 +27,7 @@ const toForm = (cfg) => ({
   assinatura: cfg.carta.assinatura,
   cores: { ...cfg.cores },
   som: cfg.som,
+  ...cfg.visual, // fundo, lacre, inicial, para, adesivo
 });
 
 const toConfig = (f) => ({
@@ -37,6 +39,7 @@ const toConfig = (f) => ({
   },
   cores: { ...f.cores },
   som: f.som,
+  visual: { fundo: f.fundo, lacre: f.lacre, inicial: f.inicial, para: f.para, adesivo: f.adesivo },
 });
 
 /* ---- rascunho salvo neste navegador ---- */
@@ -161,6 +164,51 @@ onMounted(() => useSound().applyDefault(config.value.som));
             <input v-model="form.cores[chave]" type="color" />
             <span>{{ nome }}</span>
           </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ed-card">
+        <legend>Aparência</legend>
+
+        <div class="ed-group" role="radiogroup" aria-labelledby="rot-fundo">
+          <span id="rot-fundo" class="ed-label">Fundo</span>
+          <div class="ed-chips">
+            <label v-for="o in FUNDOS" :key="o.id" class="ed-chip">
+              <input v-model="form.fundo" type="radio" name="fundo" :value="o.id" />
+              <span>{{ o.nome }}</span>
+            </label>
+          </div>
+          <small>Estrelas combinam com fundo escuro (mude as cores acima); pétalas e brilhos funcionam nos dois.</small>
+        </div>
+
+        <div class="ed-group" role="radiogroup" aria-labelledby="rot-lacre">
+          <span id="rot-lacre" class="ed-label">Lacre</span>
+          <div class="ed-chips">
+            <label v-for="o in LACRES" :key="o.id" class="ed-chip">
+              <input v-model="form.lacre" type="radio" name="lacre" :value="o.id" />
+              <span>{{ o.nome }}</span>
+            </label>
+          </div>
+        </div>
+
+        <label v-if="form.lacre === 'inicial'">
+          Inicial do lacre (até {{ LIMITS.inicial }} letras)
+          <input v-model="form.inicial" type="text" :maxlength="LIMITS.inicial" />
+        </label>
+
+        <label>
+          Dedicatória no envelope
+          <input v-model="form.para" type="text" :maxlength="LIMITS.para" placeholder="Para Maria" />
+        </label>
+
+        <div class="ed-group" role="radiogroup" aria-labelledby="rot-adesivo">
+          <span id="rot-adesivo" class="ed-label">Adesivo</span>
+          <div class="ed-chips">
+            <label v-for="e in ADESIVOS" :key="e || 'nenhum'" class="ed-chip">
+              <input v-model="form.adesivo" type="radio" name="adesivo" :value="e" />
+              <span>{{ e || 'Nenhum' }}</span>
+            </label>
+          </div>
         </div>
       </fieldset>
 

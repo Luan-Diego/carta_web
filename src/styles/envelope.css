@@ -95,6 +95,36 @@
   fill: var(--heart-color);
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .3));
 }
+.selo-texto{
+  fill: #fff;
+  font: 700 11px Georgia, 'Times New Roman', serif;
+}
+.selo-miolo{ fill: color-mix(in srgb, var(--heart-color) 40%, #fff); }
+
+/* ---------- Enfeites na frente do envelope ---------- */
+.dedicatoria{
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 26px;
+  text-align: center;
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: .03em;
+  color: color-mix(in srgb, var(--env-cover) 40%, #000);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.adesivo{
+  position: absolute;
+  right: 20px;
+  top: 64px;
+  font-size: 26px;
+  line-height: 1;
+  transform: rotate(8deg);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .2));
+}
 
 /* ---------- Carta ---------- */
 /* 270x360, desenhada no tamanho final (texto nítido) e reduzida enquanto está guardada */

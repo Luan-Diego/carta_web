@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import LetterContent from './LetterContent.vue';
+import SealMark from './SealMark.vue';
 import { useFit } from '../composables/useFit.js';
 import { useOrbit } from '../composables/useOrbit.js';
 import { useSound } from '../composables/useSound.js';
@@ -10,6 +11,7 @@ import '../styles/envelope.css';
 defineProps({
   letter: { type: Object, required: true }, // { saudacao, mensagem[], assinatura }
   open: { type: Boolean, default: false },
+  visual: { type: Object, required: true }, // { lacre, inicial, para, adesivo }
 });
 const auto = defineModel('auto', { type: Boolean, default: false }); // giro automático
 const emit = defineEmits(['tap', 'toggle', 'read']);
@@ -120,6 +122,8 @@ defineExpose({
                 <i class="f-left"></i>
                 <i class="f-right"></i>
                 <i class="f-bottom"></i>
+                <div v-if="visual.para" class="dedicatoria">{{ visual.para }}</div>
+                <div v-if="visual.adesivo" class="adesivo" aria-hidden="true">{{ visual.adesivo }}</div>
               </div>
 
               <!-- aba + lacre em coração -->
@@ -127,9 +131,7 @@ defineExpose({
                 <div class="flap-face flap-out"></div>
                 <div class="flap-face flap-in"></div>
                 <div class="selo" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                  </svg>
+                  <SealMark :forma="visual.lacre" :inicial="visual.inicial" />
                 </div>
               </div>
             </div>

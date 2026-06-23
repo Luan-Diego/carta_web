@@ -1,11 +1,12 @@
 <script setup>
 import { computed, ref } from 'vue';
+import BackgroundLayer from './BackgroundLayer.vue';
 import ControlBar from './ControlBar.vue';
 import EnvelopeScene from './EnvelopeScene.vue';
 import ReadingMode from './ReadingMode.vue';
 import { useEnvelope } from '../composables/useEnvelope.js';
 import { useSound } from '../composables/useSound.js';
-import { themeVars } from '../config/theme.js';
+import { themeVars, toneOf } from '../config/theme.js';
 import '../styles/player.css';
 
 // A carta completa: cena 3D + dica + barra de controles + modo leitura.
@@ -73,11 +74,13 @@ function toggleSound() {
 </script>
 
 <template>
-  <div class="player" :style="themeVars(props.config)">
+  <div class="player" :style="themeVars(props.config)" :data-tone="toneOf(props.config)">
+    <BackgroundLayer :tipo="config.visual.fundo" />
     <EnvelopeScene
       ref="scene"
       v-model:auto="auto"
       :letter="config.carta"
+      :visual="config.visual"
       :open="isOpen"
       @tap="onTap"
       @toggle="toggle"

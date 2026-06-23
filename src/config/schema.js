@@ -1,4 +1,5 @@
 import { DEFAULTS, LIMITS } from './defaults.js';
+import { ADESIVOS, FUNDOS, LACRES } from './options.js';
 
 const COLOR_RE = /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%/]+\)|hsla?\([\d\s.,%/a-z]+\))$/i;
 
@@ -18,6 +19,19 @@ export function merge(base, extra) {
   return out;
 }
 
+// Só aceita valores das listas de options.js; o resto volta ao padrão
+function sanitizeVisual(v) {
+  const inicial = Array.from(v.inicial.trim()).slice(0, LIMITS.inicial).join('');
+  const lacre = LACRES.some((o) => o.id === v.lacre) ? v.lacre : DEFAULTS.visual.lacre;
+  return {
+    fundo: FUNDOS.some((o) => o.id === v.fundo) ? v.fundo : DEFAULTS.visual.fundo,
+    lacre: lacre === 'inicial' && !inicial ? DEFAULTS.visual.lacre : lacre, // inicial sem letra: coração
+    inicial,
+    para: v.para.slice(0, LIMITS.para),
+    adesivo: ADESIVOS.includes(v.adesivo) ? v.adesivo : '',
+  };
+}
+
 // Aplica limites de tamanho e valida as cores. Sempre devolve uma configuração segura.
 export function sanitize(cfg) {
   const cores = {};
@@ -31,6 +45,7 @@ export function sanitize(cfg) {
     },
     cores,
     som: cfg.som !== false,
+    visual: sanitizeVisual(cfg.visual),
   };
 }
 
