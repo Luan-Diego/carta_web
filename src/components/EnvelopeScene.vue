@@ -11,7 +11,7 @@ import '../styles/envelope.css';
 defineProps({
   letter: { type: Object, required: true }, // { saudacao, mensagem[], assinatura }
   open: { type: Boolean, default: false },
-  visual: { type: Object, required: true }, // { lacre, inicial, para, adesivo }
+  visual: { type: Object, required: true }, // { lacre, inicial, para, adesivo, adesivoImg, adesivoTam, estampa, postal }
 });
 const auto = defineModel('auto', { type: Boolean, default: false }); // giro automático
 const emit = defineEmits(['tap', 'toggle', 'read']);
@@ -122,8 +122,25 @@ defineExpose({
                 <i class="f-left"></i>
                 <i class="f-right"></i>
                 <i class="f-bottom"></i>
-                <div v-if="visual.para" class="dedicatoria">{{ visual.para }}</div>
-                <div v-if="visual.adesivo" class="adesivo" aria-hidden="true">{{ visual.adesivo }}</div>
+                <i v-if="visual.estampa" class="f-estampa" :class="`est-${visual.estampa}`" aria-hidden="true"></i>
+                <div v-if="visual.postal" class="selo-postal" aria-hidden="true">{{ visual.postal }}</div>
+                <div v-if="visual.para" class="dedicatoria" :class="{ 'com-postal': visual.postal }">{{ visual.para }}</div>
+                <img
+                  v-if="visual.adesivoImg"
+                  class="adesivo adesivo-img"
+                  :src="visual.adesivoImg"
+                  :style="{ '--ad-size': visual.adesivoTam / 100 }"
+                  alt=""
+                  draggable="false"
+                />
+                <div
+                  v-else-if="visual.adesivo"
+                  class="adesivo"
+                  :style="{ '--ad-size': visual.adesivoTam / 100 }"
+                  aria-hidden="true"
+                >
+                  {{ visual.adesivo }}
+                </div>
               </div>
 
               <!-- aba + lacre em coração -->

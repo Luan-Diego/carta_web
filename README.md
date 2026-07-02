@@ -14,7 +14,11 @@ So, I decided to make this project public, hoping it could inspire others to cre
 - Control bar: auto-rotate / stop, reset view (also puts the letter back in the envelope) and sound on/off.
 - Keyboard support: Enter/Space to open, arrow keys to rotate, Home to reset, `L` to read.
 - **Personalized links**: customize text and colors in the editor (`/criar/`) and share a link. Whoever opens it can only open the letter and interact with it; nothing can be changed.
-- **Look & feel options**: animated backgrounds (stars, falling petals, sparkles), seal shapes (heart, star, flower, initial), a dedication written on the envelope ("Para Maria") and an emoji sticker. The page adapts its contrast to light or dark backgrounds.
+- **Animated, interactive backgrounds** (canvas, no extra libraries): floating particles, cosmic nebula, aurora, starry sky, waves, rain on a window, flower garden, fire and embers, glowing circuits, falling petals / hearts / stars, or your own image. Move the mouse/finger over them and tap. They pause when the tab is hidden and respect "reduce motion".
+- **Independent parts**: the background, the letter colors (envelope, paper, text, seal) and the envelope decorations are separate; changing one never changes the others.
+- **Seals** (19 shapes + initials), envelope patterns (airmail, dots, stripes, checks, hearts, stars, waves), a postage stamp, a dedication, ~80 emoji stickers or your own PNG/WebP sticker with adjustable size.
+- **"Minha imagem"** opens a pop-up: add an image by URL or from your computer; everything added is kept in a "Minhas imagens" gallery (saved in this browser).
+- **Colors** tab: ready palettes, "Desfazer alterações" (back to how it was when you opened the tab) and "Voltar ao padrão".
 - Responsive, and respects `prefers-reduced-motion`.
 
 ## 🛠️ Built With
@@ -47,8 +51,9 @@ npm run preview    # serve dist/ locally to check the build
 ## ✏️ Customizing
 
 - **Default letter** (shown when the site is opened without a link): edit `src/config/carta.config.js` (title, greeting, paragraphs, signature, colors, sound).
-- **Personalized links**: open `/criar/`, change the text and colors with a live preview, and copy the link.
-- Look & feel lives in the `visual` block (`fundo`, `lacre`, `inicial`, `para`, `adesivo`). The accepted values are listed in `src/config/options.js`; to add a new background, seal or sticker, add it there (and its CSS/markup).
+- **Personalized links**: open `/criar/` (a glass, iOS-style editor): the letter sits in an "aquarium" with a live preview and a dock below, one option per customization (Message, Colors, Background, Seal, Envelope, Link). Tapping an option opens a sheet with only its controls; copy the link in the last one.
+- Look & feel lives in the `visual` block (`fundo`, `imagem`, `lacre`, `inicial`, `para`, `adesivo`, `adesivoImg`, `adesivoTam`). The accepted values are listed in `src/config/options.js`. To add a background, write a scene in `src/lib/scenes/` (`create(w, h, dark)` returning `{ resize, step, draw, tap }`), register it in `scenes/index.js` and add it to `FUNDOS`.
+- Your own images travel inside the link: stickers are shrunk to ~100px WebP and backgrounds to a small JPEG so they fit (link limit ~22,000 characters; some chat apps cut very long links). For a sharp background, host the image and paste its `https://` address instead.
 - Invalid or missing fields fall back to the defaults in `src/config/defaults.js`. Values outside the lists in `options.js` are ignored.
 - About 400 characters fit on the paper; the full text (up to 8 paragraphs of 800 characters) appears in reading mode.
 - The envelope needs only one base color; the other tones are derived from it in `src/styles/tokens.css`.
@@ -68,11 +73,13 @@ src/
   viewer.js           boots the letter: reads the link, validates, mounts
   editor.js           boots the editor
   views/              one component per page (LetterViewer, LetterEditor)
+  components/editor/  GlassDock, GlassSheet and one Panel* per option
   components/         EnvelopeScene (3D), LetterPlayer, ControlBar, ReadingMode, LetterContent,
-                      BackgroundLayer (stars/petals/sparkles), SealMark (seal shapes)
-  composables/        useOrbit (rotation), useEnvelope (open/close), useFit (scale), useSound
+                      BackgroundLayer (canvas scenes / image), SealMark (seal shapes)
+  composables/        useOrbit (rotation), useEnvelope (open/close), useFit (scale), useSound, useScene (canvas loop),
+                      useLetterDraft (editor state), useImageLibrary (my images)
   config/             defaults, options (allowed looks), schema (validation), theme (CSS variables), carta.config (your letter)
-  lib/                link (encode/decode), sound (Web Audio engine, no Vue)
+  lib/                link (encode/decode), sound (Web Audio engine), image (shrink uploads), scenes/ (one file per animated background)
   styles/             tokens, scene, envelope, ui, reader, player, editor... (all plain CSS)
 legacy/               the previous single-file version (index.html + style.css)
 ```

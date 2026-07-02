@@ -1,96 +1,21 @@
-/* ---------- Camada decorativa do fundo ---------- */
-.fx{
+/* Fundo: camada atrás do envelope (cena em canvas ou imagem) */
+.bg{
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  container-type: size;   /* permite usar a altura da própria camada (cqh) */
 }
-
-/* estrelas: dois conjuntos de pontos que piscam em tempos diferentes */
-.fx-estrelas::before,
-.fx-estrelas::after{
-  content: "";
+.bg-canvas{
   position: absolute;
   inset: 0;
-  background-repeat: repeat;
-  animation: fx-twinkle 4s ease-in-out infinite alternate;
+  width: 100%;
+  height: 100%;
 }
-.fx-estrelas::before{
-  background-image:
-    radial-gradient(1.6px 1.6px at 20px 30px,  var(--fx-color), transparent),
-    radial-gradient(1.2px 1.2px at 90px 120px, var(--fx-color), transparent),
-    radial-gradient(2px 2px     at 160px 60px, var(--fx-color), transparent),
-    radial-gradient(1.2px 1.2px at 230px 180px, var(--fx-color), transparent),
-    radial-gradient(1.6px 1.6px at 60px 200px, var(--fx-color), transparent);
-  background-size: 260px 230px;
-}
-.fx-estrelas::after{
-  background-image:
-    radial-gradient(1.4px 1.4px at 50px 40px,  var(--fx-color), transparent),
-    radial-gradient(2px 2px     at 140px 150px, var(--fx-color), transparent),
-    radial-gradient(1.2px 1.2px at 250px 90px, var(--fx-color), transparent),
-    radial-gradient(1.6px 1.6px at 300px 240px, var(--fx-color), transparent);
-  background-size: 340px 290px;
-  animation-duration: 6s;
-  animation-delay: -2s;
-}
-@keyframes fx-twinkle{
-  from{ opacity: .3; }
-  to  { opacity: 1; }
-}
-
-/* pétalas caindo (cor derivada da cor do lacre) */
-.fx-petalas span{
+.bg-canvas[hidden]{ display: none; }
+.bg-img{
   position: absolute;
-  left: var(--x);
-  top: 0;
-  width: var(--s);
-  height: calc(var(--s) * 1.3);
-  background: color-mix(in srgb, var(--heart-color) 55%, #fff);
-  opacity: .55;
-  border-radius: 100% 0 100% 0;
-  animation: fx-fall var(--t) linear infinite;
-  animation-delay: var(--d);
-  will-change: transform;
-}
-@keyframes fx-fall{
-  from{
-    transform: translate3d(0, -12vh, 0) rotate(var(--r));
-    transform: translate3d(0, -12cqh, 0) rotate(var(--r));
-  }
-  50%{
-    transform: translate3d(30px, 52vh, 0) rotate(calc(var(--r) + 140deg));
-    transform: translate3d(30px, 52cqh, 0) rotate(calc(var(--r) + 140deg));
-  }
-  to{
-    transform: translate3d(-14px, 115vh, 0) rotate(calc(var(--r) + 300deg));
-    transform: translate3d(-14px, 115cqh, 0) rotate(calc(var(--r) + 300deg));
-  }
-}
-
-/* brilhos: estrelinhas de quatro pontas que acendem e apagam */
-.fx-brilhos span{
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--s);
-  height: var(--s);
-  background: var(--fx-color);
-  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-  opacity: 0;
-  animation: fx-sparkle calc(var(--t) / 3) ease-in-out infinite;
-  animation-delay: var(--d);
-}
-@keyframes fx-sparkle{
-  0%, 100%{ opacity: 0; transform: scale(.3) rotate(0deg); }
-  50%     { opacity: 1; transform: scale(1) rotate(45deg); }
-}
-
-/* sem movimento: cena parada, mas ainda visível */
-@media (prefers-reduced-motion: reduce){
-  .fx-estrelas::before,
-  .fx-estrelas::after{ animation: none; opacity: .8; }
-  .fx-petalas span{ animation: none; top: var(--y); transform: rotate(var(--r)); }
-  .fx-brilhos span{ animation: none; opacity: .7; }
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

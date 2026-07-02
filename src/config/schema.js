@@ -1,5 +1,5 @@
 import { DEFAULTS, LIMITS } from './defaults.js';
-import { ADESIVOS, FUNDOS, LACRES } from './options.js';
+import { ADESIVOS, ESTAMPAS, FUNDO_ANTIGO, FUNDOS, LACRES, STICKER_SIZE } from './options.js';
 
 const COLOR_RE = /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%/]+\)|hsla?\([\d\s.,%/a-z]+\))$/i;
 
@@ -19,16 +19,34 @@ export function merge(base, extra) {
   return out;
 }
 
+const DATA_RE = /^data:image\/(webp|png|jpeg);base64,[A-Za-z0-9+/]+={0,2}$/;
+const URL_RE = /^https:\/\/[^\s"'<>()\\]+$/;
+
+// Imagem do usuário: data URL de png/webp/jpeg (sem SVG) ou endereço https simples
+export function safeImage(v, { data = true, url = true } = {}) {
+  if (typeof v !== 'string') return '';
+  if (data && v.length <= LIMITS.dataUrl && DATA_RE.test(v)) return v;
+  if (url && v.length <= LIMITS.url && URL_RE.test(v)) return v;
+  return '';
+}
+
 // Só aceita valores das listas de options.js; o resto volta ao padrão
 function sanitizeVisual(v) {
   const inicial = Array.from(v.inicial.trim()).slice(0, LIMITS.inicial).join('');
   const lacre = LACRES.some((o) => o.id === v.lacre) ? v.lacre : DEFAULTS.visual.lacre;
+  const fundoId = FUNDO_ANTIGO[v.fundo] || v.fundo;
+  const tam = Number.isFinite(v.adesivoTam) ? v.adesivoTam : STICKER_SIZE.padrao;
   return {
-    fundo: FUNDOS.some((o) => o.id === v.fundo) ? v.fundo : DEFAULTS.visual.fundo,
+    fundo: FUNDOS.some((o) => o.id === fundoId) ? fundoId : DEFAULTS.visual.fundo,
+    imagem: safeImage(v.imagem),
     lacre: lacre === 'inicial' && !inicial ? DEFAULTS.visual.lacre : lacre, // inicial sem letra: coração
     inicial,
     para: v.para.slice(0, LIMITS.para),
     adesivo: ADESIVOS.includes(v.adesivo) ? v.adesivo : '',
+    adesivoImg: safeImage(v.adesivoImg, { url: false }),
+    estampa: ESTAMPAS.some((o) => o.id === v.estampa) ? v.estampa : '',
+    postal: ADESIVOS.includes(v.postal) ? v.postal : '',
+    adesivoTam: Math.min(STICKER_SIZE.max, Math.max(STICKER_SIZE.min, Math.round(tam))),
   };
 }
 

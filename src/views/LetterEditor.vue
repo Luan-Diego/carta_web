@@ -1,251 +1,87 @@
 <script setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import LetterPlayer from '../components/LetterPlayer.vue';
+import GlassDock from '../components/editor/GlassDock.vue';
+import GlassSheet from '../components/editor/GlassSheet.vue';
+import PanelCores from '../components/editor/PanelCores.vue';
+import PanelEnvelope from '../components/editor/PanelEnvelope.vue';
+import PanelFundo from '../components/editor/PanelFundo.vue';
+import PanelLacre from '../components/editor/PanelLacre.vue';
+import PanelLink from '../components/editor/PanelLink.vue';
+import PanelMensagem from '../components/editor/PanelMensagem.vue';
+import { provideLetterDraft } from '../composables/useLetterDraft.js';
 import { useSound } from '../composables/useSound.js';
-import { siteConfig } from '../config/carta.config.js';
-import { ADESIVOS, FUNDOS, LACRES } from '../config/options.js';
-import { LIMITS, resolveConfig } from '../config/schema.js';
-import { encodeConfig, MAX_ENC } from '../lib/link.js';
-import '../styles/editor-form.css';
+import '../styles/controls.css';
+import '../styles/previews.css';
 
-const STORAGE_KEY = 'carta:rascunho';
+// Editor: a carta ao vivo dentro de um "aquário" de vidro e, embaixo, uma dock
+// com uma opção por personalização. Cada opção abre uma folha só com os seus controles.
+const { config } = provideLetterDraft();
 
-const CAMPOS_COR = [
-  ['fundo1', 'Fundo (centro)'],
-  ['fundo2', 'Fundo (bordas)'],
-  ['envelope', 'Envelope'],
-  ['papel', 'Papel'],
-  ['texto', 'Texto'],
-  ['lacre', 'Lacre'],
+const SECOES = [
+  { id: 'mensagem', nome: 'Mensagem', painel: PanelMensagem },
+  { id: 'cores', nome: 'Cores', painel: PanelCores },
+  { id: 'fundo', nome: 'Fundo', painel: PanelFundo },
+  { id: 'lacre', nome: 'Lacre', painel: PanelLacre },
+  { id: 'envelope', nome: 'Envelope', painel: PanelEnvelope },
+  { id: 'link', nome: 'Link', painel: PanelLink },
 ];
 
-/* ---- formulário <-> configuração ---- */
-const toForm = (cfg) => ({
-  titulo: cfg.titulo,
-  saudacao: cfg.carta.saudacao,
-  mensagem: cfg.carta.mensagem.join('\n\n'), // linha em branco = novo parágrafo
-  assinatura: cfg.carta.assinatura,
-  cores: { ...cfg.cores },
-  som: cfg.som,
-  ...cfg.visual, // fundo, lacre, inicial, para, adesivo
-});
+const ativa = ref(null); // opção aberta (null = folha fechada)
+const ultima = ref(SECOES[0]); // mantém o conteúdo enquanto a folha fecha
 
-const toConfig = (f) => ({
-  titulo: f.titulo,
-  carta: {
-    saudacao: f.saudacao,
-    mensagem: f.mensagem.split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean),
-    assinatura: f.assinatura,
+function selecionar(id) {
+  if (ativa.value === id) {
+    ativa.value = null;
+    return;
+  }
+  ativa.value = id;
+  ultima.value = SECOES.find((s) => s.id === id);
+}
+
+const fechar = () => (ativa.value = null);
+const onKey = (e) => {
+  if (e.key === 'Escape') fechar();
+};
+
+// bolhas decorativas (valores fixos: sem aleatoriedade, sem reatividade)
+const BOLHAS = Array.from({ length: 10 }, (_, i) => ({
+  key: i,
+  style: {
+    '--x': `${(i * 29 + 6) % 96}%`,
+    '--s': `${22 + ((i * 17) % 60)}px`,
+    '--t': `${16 + ((i * 5) % 12)}s`,
+    '--d': `-${(i * 2.7).toFixed(1)}s`,
   },
-  cores: { ...f.cores },
-  som: f.som,
-  visual: { fundo: f.fundo, lacre: f.lacre, inicial: f.inicial, para: f.para, adesivo: f.adesivo },
+}));
+
+const sound = useSound();
+onMounted(() => {
+  sound.applyDefault(config.value.som);
+  window.addEventListener('keydown', onKey);
 });
+onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
 
-/* ---- rascunho salvo neste navegador ---- */
-function loadDraft() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}
-
-function saveDraft(cfg) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
-  } catch {
-    /* sem armazenamento: o rascunho vale só nesta aba */
-  }
-}
-
-const form = reactive(toForm(resolveConfig(siteConfig, loadDraft())));
-const config = computed(() => resolveConfig(siteConfig, toConfig(form)));
-const totalChars = computed(() => form.mensagem.length);
-
-/* ---- link ---- */
-const link = ref('');
-const linkError = ref('');
-const copied = ref(false);
-const linkInput = ref(null);
-
-// endereço da página da carta (a pasta acima de /criar/)
-function viewerUrl() {
-  const here = new URL(location.href);
-  here.search = '';
-  here.hash = '';
-  if (!here.pathname.endsWith('/')) here.pathname += '/';
-  return new URL('../', here).href;
-}
-
-async function generate() {
-  try {
-    const payload = await encodeConfig(config.value);
-    if (payload.length > MAX_ENC) {
-      link.value = '';
-      linkError.value = 'O texto é grande demais para caber no link. Reduza a mensagem.';
-    } else {
-      link.value = viewerUrl() + '#c=' + payload;
-      linkError.value = '';
-    }
-  } catch {
-    link.value = '';
-    linkError.value = 'Não foi possível gerar o link neste navegador.';
-  }
-  saveDraft(toConfig(form));
-}
-
-let timer = 0;
-watch(
-  config,
-  () => {
-    clearTimeout(timer);
-    timer = setTimeout(generate, 250);
-  },
-  { immediate: true },
-);
-
-async function copy() {
-  try {
-    await navigator.clipboard.writeText(link.value);
-  } catch {
-    linkInput.value?.select();
-    document.execCommand?.('copy');
-  }
-  copied.value = true;
-  setTimeout(() => (copied.value = false), 1800);
-}
-
-function restaurar() {
-  Object.assign(form, toForm(resolveConfig(siteConfig)));
-}
-
-onMounted(() => useSound().applyDefault(config.value.som));
+const titulo = computed(() => ultima.value.nome);
 </script>
 
 <template>
   <div class="ed">
-    <section class="ed-preview" aria-label="Pré-visualização da carta">
-      <LetterPlayer :config="config" />
-    </section>
+    <div class="ed-bubbles" aria-hidden="true">
+      <span v-for="b in BOLHAS" :key="b.key" :style="b.style"></span>
+    </div>
 
-    <form class="ed-form" @submit.prevent>
-      <header class="ed-head">
-        <h1>Criar carta</h1>
-        <p>Personalize e copie o link. Quem abrir só vê a carta: nada pode ser alterado por ela.</p>
-      </header>
+    <main class="ed-stage">
+      <LetterPlayer :config="config" compact />
+    </main>
 
-      <fieldset class="ed-card">
-        <legend>Mensagem</legend>
-        <label>
-          Saudação
-          <input v-model="form.saudacao" type="text" :maxlength="LIMITS.saudacao" />
-        </label>
-        <label>
-          Mensagem
-          <textarea v-model="form.mensagem" rows="9"></textarea>
-          <small>
-            Linha em branco = novo parágrafo · {{ totalChars }} caracteres. No papel cabem cerca de 400; o texto
-            completo aparece ao tocar na carta aberta. Máximo de {{ LIMITS.paragrafos }} parágrafos de
-            {{ LIMITS.paragrafo }} caracteres.
-          </small>
-        </label>
-        <label>
-          Assinatura
-          <input v-model="form.assinatura" type="text" :maxlength="LIMITS.assinatura" />
-        </label>
-      </fieldset>
-
-      <fieldset class="ed-card">
-        <legend>Cores</legend>
-        <div class="ed-colors">
-          <label v-for="[chave, nome] in CAMPOS_COR" :key="chave" class="ed-color">
-            <input v-model="form.cores[chave]" type="color" />
-            <span>{{ nome }}</span>
-          </label>
-        </div>
-      </fieldset>
-
-      <fieldset class="ed-card">
-        <legend>Aparência</legend>
-
-        <div class="ed-group" role="radiogroup" aria-labelledby="rot-fundo">
-          <span id="rot-fundo" class="ed-label">Fundo</span>
-          <div class="ed-chips">
-            <label v-for="o in FUNDOS" :key="o.id" class="ed-chip">
-              <input v-model="form.fundo" type="radio" name="fundo" :value="o.id" />
-              <span>{{ o.nome }}</span>
-            </label>
-          </div>
-          <small>Estrelas combinam com fundo escuro (mude as cores acima); pétalas e brilhos funcionam nos dois.</small>
-        </div>
-
-        <div class="ed-group" role="radiogroup" aria-labelledby="rot-lacre">
-          <span id="rot-lacre" class="ed-label">Lacre</span>
-          <div class="ed-chips">
-            <label v-for="o in LACRES" :key="o.id" class="ed-chip">
-              <input v-model="form.lacre" type="radio" name="lacre" :value="o.id" />
-              <span>{{ o.nome }}</span>
-            </label>
-          </div>
-        </div>
-
-        <label v-if="form.lacre === 'inicial'">
-          Inicial do lacre (até {{ LIMITS.inicial }} letras)
-          <input v-model="form.inicial" type="text" :maxlength="LIMITS.inicial" />
-        </label>
-
-        <label>
-          Dedicatória no envelope
-          <input v-model="form.para" type="text" :maxlength="LIMITS.para" placeholder="Para Maria" />
-        </label>
-
-        <div class="ed-group" role="radiogroup" aria-labelledby="rot-adesivo">
-          <span id="rot-adesivo" class="ed-label">Adesivo</span>
-          <div class="ed-chips">
-            <label v-for="e in ADESIVOS" :key="e || 'nenhum'" class="ed-chip">
-              <input v-model="form.adesivo" type="radio" name="adesivo" :value="e" />
-              <span>{{ e || 'Nenhum' }}</span>
-            </label>
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset class="ed-card">
-        <legend>Outros</legend>
-        <label>
-          Título da aba do navegador
-          <input v-model="form.titulo" type="text" :maxlength="LIMITS.titulo" />
-        </label>
-        <label class="ed-check">
-          <input v-model="form.som" type="checkbox" />
-          Som ligado ao abrir a carta
-        </label>
-      </fieldset>
-
-      <fieldset class="ed-card">
-        <legend>Link da carta</legend>
-        <input
-          ref="linkInput"
-          class="ed-link"
-          type="text"
-          readonly
-          :value="link"
-          placeholder="Gerando…"
-          aria-label="Link da carta"
-          @focus="$event.target.select()"
-        />
-        <p v-if="linkError" class="ed-error" role="alert">{{ linkError }}</p>
-        <div class="ed-actions">
-          <button type="button" class="ed-btn primary" :disabled="!link" @click="copy">
-            {{ copied ? 'Copiado!' : 'Copiar link' }}
-          </button>
-          <a v-if="link" class="ed-btn" :href="link" target="_blank" rel="noopener">Abrir carta</a>
-          <button type="button" class="ed-btn ghost" @click="restaurar">Restaurar padrão</button>
-        </div>
-        <small v-if="link">{{ link.length }} caracteres. O rascunho fica salvo neste navegador.</small>
-      </fieldset>
-    </form>
+    <div class="ed-bottom">
+      <GlassSheet :open="ativa !== null" :title="titulo" @close="fechar">
+        <Transition name="painel" mode="out-in">
+          <component :is="ultima.painel" :key="ultima.id" />
+        </Transition>
+      </GlassSheet>
+      <GlassDock :secoes="SECOES" :ativa="ativa" @select="selecionar" />
+    </div>
   </div>
 </template>

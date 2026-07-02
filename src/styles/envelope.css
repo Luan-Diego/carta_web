@@ -117,14 +117,100 @@
   text-overflow: ellipsis;
 }
 .adesivo{
+  --ad-size: 1;
   position: absolute;
   right: 20px;
   top: 64px;
-  font-size: 26px;
+  font-size: calc(26px * var(--ad-size));
   line-height: 1;
   transform: rotate(8deg);
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .2));
+  pointer-events: none;
+  user-select: none;
 }
+/* adesivo próprio (PNG/WebP): caixa de 40px x tamanho, sem distorcer */
+.adesivo-img{
+  width: calc(40px * var(--ad-size));
+  height: calc(40px * var(--ad-size));
+  object-fit: contain;
+}
+
+/* Estampas: padrão sobre a frente do envelope, na cor do lacre (via máscara) */
+.f-estampa{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.est-bolinhas, .est-listras, .est-xadrez, .est-coracoes, .est-estrelas, .est-ondas{
+  background: var(--heart-color);
+  opacity: .3;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+.est-bolinhas{
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 3px, transparent 3.5px);
+  mask-image: radial-gradient(circle at 50% 50%, #000 0 3px, transparent 3.5px);
+  -webkit-mask-size: 16px 16px;
+  mask-size: 16px 16px;
+}
+.est-listras{
+  -webkit-mask-image: repeating-linear-gradient(135deg, #000 0 5px, transparent 5px 14px);
+  mask-image: repeating-linear-gradient(135deg, #000 0 5px, transparent 5px 14px);
+}
+.est-xadrez{
+  -webkit-mask-image: conic-gradient(#000 25%, transparent 0 50%, #000 0 75%, transparent 0);
+  mask-image: conic-gradient(#000 25%, transparent 0 50%, #000 0 75%, transparent 0);
+  -webkit-mask-size: 28px 28px;
+  mask-size: 28px 28px;
+}
+.est-coracoes{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 20.5 10.8 19.400C6.6 15.5 4 13.1 4 10a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 3.1-2.6 5.5-6.8 9.400z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 20.5 10.8 19.400C6.6 15.5 4 13.1 4 10a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 3.1-2.6 5.5-6.8 9.400z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 22px 22px;
+  mask-size: 22px 22px;
+}
+.est-estrelas{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4l2.2 5.3 5.8.5-4.4 3.8 1.4 5.600L12 16.1 7 19.200l1.4-5.600L4 9.800l5.8-.5z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4l2.2 5.3 5.8.5-4.4 3.8 1.4 5.600L12 16.1 7 19.200l1.4-5.600L4 9.800l5.8-.5z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 24px 24px;
+  mask-size: 24px 24px;
+}
+.est-ondas{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14'%3E%3Cpath d='M0 7c5-6 15-6 20 0s15 6 20 0' fill='none' stroke='%23000' stroke-width='2.4'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14'%3E%3Cpath d='M0 7c5-6 15-6 20 0s15 6 20 0' fill='none' stroke='%23000' stroke-width='2.4'/%3E%3C/svg%3E");
+  -webkit-mask-size: 40px 14px;
+  mask-size: 40px 14px;
+}
+/* correio aéreo: moldura listrada vermelha e azul */
+.est-aerea{
+  padding: 9px;
+  background: repeating-linear-gradient(135deg, #d6333a 0 12px, #fff 12px 20px, #2a56a8 20px 32px, #fff 32px 40px);
+  opacity: .9;
+  -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* selo postal no canto de baixo */
+.selo-postal{
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 46px;
+  font-size: 22px;
+  line-height: 1;
+  background: #fffdf5;
+  border-radius: 2px;
+  outline: 1px dashed rgba(60, 50, 30, .45);
+  outline-offset: -4px;
+  box-shadow: 0 0 0 2px #fffdf5, 0 1px 4px rgba(0, 0, 0, .25);
+  transform: rotate(3deg);
+}
+.dedicatoria.com-postal{ right: 24%; left: 8%; text-align: left; }
 
 /* ---------- Carta ---------- */
 /* 270x360, desenhada no tamanho final (texto nítido) e reduzida enquanto está guardada */

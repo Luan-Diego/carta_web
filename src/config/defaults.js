@@ -18,11 +18,16 @@ export const DEFAULTS = {
   som: true,
   // opções válidas em config/options.js
   visual: {
-    fundo: 'gradiente', // gradiente | estrelas | petalas | brilhos
-    lacre: 'coracao', // coracao | estrela | flor | inicial
+    fundo: 'gradiente', // ver FUNDOS em options.js
+    imagem: '', // fundo = 'imagem': endereço https ou data URL da foto
+    lacre: 'coracao', // ver LACRES em options.js
     inicial: '', // letra(s) do lacre, quando lacre = 'inicial'
     para: '', // dedicatória escrita no envelope (ex.: "Para Maria")
     adesivo: '', // emoji colado no envelope ('' = nenhum)
+    adesivoImg: '', // PNG/WebP próprio (data URL) no lugar do emoji
+    adesivoTam: 100, // tamanho do adesivo, em % (50 a 200)
+    estampa: '', // padrão do envelope (ESTAMPAS em options.js)
+    postal: '', // emoji no selo postal do envelope ('' = sem selo)
   },
 };
 
@@ -35,4 +40,6 @@ export const LIMITS = {
   paragrafo: 800,
   inicial: 2,
   para: 40,
+  url: 500, // endereço https de imagem
+  dataUrl: 14000, // imagem embutida no link (já reduzida pelo editor)
 };

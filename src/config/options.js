@@ -1,19 +1,83 @@
 // Opções visuais disponíveis. Fonte única: o editor lista estas opções e
 // a validação (schema.js) só aceita estes valores.
 
+// Fundos animados (desenhados em canvas, ver lib/scenes). `cores` = fundo sugerido
+// ao escolher a opção; dá para ajustar depois. 'imagem' usa a foto do usuário.
 export const FUNDOS = [
-  { id: 'gradiente', nome: 'Liso' },
-  { id: 'estrelas', nome: 'Estrelas' },
-  { id: 'petalas', nome: 'Pétalas' },
-  { id: 'brilhos', nome: 'Brilhos' },
+  { id: 'gradiente', nome: 'Liso', icone: '◐', cores: null },
+  { id: 'particulas', nome: 'Partículas', icone: '✨', cores: ['#e8fbff', '#a9e3f5'] },
+  { id: 'nebulosa', nome: 'Nebulosa', icone: '🌌', cores: ['#1b1040', '#07040f'] },
+  { id: 'aurora', nome: 'Aurora', icone: '🌠', cores: ['#0a2236', '#02060d'] },
+  { id: 'estrelado', nome: 'Céu estrelado', icone: '⭐', cores: ['#142046', '#04060f'] },
+  { id: 'ondas', nome: 'Ondas', icone: '🌊', cores: ['#dff4ff', '#8fd0f0'] },
+  { id: 'chuva', nome: 'Chuva na janela', icone: '🌧️', cores: ['#607080', '#232c36'] },
+  { id: 'jardim', nome: 'Jardim', icone: '🌷', cores: ['#eaf7ff', '#d3efd3'] },
+  { id: 'fogo', nome: 'Fogo e brasas', icone: '🔥', cores: ['#2d0f06', '#090302'] },
+  { id: 'circuitos', nome: 'Circuitos', icone: '⚡', cores: ['#07181f', '#020708'] },
+  { id: 'petalas', nome: 'Pétalas', icone: '🌸', cores: ['#fff1f3', '#f8d5dc'] },
+  { id: 'coracoes', nome: 'Corações', icone: '💕', cores: ['#fff0f3', '#ffd0dc'] },
+  { id: 'estrelas', nome: 'Chuva de estrelas', icone: '🌟', cores: ['#1d2540', '#0c1020'] },
+  { id: 'imagem', nome: 'Minha imagem', icone: '🖼️', cores: null },
 ];
+
+// Links antigos usavam 'brilhos'; hoje equivale a 'particulas'
+export const FUNDO_ANTIGO = { brilhos: 'particulas' };
 
 export const LACRES = [
   { id: 'coracao', nome: 'Coração' },
   { id: 'estrela', nome: 'Estrela' },
   { id: 'flor', nome: 'Flor' },
+  { id: 'lua', nome: 'Lua' },
+  { id: 'diamante', nome: 'Diamante' },
+  { id: 'borboleta', nome: 'Borboleta' },
+  { id: 'trevo', nome: 'Trevo' },
+  { id: 'raio', nome: 'Raio' },
+  { id: 'musica', nome: 'Nota' },
+  { id: 'sol', nome: 'Sol' },
+  { id: 'coroa', nome: 'Coroa' },
+  { id: 'floco', nome: 'Floco de neve' },
+  { id: 'laco', nome: 'Laço' },
+  { id: 'patinha', nome: 'Patinha' },
+  { id: 'gota', nome: 'Gota' },
+  { id: 'folha', nome: 'Folha' },
+  { id: 'escudo', nome: 'Escudo' },
+  { id: 'nuvem', nome: 'Nuvem' },
+  { id: 'chama', nome: 'Chama' },
   { id: 'inicial', nome: 'Inicial' },
 ];
 
-// '' = sem adesivo
-export const ADESIVOS = ['', '🌹', '🌸', '🦋', '⭐', '💌', '☕', '🍀'];
+// Paletas prontas: mexem só na carta (envelope, papel, texto e lacre), nunca no fundo
+export const PALETAS = [
+  { id: 'classico', nome: 'Clássico', cores: { envelope: '#e6cfa7', papel: '#fffefa', texto: '#3f3b33', lacre: '#92161c' } },
+  { id: 'oceano', nome: 'Oceano', cores: { envelope: '#8fd0ea', papel: '#ffffff', texto: '#27495a', lacre: '#0b6fae' } },
+  { id: 'rosa', nome: 'Rosa', cores: { envelope: '#f0a9bb', papel: '#fffafb', texto: '#5a3a42', lacre: '#b3203f' } },
+  { id: 'floresta', nome: 'Floresta', cores: { envelope: '#b6d1a0', papel: '#fffff8', texto: '#2f4a33', lacre: '#2e7d4f' } },
+  { id: 'lavanda', nome: 'Lavanda', cores: { envelope: '#c4b2ec', papel: '#fffdff', texto: '#3d3358', lacre: '#7a4fc4' } },
+  { id: 'noite', nome: 'Noite', cores: { envelope: '#2b3a67', papel: '#f5f1e6', texto: '#262a3d', lacre: '#e0b84a' } },
+];
+
+// '' = sem adesivo. Também usados como imagem do selo postal.
+export const ADESIVOS = [
+  '',
+  '🌹', '🌸', '🌻', '🌷', '🌺', '🌼', '🪻', '🍀', '🍃', '🍂', '🍁', '🌴', '🌵',
+  '🦋', '🐝', '🐞', '🕊️', '🐰', '🦊', '🐼', '🐻', '🦄', '🐱', '🐶', '🐢', '🐬', '🐠',
+  '⭐', '🌟', '💫', '🌙', '✨', '☀️', '⛅', '🌈', '🌊', '🪐', '🚀',
+  '💌', '✉️', '💖', '💝', '❤️', '🧡', '💛', '💚', '💙', '💜', '🤍', '🎀', '🎁', '🎈', '🎉',
+  '☕', '🍓', '🍒', '🍑', '🍉', '🍰', '🍩', '🍫', '🍪', '🍦', '🥂', '🍷',
+  '🎵', '🎧', '📷', '📖', '💍', '🔑', '🧿', '🪄', '🔥', '💎', '🧸', '😍', '🥰', '😘',
+];
+
+// Estampas do envelope: desenhadas em CSS (styles/envelope.css), usam a cor do lacre
+export const ESTAMPAS = [
+  { id: '', nome: 'Lisa' },
+  { id: 'aerea', nome: 'Correio aéreo' },
+  { id: 'bolinhas', nome: 'Bolinhas' },
+  { id: 'listras', nome: 'Listras' },
+  { id: 'xadrez', nome: 'Xadrez' },
+  { id: 'coracoes', nome: 'Corações' },
+  { id: 'estrelas', nome: 'Estrelas' },
+  { id: 'ondas', nome: 'Ondas' },
+];
+
+// Imagens do usuário (data URL ou https) e tamanho do adesivo próprio, em %
+export const STICKER_SIZE = { min: 50, max: 200, padrao: 100 };

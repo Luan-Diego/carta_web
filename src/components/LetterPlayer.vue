@@ -14,6 +14,7 @@ import '../styles/player.css';
 // pré-visualização do editor.
 const props = defineProps({
   config: { type: Object, required: true }, // configuração já validada (resolveConfig)
+  compact: { type: Boolean, default: false }, // sem a dica de texto (pré-visualização do editor)
 });
 
 const sound = useSound();
@@ -75,7 +76,11 @@ function toggleSound() {
 
 <template>
   <div class="player" :style="themeVars(props.config)" :data-tone="toneOf(props.config)">
-    <BackgroundLayer :tipo="config.visual.fundo" />
+    <BackgroundLayer
+      :tipo="config.visual.fundo"
+      :imagem="config.visual.imagem"
+      :dark="toneOf(props.config) === 'dark'"
+    />
     <EnvelopeScene
       ref="scene"
       v-model:auto="auto"
@@ -87,7 +92,7 @@ function toggleSound() {
       @read="onReadKey"
     />
 
-    <p class="hint" aria-live="polite">{{ hint }}</p>
+    <p v-if="!compact" class="hint" aria-live="polite">{{ hint }}</p>
 
     <ControlBar
       :auto="auto"

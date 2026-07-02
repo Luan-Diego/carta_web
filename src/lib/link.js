@@ -2,7 +2,7 @@
 //   j = JSON puro, z = JSON comprimido (deflate-raw).
 // A parte depois do # nunca é enviada a nenhum servidor.
 
-export const MAX_ENC = 12000; // tamanho máximo aceito do trecho codificado
+export const MAX_ENC = 22000; // tamanho máximo aceito do trecho codificado
 const MAX_JSON = 60000; // tamanho máximo do JSON depois de descomprimir
 
 const toB64u = (bytes) => {

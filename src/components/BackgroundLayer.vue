@@ -1,32 +1,26 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, toRef } from 'vue';
+import { useScene } from '../composables/useScene.js';
+import { hasScene } from '../lib/scenes/index.js';
 import '../styles/background.css';
 
-// Camada decorativa atrás do envelope (estrelas, pétalas, brilhos).
-// Só CSS: nada de canvas, e sem sorteio, então a cena é igual a cada visita.
+// Fundo da carta, independente do envelope: degradê (cores do fundo) + uma cena
+// animada e interativa em canvas, ou a imagem escolhida pelo usuário.
 const props = defineProps({
-  tipo: { type: String, default: 'gradiente' }, // gradiente = sem camada
+  tipo: { type: String, default: 'gradiente' }, // id de FUNDOS (options.js)
+  imagem: { type: String, default: '' }, // endereço https ou data URL
+  dark: { type: Boolean, default: false }, // fundo escuro? (escolhe cores das luzes)
 });
 
-const QUANTIDADE = { petalas: 16, brilhos: 18 };
-
-const itens = computed(() =>
-  Array.from({ length: QUANTIDADE[props.tipo] || 0 }, (_, i) => ({
-    key: i,
-    style: {
-      '--x': `${(i * 37 + 11) % 100}%`,
-      '--y': `${(i * 53 + 7) % 100}%`,
-      '--d': `-${((i * 3.1) % 14).toFixed(1)}s`, // atraso negativo: já começa "no meio"
-      '--t': `${9 + ((i * 7) % 6)}s`,
-      '--s': `${10 + ((i * 5) % 11)}px`,
-      '--r': `${(i * 47) % 360}deg`,
-    },
-  })),
-);
+const canvas = ref(null);
+const animado = computed(() => hasScene(props.tipo));
+const comImagem = computed(() => props.tipo === 'imagem' && props.imagem);
+useScene(canvas, toRef(props, 'tipo'), toRef(props, 'dark'));
 </script>
 
 <template>
-  <div v-if="tipo !== 'gradiente'" class="fx" :class="`fx-${tipo}`" aria-hidden="true">
-    <span v-for="item in itens" :key="item.key" :style="item.style"></span>
+  <div class="bg" aria-hidden="true">
+    <img v-if="comImagem" class="bg-img" :src="imagem" alt="" decoding="async" referrerpolicy="no-referrer" />
+    <canvas ref="canvas" class="bg-canvas" :hidden="!animado"></canvas>
   </div>
 </template>

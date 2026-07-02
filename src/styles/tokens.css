@@ -7,16 +7,19 @@
   --heart-color: #92161c;
   --env-cover: #e6cfa7;
 
-  /* Tons do envelope derivados da cor base */
+  --shadow-color: rgba(60, 50, 30, 0.18);
+  --ease: cubic-bezier(.45, 0, .2, 1);
+  --font: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* Tons do envelope derivados da cor base. Ficam em .player também: assim a cor
+   escolhida no próprio elemento (pré-visualização do editor) recalcula todos os tons. */
+:root, .player{
   --env-tab:    color-mix(in srgb, var(--env-cover) 75%, #fff);
   --env-tab-in: color-mix(in srgb, var(--env-cover) 88%, #fff);
   --env-inside: color-mix(in srgb, var(--env-cover) 80%, #fff);
   --env-back:   color-mix(in srgb, var(--env-cover) 65%, #fff);
   --env-edge:   color-mix(in srgb, var(--env-cover) 92%, #000);
-
-  --shadow-color: rgba(60, 50, 30, 0.18);
-  --ease: cubic-bezier(.45, 0, .2, 1);
-  --font: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 *{ box-sizing: border-box; }
