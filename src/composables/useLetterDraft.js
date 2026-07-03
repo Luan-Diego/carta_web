@@ -2,6 +2,7 @@ import { computed, inject, onBeforeUnmount, provide, reactive, ref, watch } from
 import { siteConfig } from '../config/carta.config.js';
 import { PALETAS } from '../config/options.js';
 import { resolveConfig } from '../config/schema.js';
+import { salvarCarta } from '../lib/cloud.js';
 import { encodeConfig, MAX_ENC } from '../lib/link.js';
 
 // Estado do editor: formulário, configuração validada e link. Fica fora dos
@@ -132,6 +133,23 @@ export function createLetterDraft() {
     copiedTimer = setTimeout(() => (copied.value = false), 1800);
   }
 
+  // link curto: a carta fica guardada no servidor (MongoDB) e o link leva só o id
+  const linkCurto = ref('');
+  const curtoErro = ref('');
+  const curtoOcupado = ref(false);
+  async function gerarCurto() {
+    curtoOcupado.value = true;
+    curtoErro.value = '';
+    try {
+      linkCurto.value = viewerUrl() + '#i=' + (await salvarCarta(config.value));
+    } catch (e) {
+      curtoErro.value = e.message;
+    } finally {
+      curtoOcupado.value = false;
+    }
+  }
+  watch(config, () => (linkCurto.value = ''), { deep: true }); // carta mudou: o link curto antigo não vale mais
+
   // cores padrão da carta (as do site), para o botão "Voltar ao padrão"
   const padrao = resolveConfig(siteConfig).cores;
   const CORES_CARTA = ['envelope', 'papel', 'texto', 'lacre'];
@@ -150,7 +168,7 @@ export function createLetterDraft() {
     clearTimeout(copiedTimer);
   });
 
-  return { form, config, totalChars, paletaAtual, link, linkError, copied, copy, restaurar, aplicarPaleta, escolherFundo, padrao, restaurarCarta };
+  return { form, config, totalChars, paletaAtual, link, linkError, copied, copy, linkCurto, curtoErro, curtoOcupado, gerarCurto, restaurar, aplicarPaleta, escolherFundo, padrao, restaurarCarta };
 }
 
 export function provideLetterDraft() {

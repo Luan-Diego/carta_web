@@ -106,7 +106,18 @@ Feel free to explore the project, customize it, and make it your own.
 
 ## Backgrounds, colors and stickers
 
-- Animated backgrounds are canvas 2D scenes: realistic water (`waves.js`, reacts to the pointer), volumetric fire with embers (`fire.js`), a detailed garden with butterflies (`garden.js`) and faint cherry trees behind the petals (`sakura.js`).
+- Animated backgrounds are canvas 2D scenes: watercolor-style wave (`waves.js`, reacts to the pointer), ring nebula (`nebula.js`), aurora with vertical ray curtains over a mountain (`aurora.js`; touch triggers a light storm), volumetric fire with embers (`fire.js`), a detailed garden with butterflies (`garden.js`) and faint cherry trees behind the petals (`sakura.js`).
 - Scenes marked `cor: true` in `FUNDOS` accept a hue (`visual.matiz`, 0-359; -1 = original colors) chosen with the rainbow slider in the Fundo panel.
 - The Adesivo panel has two tabs: **Do app** (about 636 emojis in categories, including 🍥) and **Meus adesivos** (your own images, kept only in your browser). Stickers are stored at up to 128x128 px; a larger image can be reduced (whole image) or cropped (pick the part) before it is added.
 - Images travel inside the link, so very large ones make long links; a database would remove that limit.
+
+## Link curto (Vercel + MongoDB)
+
+The normal link carries the whole letter after the `#` and works with no server. The **Link curto** button in the editor instead saves the letter in MongoDB and gives `site/#i=<id>`.
+
+1. Create a free cluster on MongoDB Atlas and a database user; allow access from anywhere (`0.0.0.0/0`), since Vercel IPs change.
+2. Import the project on Vercel (framework: Vite). `api/carta.js` becomes the serverless function `/api/carta`.
+3. In Vercel > Settings > Environment Variables set `MONGODB_URI` (and optionally `MONGODB_DB`, default `carta`), see `.env.example`.
+4. Locally, `npm run dev` only serves the front end; use `vercel dev` to test the API.
+
+The letter is stored as JSON text (max 1 MB) and is re-validated by the viewer when opened. Anyone with the id can read it, so it is not private.

@@ -70,6 +70,11 @@ export async function decodeConfig(payload) {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
+export function readHashId(hash = location.hash) {
+  const m = /^#i=([A-Za-z0-9_-]{6,20})$/.exec(hash);
+  return m ? m[1] : null;
+}
+
 export function readHashPayload(hash = location.hash) {
   const m = /^#c=(.+)$/.exec(hash);
   return m ? m[1] : null;

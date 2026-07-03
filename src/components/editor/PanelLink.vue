@@ -2,7 +2,15 @@
 import { useLetterDraft } from '../../composables/useLetterDraft.js';
 import { LIMITS } from '../../config/schema.js';
 
-const { form, link, linkError, copied, copy, restaurar } = useLetterDraft();
+const { form, link, linkError, copied, copy, linkCurto, curtoErro, curtoOcupado, gerarCurto, restaurar } = useLetterDraft();
+
+async function copiarCurto() {
+  try {
+    await navigator.clipboard.writeText(linkCurto.value);
+  } catch {
+    /* sem permissão: o campo já está selecionável */
+  }
+}
 </script>
 
 <template>
@@ -29,6 +37,19 @@ const { form, link, linkError, copied, copy, restaurar } = useLetterDraft();
     <p v-if="link" class="ed-foot">
       {{ link.length }} caracteres. Quem abrir só vê a carta e não pode alterá-la. O rascunho fica salvo neste navegador.
     </p>
+
+    <h3 class="ed-sub">Link curto</h3>
+    <p class="ed-foot">Guarda a carta no servidor e gera um link pequeno, bom para enviar em apps de conversa.</p>
+    <button v-if="!linkCurto" type="button" class="ed-glassbtn" :disabled="curtoOcupado" @click="gerarCurto">{{ curtoOcupado ? 'Salvando…' : 'Gerar link curto' }}</button>
+    <template v-else>
+      <div class="ed-group">
+        <div class="ed-row">
+          <input class="ed-linkfield" type="text" readonly :value="linkCurto" aria-label="Link curto da carta" @focus="$event.target.select()" />
+        </div>
+      </div>
+      <button type="button" class="ed-aqua" @click="copiarCurto">Copiar link curto</button>
+    </template>
+    <p v-if="curtoErro" class="ed-error" role="alert">{{ curtoErro }}</p>
 
     <div class="ed-group">
       <label class="ed-row">

@@ -4,12 +4,21 @@ import { useSound } from './composables/useSound.js';
 import { siteConfig } from './config/carta.config.js';
 import { resolveConfig } from './config/schema.js';
 import { applyTheme } from './config/theme.js';
-import { decodeConfig, readHashPayload } from './lib/link.js';
+import { buscarCarta } from './lib/cloud.js';
+import { decodeConfig, readHashId, readHashPayload } from './lib/link.js';
 import './styles/tokens.css';
 import './styles/viewer-page.css';
 
-// padrões < carta do site < link (#c=...), sempre validado
+// padrões < carta do site < link (#c=... ou #i=id curto), sempre validado
 async function loadConfig() {
+  const id = readHashId();
+  if (id) {
+    try {
+      return resolveConfig(siteConfig, await buscarCarta(id));
+    } catch {
+      /* carta não encontrada: mostra a carta padrão do site */
+    }
+  }
   const payload = readHashPayload();
   if (payload) {
     try {
