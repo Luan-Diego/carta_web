@@ -3,7 +3,7 @@ import '../../styles/dock.css';
 
 // Dock de vidro: um botão por opção de personalização.
 defineProps({
-  secoes: { type: Array, required: true }, // [{ id, nome }]
+  secoes: { type: Array, required: true }, // [{ id, nome, curto? }]
   ativa: { type: String, default: null },
 });
 defineEmits(['select']);
@@ -13,12 +13,15 @@ defineEmits(['select']);
   <nav class="ed-dock" aria-label="Personalizar a carta">
     <button
       v-for="s in secoes"
+      class="ed-app"
+      :data-id="s.id"
+      :aria-label="s.nome"
       :key="s.id"
       type="button"
       :aria-expanded="ativa === s.id ? 'true' : 'false'"
       @click="$emit('select', s.id)"
     >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
+      <span class="ed-app-icon"><svg viewBox="0 0 24 24" aria-hidden="true">
         <template v-if="s.id === 'mensagem'">
           <path d="M5 7h14M5 12h14M5 17h9" />
         </template>
@@ -51,8 +54,8 @@ defineEmits(['select']);
           <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
           <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
         </template>
-      </svg>
-      <span>{{ s.nome }}</span>
+      </svg></span>
+      <span class="ed-app-name" aria-hidden="true">{{ s.curto ?? s.nome }}</span>
     </button>
   </nav>
 </template>

@@ -189,22 +189,21 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 48px;
-  border-radius: 16px;
-  font: 700 16px/1 inherit;
+  min-height: 42px;
+  border-radius: 999px;
+  font: 650 15px/1 inherit;
   font-family: inherit;
   text-decoration: none;
   cursor: pointer;
   transition: transform .25s var(--spring), opacity .2s;
 }
 .ed-aqua{
-  border: 1px solid rgba(255,255,255,.7);
+  border: 1px solid rgba(255,255,255,.8);
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 60, 100, .35);
   background:
-    linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 52%),
-    linear-gradient(180deg, #43bdfa, #0e8de0);
-  box-shadow: 0 6px 16px rgba(14, 141, 224, .4), inset 0 -2px 4px rgba(0, 70, 130, .25);
+    linear-gradient(180deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 55%),
+    var(--aqua);
+  box-shadow: 0 4px 12px rgba(10, 132, 255, .3), inset 0 1px 1px rgba(255,255,255,.7);
 }
 .ed-aqua:disabled{ opacity: .5; cursor: default; }
 .ed-glassbtn{ border: 1px solid rgba(255,255,255,.9); background: rgba(255,255,255,.65); color: var(--aqua); }

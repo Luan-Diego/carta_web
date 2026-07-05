@@ -18,13 +18,14 @@ import '../styles/previews.css';
 // Editor: a carta ao vivo dentro de um "aquário" de vidro e, embaixo, uma dock
 // com uma opção por personalização. Cada opção abre uma folha só com os seus controles.
 const { config } = provideLetterDraft();
+const sound = useSound();
 
 const SECOES = [
-  { id: 'mensagem', nome: 'Mensagem', painel: PanelMensagem },
+  { id: 'mensagem', nome: 'Mensagem', curto: 'Texto', painel: PanelMensagem },
   { id: 'cores', nome: 'Cores', painel: PanelCores },
   { id: 'fundo', nome: 'Fundo', painel: PanelFundo },
   { id: 'lacre', nome: 'Lacre', painel: PanelLacre },
-  { id: 'envelope', nome: 'Envelope', painel: PanelEnvelope },
+  { id: 'envelope', nome: 'Envelope', curto: 'Capa', painel: PanelEnvelope },
   { id: 'adesivo', nome: 'Adesivo', painel: PanelAdesivo },
   { id: 'link', nome: 'Link', painel: PanelLink },
 ];
@@ -33,6 +34,8 @@ const ativa = ref(null); // opção aberta (null = folha fechada)
 const ultima = ref(SECOES[0]); // mantém o conteúdo enquanto a folha fecha
 
 function selecionar(id) {
+  sound.unlock();
+  sound.drop();
   if (ativa.value === id) {
     ativa.value = null;
     return;
@@ -41,23 +44,15 @@ function selecionar(id) {
   ultima.value = SECOES.find((s) => s.id === id);
 }
 
-const fechar = () => (ativa.value = null);
+const fechar = () => {
+  if (ativa.value === null) return;
+  sound.drop();
+  ativa.value = null;
+};
 const onKey = (e) => {
   if (e.key === 'Escape') fechar();
 };
 
-// bolhas decorativas (valores fixos: sem aleatoriedade, sem reatividade)
-const BOLHAS = Array.from({ length: 10 }, (_, i) => ({
-  key: i,
-  style: {
-    '--x': `${(i * 29 + 6) % 96}%`,
-    '--s': `${22 + ((i * 17) % 60)}px`,
-    '--t': `${16 + ((i * 5) % 12)}s`,
-    '--d': `-${(i * 2.7).toFixed(1)}s`,
-  },
-}));
-
-const sound = useSound();
 onMounted(() => {
   sound.applyDefault(config.value.som);
   window.addEventListener('keydown', onKey);
@@ -69,10 +64,6 @@ const titulo = computed(() => ultima.value.nome);
 
 <template>
   <div class="ed">
-    <div class="ed-bubbles" aria-hidden="true">
-      <span v-for="b in BOLHAS" :key="b.key" :style="b.style"></span>
-    </div>
-
     <main class="ed-stage">
       <LetterPlayer :config="config" compact />
     </main>

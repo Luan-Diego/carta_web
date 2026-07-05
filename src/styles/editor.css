@@ -1,4 +1,4 @@
-/* Editor — Frutiger Aero × iOS: céu aqua, bolhas, vidro e dock */
+/* Editor — vidro líquido (estilo iOS): fundo claro, ícones de vidro e folha */
 html, body{
   margin: 0;
   height: 100%;
@@ -7,11 +7,11 @@ html, body{
 }
 
 .ed{
-  --aqua: #1aa3f0;
+  --aqua: #0a84ff;
   --ink: #17323f;
   --ink-2: #4a6a79;
   --ink-3: #7b97a4;
-  --glass: rgba(255, 255, 255, .52);
+  --glass: rgba(255, 255, 255, .55);
   --glass-strong: rgba(255, 255, 255, .7);
   --glass-line: rgba(255, 255, 255, .8);
   --danger: #e5352b;
@@ -27,52 +27,31 @@ html, body{
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  background:
-    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(255, 255, 255, .85), transparent 60%),
-    linear-gradient(180deg, #8fdcff 0%, #4cc0f5 45%, #1d9be0 100%);
+  background: linear-gradient(180deg, #f4f6fa 0%, #e3e8f0 100%);
 }
 
-/* raios de luz */
-.ed::before{
+/* manchas de cor suaves por trás: dão o que o vidro refratar */
+.ed::before, .ed::after{
   content: "";
   position: absolute;
-  inset: -20% -10% 30% -10%;
-  pointer-events: none;
-  background:
-    conic-gradient(from 195deg at 30% -10%, transparent 0 8deg, rgba(255,255,255,.28) 12deg, transparent 20deg 30deg, rgba(255,255,255,.18) 36deg, transparent 46deg 60deg, rgba(255,255,255,.22) 66deg, transparent 78deg);
-  filter: blur(6px);
-}
-
-/* bolhas */
-.ed-bubbles{ position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.ed-bubbles span{
-  position: absolute;
-  left: var(--x);
-  bottom: calc(var(--s) * -1);
-  width: var(--s);
-  height: var(--s);
+  width: 60vmax;
+  height: 60vmax;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 28%, rgba(255,255,255,.95) 0 12%, transparent 30%),
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,.08) 55%, rgba(255,255,255,.5) 100%);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.55);
-  animation: ed-rise var(--t) linear var(--d) infinite;
+  pointer-events: none;
+  filter: blur(60px);
 }
-@keyframes ed-rise{
-  from{ transform: translateY(0) translateX(0); opacity: 0; }
-  10%{ opacity: .9; }
-  to{ transform: translateY(-110vh) translateX(24px); opacity: 0; }
-}
+.ed::before{ left: -20vmax; top: -25vmax; background: radial-gradient(circle, rgba(90, 200, 220, .45), transparent 65%); }
+.ed::after{ right: -22vmax; bottom: -22vmax; background: radial-gradient(circle, rgba(130, 110, 255, .3), transparent 65%); }
 
 /* aquário: a carta ao vivo */
 .ed-stage{
   position: relative;
   flex: 1;
   min-height: 0;
-  border-radius: 28px;
+  border-radius: 32px;
   overflow: hidden;
-  border: 1px solid var(--glass-line);
-  box-shadow: 0 18px 40px rgba(8, 70, 110, .28), inset 0 0 0 6px rgba(255,255,255,.25);
+  border: 1px solid rgba(255,255,255,.9);
+  box-shadow: 0 20px 50px rgba(40, 60, 100, .2), 0 0 0 5px rgba(255,255,255,.35);
   isolation: isolate;
 }
 .ed-stage::after{
@@ -95,6 +74,10 @@ html, body{
   gap: 10px;
 }
 
-@media (prefers-reduced-motion: reduce){
-  .ed-bubbles span{ animation: none; opacity: 0; }
+/* telas largas: carta à esquerda, ícones e opções numa coluna à direita */
+@media (min-width: 900px){
+  .ed{ flex-direction: row; gap: 20px; padding: 16px 20px; }
+  .ed-bottom{ order: 2; flex: none; width: 380px; max-width: none; margin: 0; justify-content: flex-start; }
+  .ed-bottom .ed-dock{ order: -1; }
+  .ed-stage{ order: 1; }
 }

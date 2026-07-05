@@ -10,6 +10,7 @@ export function useSound() {
     enabled,
     unlock: engine.unlock,
     ui: engine.ui,
+    drop: engine.drop,
     open: engine.open,
     close: engine.close,
     speed: engine.speed,

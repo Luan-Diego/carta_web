@@ -182,6 +182,28 @@ export function createSound() {
       tick(ctx.currentTime + 0.01, 1000, 0.09);
     },
 
+    // gota d'água suave ("plip"): o tom sobe rápido e some; um eco bem leve
+    drop() {
+      if (!ready()) return;
+      const t = ctx.currentTime + 0.005;
+      const f = 520 * (0.92 + Math.random() * 0.16);
+      for (const [mult, vol, dur] of [[1, 0.13, 0.16], [2.4, 0.03, 0.07]]) {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(f * mult, t);
+        o.frequency.exponentialRampToValueAtTime(f * mult * 1.9, t + 0.07);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(vol, t + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.connect(g);
+        g.connect(master);
+        g.connect(fx);
+        o.start(t);
+        o.stop(t + dur + 0.05);
+      }
+    },
+
     open() {
       if (!ready()) return;
       const t = ctx.currentTime + 0.03;
