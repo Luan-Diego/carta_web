@@ -1,8 +1,9 @@
 /* Ícones de vidro soltos na tela (estilo tela de início do iOS) */
 .ed-dock{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 4px;
+  padding-top: 4px;
 }
 .ed-app{
   --tint: #6fb4ff;
@@ -36,23 +37,24 @@
   aspect-ratio: 1;
   border-radius: 28%;
   overflow: hidden;
+  /* plástico transparente: quase sem cor própria, o fundo aparece borrado por trás */
   background:
-    linear-gradient(150deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 45%),
-    linear-gradient(160deg, color-mix(in srgb, var(--tint) 78%, white), color-mix(in srgb, var(--tint) 62%, transparent));
-  border: 1px solid rgba(255,255,255,.75);
-  -webkit-backdrop-filter: blur(14px) saturate(1.6);
-  backdrop-filter: blur(14px) saturate(1.6);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--tint) 35%, transparent), 0 1px 3px rgba(30, 50, 80, .12), inset 0 1px 1px rgba(255,255,255,.9), inset 0 -6px 10px rgba(255,255,255,.12);
+    linear-gradient(150deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,0) 42%),
+    linear-gradient(160deg, color-mix(in srgb, var(--tint) 34%, rgba(255,255,255,.14)), color-mix(in srgb, var(--tint) 20%, rgba(255,255,255,.04)));
+  border: 1px solid rgba(255,255,255,.7);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  backdrop-filter: blur(16px) saturate(1.8);
+  box-shadow: 0 8px 20px rgba(10, 20, 40, .22), inset 0 1px 1px rgba(255,255,255,.9), inset 0 -8px 12px rgba(255,255,255,.1), inset 0 0 0 1px rgba(255,255,255,.12);
   transition: transform .35s var(--spring), box-shadow .35s var(--spring);
 }
-/* brilho de borda, como o vidro líquido */
+/* reflexo curvo no topo */
 .ed-app-icon::after{
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(ellipse 70% 40% at 30% 0%, rgba(255,255,255,.65), transparent 70%);
+  background: radial-gradient(ellipse 80% 42% at 32% 0%, rgba(255,255,255,.7), transparent 72%);
 }
 .ed-app svg{
   position: relative;
@@ -64,7 +66,7 @@
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 1px 1.5px rgba(20, 40, 70, .35));
+  filter: drop-shadow(0 1px 2px rgba(10, 30, 60, .55));
 }
 .ed-app circle[r="1"]{ fill: #fff; stroke: none; }
 .ed-app-name{
@@ -72,15 +74,15 @@
   font: 600 9.5px/1.1 inherit;
   font-family: inherit;
   letter-spacing: -.02em;
-  color: var(--ink);
-  text-shadow: 0 1px 0 rgba(255,255,255,.7);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 20, 40, .65), 0 0 1px rgba(0, 20, 40, .5);
 }
 .ed-app:active .ed-app-icon{ transform: scale(.92); }
 .ed-app:focus-visible{ outline: none; }
 .ed-app:focus-visible .ed-app-icon{ box-shadow: 0 0 0 3px var(--ink); }
 .ed-app[aria-expanded="true"] .ed-app-icon{
   transform: scale(1.08);
-  box-shadow: 0 0 0 3px rgba(255,255,255,.95), 0 12px 24px color-mix(in srgb, var(--tint) 50%, transparent), inset 0 1px 1px #fff;
+  box-shadow: 0 0 0 2.5px rgba(255,255,255,.95), 0 12px 26px color-mix(in srgb, var(--tint) 55%, rgba(10,20,40,.2)), inset 0 1px 1px #fff;
 }
 .ed-app[aria-expanded="true"] .ed-app-name{ font-weight: 800; }
 
@@ -90,7 +92,7 @@
   grid-template-rows: 0fr;
   transition: grid-template-rows .45s var(--spring);
 }
-.ed-sheet-wrap.open{ grid-template-rows: 1fr; }
+.ed-sheet-wrap.open{ grid-template-rows: 1fr; margin-bottom: 10px; }
 .ed-sheet-clip{ min-height: 0; overflow: hidden; border-radius: 32px; }
 
 .ed-sheet{
@@ -168,9 +170,3 @@
   .ed-sheet-wrap, .ed-sheet, .painel-enter-active, .painel-leave-active, .ed-app-icon{ transition: none; }
 }
 
-/* telas largas: ícones e folha ficam numa coluna ao lado da carta (nada cobre a carta) */
-@media (min-width: 900px){
-  .ed-app-name{ font-size: 12px; letter-spacing: 0; }
-  .ed-dock{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 10px; }
-  .ed-sheet{ max-height: calc(100dvh - 24px - 230px); }
-}

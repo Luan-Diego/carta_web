@@ -5,7 +5,7 @@ defineProps({
   auto: { type: Boolean, default: false },
   soundOn: { type: Boolean, default: true },
 });
-defineEmits(['toggle-auto', 'reset', 'toggle-sound']);
+defineEmits(['toggle-auto', 'reset', 'toggle-sound', 'zoom-in', 'zoom-out']);
 </script>
 
 <template>
@@ -22,6 +22,13 @@ defineEmits(['toggle-auto', 'reset', 'toggle-sound']);
         <g class="i-rot"><path d="M20 12a8 8 0 1 1-2.6-5.9" /><path d="M20 4v5h-5" /></g>
         <rect class="i-stop" x="7.5" y="7.5" width="9" height="9" rx="1.8" />
       </svg>
+    </button>
+
+    <button class="tool btn-zoom" type="button" aria-label="Diminuir o zoom" title="Diminuir o zoom" @click="$emit('zoom-out')">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" /><path d="M15.5 15.5L20 20M8.5 11h5" /></svg>
+    </button>
+    <button class="tool btn-zoom" type="button" aria-label="Aumentar o zoom" title="Aumentar o zoom" @click="$emit('zoom-in')">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" /><path d="M15.5 15.5L20 20M8.5 11h5M11 8.5v5" /></svg>
     </button>
 
     <button

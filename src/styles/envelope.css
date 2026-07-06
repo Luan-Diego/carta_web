@@ -82,9 +82,12 @@
   position: absolute;
   left: 50%;
   top: 100%;
-  width: 28px;
-  height: 28px;
-  margin: -15px 0 0 -14px;
+  --lacre-size: 1;
+  width: calc(28px * var(--lacre-size));
+  height: calc(28px * var(--lacre-size));
+  margin: calc(-14px * var(--lacre-size) - 1px) 0 0 calc(-14px * var(--lacre-size));
+  display: grid;
+  place-items: center;
   transform: translateZ(.8px);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -93,6 +96,18 @@
   width: 100%;
   height: 100%;
   fill: var(--heart-color);
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .3));
+}
+.selo-img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .3));
+  user-select: none;
+}
+.selo-emoji{
+  font-size: calc(24px * var(--lacre-size));
+  line-height: 1;
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .3));
 }
 .selo-texto{

@@ -1,3 +1,4 @@
+import { createCaustics } from './caustics.js';
 import { TAU, clamp, rand, rotRgb, tintDelta } from './util.js';
 
 // Água (estilo aquarela): uma grande onda em curva, em faixas de azul do marinho
@@ -25,6 +26,7 @@ export default function waves(w, h, dark, hue) {
   const bolhas = Array.from({ length: 16 }, () => ({ u: Math.random(), r: rand(2, 5.5), ph: rand(TAU) }));
   const fios = Array.from({ length: 8 }, (_, i) => ({ off: 0.025 + i * 0.03, u0: rand(0, 0.6), len: rand(0.25, 0.5), sp: rand(0.01, 0.03), ph: rand(TAU) }));
   let Y = [];
+  const cs = createCaustics(w, h, dark, hue); // reflexos de luz dentro da água (se houver WebGL)
 
   function crest(u) {
     const bowl = Math.sin(Math.PI * clamp(u * 1.04 - 0.02, 0, 1));
@@ -50,14 +52,17 @@ export default function waves(w, h, dark, hue) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    tap(x) {
+    resize(nw, nh) { w = nw; h = nh; cs?.resize(nw, nh); },
+    destroy() { cs?.destroy(); },
+    tap(x, y) {
+      cs?.ripple(x, y);
       const u = clamp(x / w, 0, 1);
       ripples.push({ u, age: 0, amp: h * 0.05 });
       spray(u, 22, 1.4);
     },
     step(dt, ptr) {
       t += dt; emit -= dt;
+      cs?.step(dt, ptr);
       const on = ptr.x > -1000;
       pw += ((on ? 1 : 0) - pw) * Math.min(1, dt * 3);
       if (on) px += (clamp(ptr.x / w, 0, 1) - px) * Math.min(1, dt * 4);
@@ -92,6 +97,17 @@ export default function waves(w, h, dark, hue) {
         ctx.fillStyle = col(f, f[3]);
         ctx.fill();
       });
+
+      if (cs) { // luz refratada só dentro da água, abaixo da crista
+        ctx.save();
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) (i ? ctx.lineTo(i * stepX, Y[i] + h * 0.012) : ctx.moveTo(0, Y[0] + h * 0.012));
+        ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath(); ctx.clip();
+        ctx.globalCompositeOperation = 'overlay';
+        ctx.globalAlpha = dark ? 0.5 : 0.7;
+        ctx.drawImage(cs.render(), 0, 0, w, h);
+        ctx.restore();
+      }
 
       const b = ctx.createLinearGradient(0, h * 0.6, 0, h);
       b.addColorStop(0, col([30, 175, 245], 0));

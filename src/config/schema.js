@@ -1,5 +1,5 @@
 import { DEFAULTS, LIMITS } from './defaults.js';
-import { ADESIVOS, ESTAMPAS, FUNDO_ANTIGO, FUNDOS, LACRES, STICKER_SIZE } from './options.js';
+import { ADESIVOS, ESTAMPAS, FUNDO_ANTIGO, FUNDOS, LACRES, LACRE_SIZE, STICKER_SIZE } from './options.js';
 
 const COLOR_RE = /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%/]+\)|hsla?\([\d\s.,%/a-z]+\))$/i;
 
@@ -36,12 +36,16 @@ function sanitizeVisual(v) {
   const lacre = LACRES.some((o) => o.id === v.lacre) ? v.lacre : DEFAULTS.visual.lacre;
   const fundoId = FUNDO_ANTIGO[v.fundo] || v.fundo;
   const tam = Number.isFinite(v.adesivoTam) ? v.adesivoTam : STICKER_SIZE.padrao;
+  const lt = Number.isFinite(v.lacreTam) ? v.lacreTam : LACRE_SIZE.padrao;
   return {
     fundo: FUNDOS.some((o) => o.id === fundoId) ? fundoId : DEFAULTS.visual.fundo,
     matiz: Number.isFinite(v.matiz) && v.matiz >= 0 && v.matiz < 360 ? Math.round(v.matiz) : -1,
     imagem: safeImage(v.imagem),
     lacre: lacre === 'inicial' && !inicial ? DEFAULTS.visual.lacre : lacre, // inicial sem letra: coração
     inicial,
+    lacreEmoji: ADESIVOS.includes(v.lacreEmoji) ? v.lacreEmoji : '',
+    lacreImg: safeImage(v.lacreImg, { url: false }),
+    lacreTam: Math.min(LACRE_SIZE.max, Math.max(LACRE_SIZE.min, Math.round(lt))),
     para: v.para.slice(0, LIMITS.para),
     adesivo: ADESIVOS.includes(v.adesivo) ? v.adesivo : '',
     adesivoImg: safeImage(v.adesivoImg, { url: false }),

@@ -52,7 +52,7 @@ npm run preview    # serve dist/ locally to check the build
 
 - **Default letter** (shown when the site is opened without a link): edit `src/config/carta.config.js` (title, greeting, paragraphs, signature, colors, sound).
 - **Personalized links**: open `/criar/` (a glass, iOS-style editor): the letter sits in an "aquarium" with a live preview and a dock below, one option per customization (Message, Colors, Background, Seal, Envelope, Link). Tapping an option opens a sheet with only its controls; copy the link in the last one.
-- The editor uses an iOS "liquid glass" look: light background, glass app icons (no bar), a soft water-drop sound when picking an option, and on wide screens the icons and options sit in a column beside the letter so nothing covers it.
+- The editor uses an iOS "liquid glass" look: the letter fills the screen, glass app icons float at the bottom (no bar), a soft water-drop sound plays when picking an option, and the letter shrinks above the icons and the options sheet so nothing covers it.
 - Look & feel lives in the `visual` block (`fundo`, `imagem`, `lacre`, `inicial`, `para`, `adesivo`, `adesivoImg`, `adesivoTam`, `matiz`, `estampa`, `postal`). The accepted values are listed in `src/config/options.js`. To add a background, write a scene in `src/lib/scenes/` (`create(w, h, dark, hue)` returning `{ resize, step, draw, tap }`), register it in `scenes/index.js` and add it to `FUNDOS`.
 - Your own images travel inside the link: stickers are shrunk to ~100px WebP and backgrounds to a small JPEG so they fit (link limit ~22,000 characters; some chat apps cut very long links). For a sharp background, host the image and paste its `https://` address instead.
 - Invalid or missing fields fall back to the defaults in `src/config/defaults.js`. Values outside the lists in `options.js` are ignored.
@@ -122,3 +122,15 @@ The normal link carries the whole letter after the `#` and works with no server.
 4. Locally, `npm run dev` only serves the front end; use `vercel dev` to test the API.
 
 The letter is stored as JSON text (max 1 MB) and is re-validated by the viewer when opened. Anyone with the id can read it, so it is not private.
+
+## Water
+
+`caustics.js` is a WebGL fragment shader (no library, no external API) that draws pool-style refracted light. It powers the **Água cristalina** background and adds realistic light inside the **Ondas** wave. Without WebGL, Água shows a plain gradient and Ondas keeps its 2D drawing. Scenes may export `destroy()` to free the GL context.
+
+## Lacre
+
+The Lacre panel works like Adesivo: **Do app** has the drawn shapes (colored by the seal color) and every emoji category, **Meus lacres** keeps your own PNG/WebP seals (same crop/reduce window, stored in this browser only), and a size slider (`lacreTam`, 60-160%). Precedence on the envelope: own image, then emoji, then shape.
+
+## Zoom
+
+The envelope zooms from 60% to 240%: mouse wheel, two-finger pinch, the + and - buttons in the toolbar, or the keys `+`, `-`, `0`. The reset button (and `Home`) also resets the zoom. `composables/useZoom.js` holds the logic; the value is the CSS variable `--zoom`.

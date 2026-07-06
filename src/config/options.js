@@ -10,6 +10,7 @@ export const FUNDOS = [
   { id: 'aurora', nome: 'Aurora', icone: '🌠', cores: ['#0a2236', '#02060d'], cor: true },
   { id: 'estrelado', nome: 'Céu estrelado', icone: '⭐', cores: ['#142046', '#04060f'], cor: true },
   { id: 'ondas', nome: 'Ondas', icone: '🌊', cores: ['#dff4ff', '#8fd0f0'], cor: true },
+  { id: 'agua', nome: 'Água cristalina', icone: '💧', cores: ['#2ab6dc', '#0a6aaa'], cor: true },
   { id: 'chuva', nome: 'Chuva na janela', icone: '🌧️', cores: ['#607080', '#232c36'] },
   { id: 'jardim', nome: 'Jardim', icone: '🌷', cores: ['#eaf7ff', '#d3efd3'] },
   { id: 'fogo', nome: 'Fogo e brasas', icone: '🔥', cores: ['#2d0f06', '#090302'], cor: true },
@@ -89,3 +90,4 @@ export const ESTAMPAS = [
 
 // Imagens do usuário (data URL ou https) e tamanho do adesivo próprio, em %
 export const STICKER_SIZE = { min: 50, max: 200, padrao: 100 };
+export const LACRE_SIZE = { min: 60, max: 160, padrao: 100 }; // tamanho do lacre, em %

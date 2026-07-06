@@ -67,6 +67,18 @@ function onReset() {
   else sound.ui();
 }
 
+function zoomIn() {
+  sound.unlock();
+  scene.value?.zoomIn();
+  sound.ui();
+}
+
+function zoomOut() {
+  sound.unlock();
+  scene.value?.zoomOut();
+  sound.ui();
+}
+
 function toggleSound() {
   sound.unlock();
   sound.toggle();
@@ -101,6 +113,8 @@ function toggleSound() {
       @toggle-auto="toggleAuto"
       @reset="onReset"
       @toggle-sound="toggleSound"
+      @zoom-in="zoomIn"
+      @zoom-out="zoomOut"
     />
 
     <ReadingMode :open="reading" :letter="config.carta" @close="closeReader" />

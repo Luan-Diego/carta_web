@@ -1,15 +1,19 @@
 <script setup>
 import { computed, nextTick, ref, watch } from 'vue';
-import { useStickerLibrary } from '../../composables/useImageLibrary.js';
+import { useSealLibrary, useStickerLibrary } from '../../composables/useImageLibrary.js';
 import { STICKER_MAX_PX, comprimirAdesivo, lerImagem, recortar } from '../../lib/image.js';
 import '../../styles/modal.css';
 
 // Janela "Novo adesivo": escolhe um arquivo, informa o tamanho aceito e, se a
 // imagem for maior, deixa escolher entre REDUZIR (imagem inteira) e CORTAR.
-defineProps({ open: { type: Boolean, default: false } });
+const props = defineProps({
+  open: { type: Boolean, default: false },
+  tipo: { type: String, default: 'adesivo' }, // 'adesivo' | 'lacre': decide a galeria e os textos
+});
 const emit = defineEmits(['close', 'select']);
 
-const { add } = useStickerLibrary();
+const { add } = (props.tipo === 'lacre' ? useSealLibrary : useStickerLibrary)();
+const NOME = props.tipo === 'lacre' ? { novo: 'Novo lacre', lista: 'meus lacres', o: 'O lacre' } : { novo: 'Novo adesivo', lista: 'meus adesivos', o: 'O adesivo' };
 const PREVIA = 240;
 
 const img = ref(null); // { bmp, w, h }
@@ -128,9 +132,9 @@ watch(
   <Teleport to=".ed">
     <Transition name="modal">
       <div v-if="open" class="ed-modal" @click.self="fechar" @keydown.esc.stop="fechar">
-        <div ref="dialog" class="ed-dialog" role="dialog" aria-modal="true" aria-label="Novo adesivo" tabindex="-1">
+        <div ref="dialog" class="ed-dialog" role="dialog" aria-modal="true" :aria-label="NOME.novo" tabindex="-1">
           <header class="ed-dialog-head">
-            <h2>Novo adesivo</h2>
+            <h2>{{ NOME.novo }}</h2>
             <button type="button" class="ed-done" @click="fechar">Cancelar</button>
           </header>
 
@@ -141,14 +145,14 @@ watch(
               <small>ou arraste um arquivo até aqui</small>
             </label>
             <p class="ed-foot">
-              O adesivo é guardado em até {{ STICKER_MAX_PX }}×{{ STICKER_MAX_PX }} pixels, para caber no link. O ideal é um
+              {{ NOME.o }} é guardado em até {{ STICKER_MAX_PX }}×{{ STICKER_MAX_PX }} pixels, para caber no link. O ideal é um
               PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.
             </p>
           </template>
 
           <template v-else>
             <p class="ed-info">
-              Sua imagem tem <strong>{{ img.w }}×{{ img.h }} px</strong>. O limite do adesivo é
+              Sua imagem tem <strong>{{ img.w }}×{{ img.h }} px</strong>. O limite é de
               <strong>{{ STICKER_MAX_PX }}×{{ STICKER_MAX_PX }} px</strong>.
               <template v-if="cabe"> Ela já cabe, sem ajustes.</template>
             </p>
@@ -171,7 +175,7 @@ watch(
               </label>
             </div>
 
-            <button type="button" class="ed-aqua" :disabled="ocupado" @click="adicionar">{{ ocupado ? 'Preparando…' : 'Adicionar aos meus adesivos' }}</button>
+            <button type="button" class="ed-aqua" :disabled="ocupado" @click="adicionar">{{ ocupado ? 'Preparando…' : `Adicionar a ${NOME.lista}` }}</button>
             <button type="button" class="ed-glassbtn" @click="reiniciar">Escolher outra imagem</button>
           </template>
           <p v-if="erro" class="ed-error" role="alert">{{ erro }}</p>

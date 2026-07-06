@@ -60,6 +60,7 @@ export function useScene(canvas, tipo, dark, matiz) {
   async function load() {
     const my = ++token;
     stop();
+    scene?.destroy?.();
     scene = null;
     ctx?.clearRect(0, 0, canvas.value?.width || 0, canvas.value?.height || 0);
     if (!canvas.value || !hasScene(tipo.value)) return;
@@ -125,6 +126,7 @@ export function useScene(canvas, tipo, dark, matiz) {
   onBeforeUnmount(() => {
     token++;
     stop();
+    scene?.destroy?.();
     ro?.disconnect();
     document.removeEventListener('visibilitychange', onVisibility);
     if (host) {

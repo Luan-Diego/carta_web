@@ -1,4 +1,5 @@
-/* Editor — vidro líquido (estilo iOS): fundo claro, ícones de vidro e folha */
+/* Editor — vidro líquido (estilo iOS): a carta ocupa a tela inteira e os ícones
+   de vidro flutuam embaixo, sem cobrir o envelope */
 html, body{
   margin: 0;
   height: 100%;
@@ -16,68 +17,36 @@ html, body{
   --glass-line: rgba(255, 255, 255, .8);
   --danger: #e5352b;
   --spring: cubic-bezier(.32, .72, 0, 1);
+  --ed-bottom: 100px; /* altura da parte de baixo (ícones + folha); o editor atualiza */
 
   position: fixed;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
   overflow: hidden;
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  background: linear-gradient(180deg, #f4f6fa 0%, #e3e8f0 100%);
 }
 
-/* manchas de cor suaves por trás: dão o que o vidro refratar */
-.ed::before, .ed::after{
-  content: "";
-  position: absolute;
-  width: 60vmax;
-  height: 60vmax;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(60px);
-}
-.ed::before{ left: -20vmax; top: -25vmax; background: radial-gradient(circle, rgba(90, 200, 220, .45), transparent 65%); }
-.ed::after{ right: -22vmax; bottom: -22vmax; background: radial-gradient(circle, rgba(130, 110, 255, .3), transparent 65%); }
-
-/* aquário: a carta ao vivo */
+/* a carta ao vivo, em tela cheia */
 .ed-stage{
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  border-radius: 32px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.9);
-  box-shadow: 0 20px 50px rgba(40, 60, 100, .2), 0 0 0 5px rgba(255,255,255,.35);
-  isolation: isolate;
-}
-.ed-stage::after{
-  content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 28%);
 }
+/* o envelope e a barra de controles ficam acima da parte de baixo */
+.ed .stage{ bottom: calc(var(--ed-bottom) + 56px); }
+.ed .toolbar{ bottom: calc(var(--ed-bottom) + 8px); }
 
-/* parte de baixo: folha + dock */
+/* parte de baixo: folha de opções + ícones, sobre a carta */
 .ed-bottom{
-  position: relative;
-  width: 100%;
-  max-width: 560px;
-  margin: 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  padding: 0 12px max(14px, env(safe-area-inset-bottom));
+  pointer-events: none;
+  z-index: 10;
 }
-
-/* telas largas: carta à esquerda, ícones e opções numa coluna à direita */
-@media (min-width: 900px){
-  .ed{ flex-direction: row; gap: 20px; padding: 16px 20px; }
-  .ed-bottom{ order: 2; flex: none; width: 380px; max-width: none; margin: 0; justify-content: flex-start; }
-  .ed-bottom .ed-dock{ order: -1; }
-  .ed-stage{ order: 1; }
-}
+.ed-bottom > *{ width: 100%; max-width: 560px; pointer-events: auto; }

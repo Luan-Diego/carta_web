@@ -26,6 +26,9 @@ export const DEFAULTS = {
     para: '', // dedicatória escrita no envelope (ex.: "Para Maria")
     adesivo: '', // emoji colado no envelope ('' = nenhum)
     adesivoImg: '', // PNG/WebP próprio (data URL) no lugar do emoji
+    lacreEmoji: '', // emoji no lugar da forma do lacre (um de ADESIVOS)
+    lacreImg: '', // PNG/WebP próprio (data URL) no lugar da forma do lacre
+    lacreTam: 100, // tamanho do lacre, em % (60 a 160)
     adesivoTam: 100, // tamanho do adesivo, em % (50 a 200)
     estampa: '', // padrão do envelope (ESTAMPAS em options.js)
     postal: '', // emoji no selo postal do envelope ('' = sem selo)

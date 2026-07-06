@@ -5,13 +5,14 @@ import SealMark from './SealMark.vue';
 import { useFit } from '../composables/useFit.js';
 import { useOrbit } from '../composables/useOrbit.js';
 import { useSound } from '../composables/useSound.js';
+import { useZoom } from '../composables/useZoom.js';
 import '../styles/scene.css';
 import '../styles/envelope.css';
 
 defineProps({
   letter: { type: Object, required: true }, // { saudacao, mensagem[], assinatura }
   open: { type: Boolean, default: false },
-  visual: { type: Object, required: true }, // { lacre, inicial, para, adesivo, adesivoImg, adesivoTam, estampa, postal }
+  visual: { type: Object, required: true }, // { lacre, inicial, lacreEmoji, lacreImg, lacreTam, para, adesivo, adesivoImg, adesivoTam, estampa, postal }
 });
 const auto = defineModel('auto', { type: Boolean, default: false }); // giro automático
 const emit = defineEmits(['tap', 'toggle', 'read']);
@@ -22,6 +23,7 @@ const orbitEl = ref(null);
 const shadowEl = ref(null);
 
 const fit = useFit(stage);
+const { zoom, zoomIn, zoomOut, resetZoom, pinching, recentPinch } = useZoom(stage);
 const { dragging, onPointerDown, onPointerMove, onPointerEnd, nudge, resetView, intro } = useOrbit({
   orbitEl,
   shadowEl,
@@ -29,7 +31,13 @@ const { dragging, onPointerDown, onPointerMove, onPointerEnd, nudge, resetView, 
   onPress: sound.unlock,
   onSpeed: sound.speed,
   onTap: (info) => emit('tap', info),
+  canTap: () => !recentPinch(),
 });
+
+// durante a pinça (dois dedos) o envelope não gira
+const mover = (e) => {
+  if (!pinching()) onPointerMove(e);
+};
 
 function onKeydown(e) {
   sound.unlock();
@@ -58,6 +66,21 @@ function onKeydown(e) {
     case 'Home':
       e.preventDefault();
       resetView();
+      resetZoom();
+      break;
+    case '+':
+    case '=':
+      e.preventDefault();
+      zoomIn();
+      break;
+    case '-':
+    case '_':
+      e.preventDefault();
+      zoomOut();
+      break;
+    case '0':
+      e.preventDefault();
+      resetZoom();
       break;
     case 'l':
     case 'L':
@@ -69,7 +92,12 @@ function onKeydown(e) {
 onMounted(intro);
 
 defineExpose({
-  resetView,
+  resetView: () => {
+    resetView();
+    resetZoom();
+  },
+  zoomIn,
+  zoomOut,
   focus: () => stage.value?.focus({ preventScroll: true }),
 });
 </script>
@@ -79,13 +107,13 @@ defineExpose({
     ref="stage"
     class="stage"
     :class="{ 'is-open': open, 'is-auto': auto, 'is-dragging': dragging }"
-    :style="{ '--fit': fit }"
+    :style="{ '--fit': fit, '--zoom': zoom }"
     tabindex="0"
     role="button"
     :aria-pressed="open ? 'true' : 'false'"
-    aria-label="Envelope em 3D. Toque para abrir ou fechar. Arraste ou use as setas para girar."
+    aria-label="Envelope em 3D. Toque para abrir ou fechar. Arraste ou use as setas para girar. Use a roda do mouse, a pinça ou + e - para o zoom."
     @pointerdown="onPointerDown"
-    @pointermove="onPointerMove"
+    @pointermove="mover"
     @pointerup="onPointerEnd"
     @pointercancel="onPointerEnd"
     @keydown="onKeydown"
@@ -147,8 +175,10 @@ defineExpose({
               <div class="flap">
                 <div class="flap-face flap-out"></div>
                 <div class="flap-face flap-in"></div>
-                <div class="selo" aria-hidden="true">
-                  <SealMark :forma="visual.lacre" :inicial="visual.inicial" />
+                <div class="selo" :style="{ '--lacre-size': visual.lacreTam / 100 }" aria-hidden="true">
+                  <img v-if="visual.lacreImg" class="selo-img" :src="visual.lacreImg" alt="" draggable="false" />
+                  <span v-else-if="visual.lacreEmoji" class="selo-emoji">{{ visual.lacreEmoji }}</span>
+                  <SealMark v-else :forma="visual.lacre" :inicial="visual.inicial" />
                 </div>
               </div>
             </div>

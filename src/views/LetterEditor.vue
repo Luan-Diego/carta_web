@@ -30,6 +30,10 @@ const SECOES = [
   { id: 'link', nome: 'Link', painel: PanelLink },
 ];
 
+const raiz = ref(null);
+const baixo = ref(null);
+let observador = null;
+
 const ativa = ref(null); // opção aberta (null = folha fechada)
 const ultima = ref(SECOES[0]); // mantém o conteúdo enquanto a folha fecha
 
@@ -54,21 +58,29 @@ const onKey = (e) => {
 };
 
 onMounted(() => {
+  // a carta só ocupa o espaço acima dos ícones e da folha (nada a cobre)
+  if (typeof ResizeObserver !== 'undefined' && baixo.value) {
+    observador = new ResizeObserver(() => raiz.value?.style.setProperty('--ed-bottom', `${baixo.value.offsetHeight}px`));
+    observador.observe(baixo.value);
+  }
   sound.applyDefault(config.value.som);
   window.addEventListener('keydown', onKey);
 });
-onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKey);
+  observador?.disconnect();
+});
 
 const titulo = computed(() => ultima.value.nome);
 </script>
 
 <template>
-  <div class="ed">
+  <div ref="raiz" class="ed">
     <main class="ed-stage">
       <LetterPlayer :config="config" compact />
     </main>
 
-    <div class="ed-bottom">
+    <div ref="baixo" class="ed-bottom">
       <GlassSheet :open="ativa !== null" :title="titulo" @close="fechar">
         <Transition name="painel" mode="out-in">
           <component :is="ultima.painel" :key="ultima.id" />

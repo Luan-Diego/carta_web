@@ -22,7 +22,8 @@
   position: relative;
   width: 300px;
   height: 230px;
-  transform: scale(var(--fit));
+  transform: scale(calc(var(--fit) * var(--zoom, 1)));
+  transition: transform .18s ease-out;
   transform-style: preserve-3d;
 }
 

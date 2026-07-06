@@ -10,7 +10,7 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 // Rotação 3D: arraste com inércia, giro automático, animações até um alvo.
 // O estado de animação (s) fica fora do sistema reativo de propósito, porque muda
 // a cada quadro; o DOM é atualizado direto, sem re-renderizar componentes.
-export function useOrbit({ orbitEl, shadowEl, auto, onPress = () => {}, onSpeed = () => {}, onTap = () => {} }) {
+export function useOrbit({ orbitEl, shadowEl, auto, onPress = () => {}, onSpeed = () => {}, onTap = () => {}, canTap = () => true }) {
   const dragging = ref(false);
   const s = { rx: INIT.rx, ry: INIT.ry, vx: 0, vy: 0, target: null, held: false, brake: false };
   let raf = 0;
@@ -162,7 +162,7 @@ export function useOrbit({ orbitEl, shadowEl, auto, onPress = () => {}, onSpeed 
   function onPointerEnd(e) {
     if (!down || e.pointerId !== down.id) return;
     const now = performance.now();
-    const isTap = !down.moved && now - down.t < 600 && down.onModel && e.type === 'pointerup';
+    const isTap = canTap() && !down.moved && now - down.t < 600 && down.onModel && e.type === 'pointerup';
     if (now - down.lt > 80) s.vx = s.vy = 0; // parou antes de soltar: sem inércia
     const { onPaper } = down;
     s.held = false;
