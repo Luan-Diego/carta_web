@@ -29,6 +29,8 @@ export const DEFAULTS = {
     lacreEmoji: '', // emoji no lugar da forma do lacre (um de ADESIVOS)
     lacreImg: '', // PNG/WebP próprio (data URL) no lugar da forma do lacre
     lacreTam: 100, // tamanho do lacre, em % (60 a 160)
+    fonte: 'padrao', // ver FONTES em options.js
+    fonteArq: '', // fonte = 'propria': arquivo woff2/woff/ttf/otf em data URL
     adesivoTam: 100, // tamanho do adesivo, em % (50 a 200)
     estampa: '', // padrão do envelope (ESTAMPAS em options.js)
     postal: '', // emoji no selo postal do envelope ('' = sem selo)
@@ -45,5 +47,6 @@ export const LIMITS = {
   inicial: 2,
   para: 40,
   url: 500, // endereço https de imagem
+  fonteArq: 340000, // fonte própria embutida (só cabe no link curto)
   dataUrl: 14000, // imagem embutida no link (já reduzida pelo editor)
 };

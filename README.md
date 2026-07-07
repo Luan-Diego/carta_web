@@ -134,3 +134,7 @@ The Lacre panel works like Adesivo: **Do app** has the drawn shapes (colored by 
 ## Zoom
 
 The envelope zooms from 60% to 240%: mouse wheel, two-finger pinch, the + and - buttons in the toolbar, or the keys `+`, `-`, `0`. The reset button (and `Home`) also resets the zoom. `composables/useZoom.js` holds the logic; the value is the CSS variable `--zoom`.
+
+## Fonts
+
+The Mensagem panel has a Fonte section: 10 app fonts (from `@fontsource` packages, bundled by Vite so every viewer sees the same font without installing anything) and **Minha fonte** to import a .woff2/.woff/.ttf/.otf (max 250 KB). An imported font travels inside the letter data (`fonteArq`), so it is too big for the `#c=` link and needs the short link. Only import fonts you are allowed to share. Run `npm install` after pulling, to fetch the new font packages.

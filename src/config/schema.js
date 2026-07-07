@@ -1,5 +1,5 @@
 import { DEFAULTS, LIMITS } from './defaults.js';
-import { ADESIVOS, ESTAMPAS, FUNDO_ANTIGO, FUNDOS, LACRES, LACRE_SIZE, STICKER_SIZE } from './options.js';
+import { ADESIVOS, ESTAMPAS, FONTES, FUNDO_ANTIGO, FUNDOS, LACRES, LACRE_SIZE, STICKER_SIZE } from './options.js';
 
 const COLOR_RE = /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%/]+\)|hsla?\([\d\s.,%/a-z]+\))$/i;
 
@@ -30,12 +30,16 @@ export function safeImage(v, { data = true, url = true } = {}) {
   return '';
 }
 
+const FONT_RE = /^data:font\/(woff2|woff|ttf|otf);base64,[A-Za-z0-9+/=]+$/;
+
 // Só aceita valores das listas de options.js; o resto volta ao padrão
 function sanitizeVisual(v) {
   const inicial = Array.from(v.inicial.trim()).slice(0, LIMITS.inicial).join('');
   const lacre = LACRES.some((o) => o.id === v.lacre) ? v.lacre : DEFAULTS.visual.lacre;
   const fundoId = FUNDO_ANTIGO[v.fundo] || v.fundo;
   const tam = Number.isFinite(v.adesivoTam) ? v.adesivoTam : STICKER_SIZE.padrao;
+  const fonteArq = typeof v.fonteArq === 'string' && v.fonteArq.length <= LIMITS.fonteArq && FONT_RE.test(v.fonteArq) ? v.fonteArq : '';
+  const fonte = v.fonte === 'propria' ? (fonteArq ? 'propria' : 'padrao') : FONTES.some((o) => o.id === v.fonte) ? v.fonte : 'padrao';
   const lt = Number.isFinite(v.lacreTam) ? v.lacreTam : LACRE_SIZE.padrao;
   return {
     fundo: FUNDOS.some((o) => o.id === fundoId) ? fundoId : DEFAULTS.visual.fundo,
@@ -43,6 +47,8 @@ function sanitizeVisual(v) {
     imagem: safeImage(v.imagem),
     lacre: lacre === 'inicial' && !inicial ? DEFAULTS.visual.lacre : lacre, // inicial sem letra: coração
     inicial,
+    fonte,
+    fonteArq: fonte === 'propria' ? fonteArq : '',
     lacreEmoji: ADESIVOS.includes(v.lacreEmoji) ? v.lacreEmoji : '',
     lacreImg: safeImage(v.lacreImg, { url: false }),
     lacreTam: Math.min(LACRE_SIZE.max, Math.max(LACRE_SIZE.min, Math.round(lt))),

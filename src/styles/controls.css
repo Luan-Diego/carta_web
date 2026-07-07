@@ -318,3 +318,11 @@
 /* prévia do recorte */
 .ed-crop{ align-self: center; width: 240px; height: 240px; max-width: 100%; border-radius: 18px; border: 1px solid rgba(255,255,255,.9); touch-action: none; background-image: conic-gradient(rgba(23,50,63,.1) 25%, transparent 0 50%, rgba(23,50,63,.1) 0 75%, transparent 0); background-size: 16px 16px; }
 .ed-crop.mover{ cursor: grab; }
+
+/* amostra de fonte nas miniaturas */
+.ed-font-amostra{
+  display: block;
+  font-size: 30px;
+  line-height: 1.2;
+  color: var(--ink);
+}

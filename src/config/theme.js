@@ -1,4 +1,5 @@
 import { DEFAULTS } from './defaults.js';
+import { FONTES, FONTE_PROPRIA } from './options.js';
 
 const VARS = {
   fundo1: '--bg-1',
@@ -13,6 +14,9 @@ const VARS = {
 export function themeVars(cfg) {
   const out = {};
   for (const [key, name] of Object.entries(VARS)) out[name] = cfg.cores[key];
+  const fonte = cfg.visual?.fonte;
+  if (fonte === 'propria') out['--font-carta'] = `'${FONTE_PROPRIA}', Georgia, serif`;
+  else if (fonte && fonte !== 'padrao') out['--font-carta'] = FONTES.find((o) => o.id === fonte)?.familia;
   return out;
 }
 

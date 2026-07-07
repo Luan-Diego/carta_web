@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import BackgroundLayer from './BackgroundLayer.vue';
 import ControlBar from './ControlBar.vue';
 import EnvelopeScene from './EnvelopeScene.vue';
@@ -7,6 +7,7 @@ import ReadingMode from './ReadingMode.vue';
 import { useEnvelope } from '../composables/useEnvelope.js';
 import { useSound } from '../composables/useSound.js';
 import { themeVars, toneOf } from '../config/theme.js';
+import { carregarFonte } from '../lib/fonts.js';
 import '../styles/player.css';
 
 // A carta completa: cena 3D + dica + barra de controles + modo leitura.
@@ -16,6 +17,9 @@ const props = defineProps({
   config: { type: Object, required: true }, // configuração já validada (resolveConfig)
   compact: { type: Boolean, default: false }, // sem a dica de texto (pré-visualização do editor)
 });
+
+// a fonte da carta carrega só quando é escolhida (as demais não pesam)
+watch(() => [props.config.visual.fonte, props.config.visual.fonteArq], ([f, a]) => carregarFonte(f, a), { immediate: true });
 
 const sound = useSound();
 const soundOn = sound.enabled;

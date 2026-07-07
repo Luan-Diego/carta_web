@@ -47,6 +47,24 @@ export const LACRES = [
   { id: 'inicial', nome: 'Inicial' },
 ];
 
+// Fontes da carta. As do app vêm do pacote @fontsource (empacotadas no site, então
+// todo mundo vê igual, sem precisar ter a fonte instalada). 'propria' = arquivo enviado.
+export const FONTE_PROPRIA = 'FonteDaCarta';
+export const FONTES = [
+  { id: 'padrao', nome: 'Padrão', familia: '' },
+  { id: 'playfair', nome: 'Playfair', familia: "'Playfair Display', Georgia, serif" },
+  { id: 'lora', nome: 'Lora', familia: "'Lora', Georgia, serif" },
+  { id: 'cormorant', nome: 'Cormorant', familia: "'Cormorant Garamond', Georgia, serif" },
+  { id: 'merriweather', nome: 'Merriweather', familia: "'Merriweather', Georgia, serif" },
+  { id: 'dancing', nome: 'Dancing', familia: "'Dancing Script', cursive" },
+  { id: 'greatvibes', nome: 'Great Vibes', familia: "'Great Vibes', cursive" },
+  { id: 'satisfy', nome: 'Satisfy', familia: "'Satisfy', cursive" },
+  { id: 'caveat', nome: 'Caveat', familia: "'Caveat', cursive" },
+  { id: 'patrick', nome: 'Patrick Hand', familia: "'Patrick Hand', cursive" },
+  { id: 'quicksand', nome: 'Quicksand', familia: "'Quicksand', sans-serif" },
+];
+export const FONTE_ARQ_MAX = 250 * 1024; // tamanho máximo do arquivo de fonte enviado
+
 // Paletas prontas: mexem só na carta (envelope, papel, texto e lacre), nunca no fundo
 export const PALETAS = [
   { id: 'classico', nome: 'Clássico', cores: { envelope: '#e6cfa7', papel: '#fffefa', texto: '#3f3b33', lacre: '#92161c' } },

@@ -37,6 +37,8 @@ const toConfig = (f) => ({
     imagem: f.imagem,
     lacre: f.lacre,
     inicial: f.inicial,
+    fonte: f.fonte,
+    fonteArq: f.fonteArq,
     lacreEmoji: f.lacreEmoji,
     lacreImg: f.lacreImg,
     lacreTam: f.lacreTam,

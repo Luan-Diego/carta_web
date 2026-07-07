@@ -273,7 +273,7 @@
 
 .texto{
   padding: 26px 24px;
-  font-family: var(--font);
+  font-family: var(--font-carta, var(--font));
   color: var(--txt-color);
   text-align: left;
   font-size: 13px;
