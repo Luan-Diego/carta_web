@@ -44,6 +44,11 @@ defineEmits(['select']);
           <rect x="3.5" y="6" width="17" height="12" rx="2.8" />
           <path d="M4 8l8 5.5L20 8" />
         </template>
+        <template v-else-if="s.id === 'papel'">
+          <path d="M7 3.5h7l4 4v13H7z" />
+          <path d="M14 3.5v4h4" />
+          <path d="M10 13h5M10 16.5h3" />
+        </template>
         <template v-else-if="s.id === 'adesivo'">
           <path d="M20.5 12A8.5 8.5 0 1 1 12 3.5h.5L20.5 11.5z" />
           <path d="M12.5 3.5v5a3 3 0 0 0 3 3h5" />

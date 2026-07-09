@@ -20,3 +20,6 @@
 
 /* miniatura de estampa do envelope */
 .pv-est{ background: var(--env-cover); }
+
+.pv-papel{ position: relative; background: var(--paper, #fffefa); overflow: hidden; }
+.pv-papel .pd-textura{ position: absolute; inset: 0; }

@@ -26,6 +26,7 @@
 .ed-app[data-id="fundo"]{ --tint: #4fd1bd; }
 .ed-app[data-id="lacre"]{ --tint: #ff7b78; }
 .ed-app[data-id="envelope"]{ --tint: #ffbb5c; }
+.ed-app[data-id="papel"]{ --tint: #f2c94c; }
 .ed-app[data-id="adesivo"]{ --tint: #b095ff; }
 .ed-app[data-id="link"]{ --tint: #62cf86; }
 

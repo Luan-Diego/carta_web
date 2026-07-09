@@ -138,3 +138,10 @@ The envelope zooms from 60% to 240%: mouse wheel, two-finger pinch, the + and - 
 ## Fonts
 
 The Mensagem panel has a Fonte section: 10 app fonts (from `@fontsource` packages, bundled by Vite so every viewer sees the same font without installing anything) and **Minha fonte** to import a .woff2/.woff/.ttf/.otf (max 250 KB). An imported font travels inside the letter data (`fonteArq`), so it is too big for the `#c=` link and needs the short link. Only import fonts you are allowed to share. Run `npm install` after pulling, to fetch the new font packages.
+
+## Aba Papel
+
+- **Marca d'água**: texturas do papel (pautado, quadriculado, pontilhado), emojis do app ou imagem própria (`Minhas marcas d'água`, guardadas só neste navegador), com opacidade e tamanho. Fica atrás do texto.
+- **Decorações**: emojis ou "Meus adesivos" colocados numa mesa plana (`PlaceBoard.vue`) e arrastados para qualquer ponto. Posições em % (`decor` / `envDecor` em `visual`), então aparecem no mesmo lugar no papel 3D, no modo leitura e no editor. Limites: 12 por superfície, 4 imagens próprias diferentes (`config/options.js`).
+- **Envelope** (aba Capa): "Minhas estampas" (imagem repetida na frente) e adesivos soltos arrastáveis.
+- Imagens próprias só cabem no link longo se forem pequenas; use o link curto para cartas com várias.

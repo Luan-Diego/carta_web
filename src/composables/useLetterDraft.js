@@ -1,6 +1,6 @@
 import { computed, inject, onBeforeUnmount, provide, reactive, ref, watch } from 'vue';
 import { siteConfig } from '../config/carta.config.js';
-import { PALETAS } from '../config/options.js';
+import { DECOR_IMGS_MAX, DECOR_MAX, DECOR_TAM, PALETAS } from '../config/options.js';
 import { resolveConfig } from '../config/schema.js';
 import { salvarCarta } from '../lib/cloud.js';
 import { encodeConfig, MAX_ENC } from '../lib/link.js';
@@ -48,6 +48,15 @@ const toConfig = (f) => ({
     adesivoTam: f.adesivoTam,
     estampa: f.estampa,
     postal: f.postal,
+    estampaImg: f.estampaImg,
+    papelTextura: f.papelTextura,
+    marcaEmoji: f.marcaEmoji,
+    marcaImg: f.marcaImg,
+    marcaOp: f.marcaOp,
+    marcaTam: f.marcaTam,
+    decorImgs: f.decorImgs,
+    decor: f.decor,
+    envDecor: f.envDecor,
   },
 });
 
@@ -155,6 +164,42 @@ export function createLetterDraft() {
   }
   watch(config, () => (linkCurto.value = ''), { deep: true }); // carta mudou: o link curto antigo não vale mais
 
+  /* ---- decorações arrastáveis: 'papel' (form.decor) ou 'env' (form.envDecor) ---- */
+  const listaDe = (alvo) => (alvo === 'env' ? form.envDecor : form.decor);
+  const novaPos = (alvo, n) => ({ x: 30 + ((n * 17) % 40), y: (alvo === 'env' ? 62 : 25) + ((n * 13) % 30), s: DECOR_TAM.padrao, r: 0 });
+  // devolve o índice da imagem no conjunto compartilhado (-1 = conjunto cheio)
+  function indiceImg(src) {
+    let i = form.decorImgs.indexOf(src);
+    if (i < 0) {
+      if (form.decorImgs.length >= DECOR_IMGS_MAX) return -1;
+      i = form.decorImgs.push(src) - 1;
+    }
+    return i;
+  }
+  // devolve o índice novo, ou -1 se não coube
+  function addDecor(alvo, { e, src }) {
+    const lista = listaDe(alvo);
+    if (lista.length >= DECOR_MAX) return -1;
+    const pos = novaPos(alvo, lista.length);
+    if (src) {
+      const i = indiceImg(src);
+      if (i < 0) return -1;
+      lista.push({ i, ...pos });
+    } else lista.push({ e, ...pos });
+    return lista.length - 1;
+  }
+  // tira imagens do conjunto que ninguém mais usa e reindexa as decorações
+  function podarImgs() {
+    const usadas = [...new Set([...form.decor, ...form.envDecor].filter((d) => d.i !== undefined).map((d) => d.i))].sort((a, b) => a - b);
+    const mapa = new Map(usadas.map((v, n) => [v, n]));
+    [...form.decor, ...form.envDecor].forEach((d) => d.i !== undefined && (d.i = mapa.get(d.i)));
+    form.decorImgs = usadas.map((v) => form.decorImgs[v]);
+  }
+  function removeDecor(alvo, idx) {
+    listaDe(alvo).splice(idx, 1);
+    podarImgs();
+  }
+
   // cores padrão da carta (as do site), para o botão "Voltar ao padrão"
   const padrao = resolveConfig(siteConfig).cores;
   const CORES_CARTA = ['envelope', 'papel', 'texto', 'lacre'];
@@ -173,7 +218,7 @@ export function createLetterDraft() {
     clearTimeout(copiedTimer);
   });
 
-  return { form, config, totalChars, paletaAtual, link, linkError, copied, copy, linkCurto, curtoErro, curtoOcupado, gerarCurto, restaurar, aplicarPaleta, escolherFundo, padrao, restaurarCarta };
+  return { form, config, totalChars, paletaAtual, link, linkError, copied, copy, linkCurto, curtoErro, curtoOcupado, gerarCurto, restaurar, aplicarPaleta, escolherFundo, padrao, restaurarCarta, addDecor, removeDecor };
 }
 
 export function provideLetterDraft() {

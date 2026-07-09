@@ -326,3 +326,11 @@
   line-height: 1.2;
   color: var(--ink);
 }
+
+/* Aba Papel: botões de emoji que adicionam decorações e blocos internos */
+.ed-sticker-btn{ border: 0; padding: 0; background: none; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.ed-panel-in{ display: flex; flex-direction: column; gap: 10px; }
+
+.ed-seg-sm{ font-size: 12px; }
+.pl-col{ flex-direction: column; align-items: stretch; }
+.pl-col .pl-board{ margin: 0 auto; }

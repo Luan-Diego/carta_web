@@ -1,12 +1,15 @@
 <script setup>
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import DecorLayer from './DecorLayer.vue';
 import LetterContent from './LetterContent.vue';
+import PaperMarks from './PaperMarks.vue';
 import '../styles/reader.css';
 
 // Modo leitura: o texto completo em tela cheia, com rolagem.
 const props = defineProps({
   open: { type: Boolean, default: false },
   letter: { type: Object, required: true },
+  visual: { type: Object, default: () => ({ decor: [], decorImgs: [] }) },
 });
 const emit = defineEmits(['close']);
 
@@ -38,7 +41,11 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
   <div v-if="open" class="leitura" role="dialog" aria-modal="true" aria-label="Leitura da carta" @click.self="emit('close')">
     <button ref="closeBtn" class="leitura-fechar" type="button" aria-label="Fechar leitura" @click="emit('close')">&#10005;</button>
     <article ref="card" class="leitura-card" tabindex="-1">
-      <LetterContent :letter="letter" />
+      <div class="leitura-folha">
+        <PaperMarks :visual="visual" />
+        <div class="leitura-texto"><LetterContent :letter="letter" /></div>
+        <DecorLayer :itens="visual.decor" :imgs="visual.decorImgs" />
+      </div>
     </article>
   </div>
 </template>

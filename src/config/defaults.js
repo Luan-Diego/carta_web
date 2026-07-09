@@ -34,6 +34,15 @@ export const DEFAULTS = {
     adesivoTam: 100, // tamanho do adesivo, em % (50 a 200)
     estampa: '', // padrão do envelope (ESTAMPAS em options.js)
     postal: '', // emoji no selo postal do envelope ('' = sem selo)
+    estampaImg: '', // padrão próprio (data URL) no lugar da estampa do envelope
+    papelTextura: '', // TEXTURAS em options.js
+    marcaEmoji: '', // marca d'água do papel: emoji...
+    marcaImg: '', // ...ou imagem própria (data URL)
+    marcaOp: 18, // opacidade da marca d'água, em % (5 a 60)
+    marcaTam: 60, // largura da marca d'água, em % do papel (20 a 100)
+    decorImgs: [], // imagens próprias usadas nas decorações (até 4)
+    decor: [], // decorações do papel: { e | i, x, y, s, r }
+    envDecor: [], // decorações do envelope (mesmo formato)
   },
 };
 

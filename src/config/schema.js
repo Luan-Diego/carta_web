@@ -1,5 +1,5 @@
 import { DEFAULTS, LIMITS } from './defaults.js';
-import { ADESIVOS, ESTAMPAS, FONTES, FUNDO_ANTIGO, FUNDOS, LACRES, LACRE_SIZE, STICKER_SIZE } from './options.js';
+import { ADESIVOS, DECOR_IMGS_MAX, DECOR_MAX, DECOR_TAM, ESTAMPAS, FONTES, FUNDO_ANTIGO, FUNDOS, LACRES, LACRE_SIZE, MARCA_OP, MARCA_TAM, STICKER_SIZE, TEXTURAS } from './options.js';
 
 const COLOR_RE = /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%/]+\)|hsla?\([\d\s.,%/a-z]+\))$/i;
 
@@ -12,7 +12,7 @@ export function merge(base, extra) {
   for (const k of Object.keys(base)) {
     const b = base[k];
     const v = extra && typeof extra === 'object' ? extra[k] : undefined;
-    if (Array.isArray(b)) out[k] = Array.isArray(v) && v.every((x) => typeof x === 'string') ? v : b;
+    if (Array.isArray(b)) out[k] = Array.isArray(v) ? v : b; // o conteúdo é validado em sanitize()
     else if (b && typeof b === 'object') out[k] = merge(b, v);
     else out[k] = typeof v === typeof b ? v : b;
   }
@@ -32,6 +32,22 @@ export function safeImage(v, { data = true, url = true } = {}) {
 
 const FONT_RE = /^data:font\/(woff2|woff|ttf|otf);base64,[A-Za-z0-9+/=]+$/;
 
+const num = (v, min, max, pad) => Math.min(max, Math.max(min, Number.isFinite(v) ? Math.round(v * 10) / 10 : pad));
+
+// Decorações: { e: emoji } ou { i: índice em decorImgs }, com posição (x, y em %), tamanho e giro
+function sanitizeDecor(lista, nImgs) {
+  if (!Array.isArray(lista)) return [];
+  const out = [];
+  for (const d of lista) {
+    if (out.length >= DECOR_MAX) break;
+    if (!d || typeof d !== 'object') continue;
+    const base = { x: num(d.x, 0, 100, 50), y: num(d.y, 0, 100, 50), s: num(d.s, DECOR_TAM.min, DECOR_TAM.max, DECOR_TAM.padrao), r: Math.round(num(d.r, -180, 180, 0)) };
+    if (typeof d.e === 'string' && d.e && ADESIVOS.includes(d.e)) out.push({ e: d.e, ...base });
+    else if (Number.isInteger(d.i) && d.i >= 0 && d.i < nImgs) out.push({ i: d.i, ...base });
+  }
+  return out;
+}
+
 // Só aceita valores das listas de options.js; o resto volta ao padrão
 function sanitizeVisual(v) {
   const inicial = Array.from(v.inicial.trim()).slice(0, LIMITS.inicial).join('');
@@ -41,7 +57,18 @@ function sanitizeVisual(v) {
   const fonteArq = typeof v.fonteArq === 'string' && v.fonteArq.length <= LIMITS.fonteArq && FONT_RE.test(v.fonteArq) ? v.fonteArq : '';
   const fonte = v.fonte === 'propria' ? (fonteArq ? 'propria' : 'padrao') : FONTES.some((o) => o.id === v.fonte) ? v.fonte : 'padrao';
   const lt = Number.isFinite(v.lacreTam) ? v.lacreTam : LACRE_SIZE.padrao;
+  const decorImgs = (Array.isArray(v.decorImgs) ? v.decorImgs : []).slice(0, DECOR_IMGS_MAX).map((x) => safeImage(x, { url: false }));
+  const marcaImg = safeImage(v.marcaImg, { url: false });
   return {
+    estampaImg: safeImage(v.estampaImg, { url: false }),
+    papelTextura: TEXTURAS.some((o) => o.id === v.papelTextura) ? v.papelTextura : '',
+    marcaImg,
+    marcaEmoji: !marcaImg && ADESIVOS.includes(v.marcaEmoji) ? v.marcaEmoji : '',
+    marcaOp: Math.round(num(v.marcaOp, MARCA_OP.min, MARCA_OP.max, MARCA_OP.padrao)),
+    marcaTam: Math.round(num(v.marcaTam, MARCA_TAM.min, MARCA_TAM.max, MARCA_TAM.padrao)),
+    decorImgs,
+    decor: sanitizeDecor(v.decor, decorImgs.length),
+    envDecor: sanitizeDecor(v.envDecor, decorImgs.length),
     fundo: FUNDOS.some((o) => o.id === fundoId) ? fundoId : DEFAULTS.visual.fundo,
     matiz: Number.isFinite(v.matiz) && v.matiz >= 0 && v.matiz < 360 ? Math.round(v.matiz) : -1,
     imagem: safeImage(v.imagem),
@@ -69,7 +96,7 @@ export function sanitize(cfg) {
     titulo: cfg.titulo.slice(0, LIMITS.titulo),
     carta: {
       saudacao: cfg.carta.saudacao.slice(0, LIMITS.saudacao),
-      mensagem: cfg.carta.mensagem.slice(0, LIMITS.paragrafos).map((t) => t.slice(0, LIMITS.paragrafo)),
+      mensagem: cfg.carta.mensagem.filter((t) => typeof t === 'string').slice(0, LIMITS.paragrafos).map((t) => t.slice(0, LIMITS.paragrafo)),
       assinatura: cfg.carta.assinatura.slice(0, LIMITS.assinatura),
     },
     cores,

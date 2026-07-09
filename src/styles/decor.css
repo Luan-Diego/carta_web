@@ -1,0 +1,72 @@
+/* Camadas do papel e do envelope: textura, marca d'água e decorações.
+   Cada camada é um "container": as medidas usam cqw (% da largura da superfície),
+   assim tudo fica proporcional no papel 3D, na leitura e no editor. */
+.pd-camada{
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  pointer-events: none;
+  overflow: hidden;
+}
+.pd-marcas{ z-index: 0; }
+.pd-decor{ z-index: 2; }
+
+.pd-textura{ position: absolute; inset: 0; }
+.tx-pautado{
+  background: repeating-linear-gradient(to bottom, transparent 0 25px, color-mix(in srgb, var(--txt-color, #3f3b33) 16%, transparent) 25px 26px);
+}
+.tx-quadriculado{
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 17px, color-mix(in srgb, var(--txt-color, #3f3b33) 12%, transparent) 17px 18px),
+    repeating-linear-gradient(to right, transparent 0 17px, color-mix(in srgb, var(--txt-color, #3f3b33) 12%, transparent) 17px 18px);
+}
+.tx-pontilhado{
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--txt-color, #3f3b33) 22%, transparent) 1px, transparent 1.4px);
+  background-size: 14px 14px;
+}
+
+/* marca d'água: centralizada, discreta e sempre atrás do texto */
+.pd-marca{
+  --op: .18;
+  --w: 60;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--w) * 1cqw);
+  max-height: 90cqh;
+  transform: translate(-50%, -50%);
+  opacity: var(--op);
+  object-fit: contain;
+  user-select: none;
+}
+.pd-marca-emoji{
+  width: auto;
+  font-size: calc(var(--w) * .8cqw);
+  line-height: 1;
+  filter: grayscale(.25);
+}
+
+/* decorações */
+.pd-item{
+  --x: 50; --y: 50; --s: 18; --r: 0deg;
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  font-size: calc(var(--s) * .8cqw);
+  line-height: 1;
+  transform: translate(-50%, -50%) rotate(var(--r));
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .22));
+  user-select: none;
+  -webkit-user-select: none;
+}
+.pd-item-img{
+  width: calc(var(--s) * 1cqw);
+  height: calc(var(--s) * 1cqw);
+  object-fit: contain;
+}
+
+/* no editor os itens recebem toque e mostram qual está selecionado */
+.pd-edit{ pointer-events: none; overflow: visible; }
+.pd-edit .pd-item{ pointer-events: auto; cursor: grab; touch-action: none; }
+.pd-edit .pd-item:active{ cursor: grabbing; }
+.pd-edit .pd-item.sel{ outline: 2px dashed rgba(60, 130, 255, .9); outline-offset: 3px; border-radius: 6px; }

@@ -283,3 +283,15 @@
 .texto p{ margin: 0; }
 .texto p + p{ margin-top: .75em; }
 .texto .assinatura{ margin-top: 1.1em; text-align: right; font-style: italic; }
+
+/* estampa própria (imagem do usuário) repetida sobre a frente do envelope */
+.f-estampa-img{
+  background-image: var(--est-img);
+  background-size: 44px 44px;
+  background-repeat: repeat;
+  opacity: .85;
+}
+/* decorações do envelope: camada sobre a frente (o clip-path do bolso já recorta o "V") */
+.front-pocket > .pd-decor{ z-index: 3; }
+/* camadas do papel: marca d'água atrás do texto, decorações por cima */
+.texto{ position: relative; z-index: 1; }

@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, ref, watch } from 'vue';
-import { useSealLibrary, useStickerLibrary } from '../../composables/useImageLibrary.js';
+import { useMarkLibrary, usePatternLibrary, useSealLibrary, useStickerLibrary } from '../../composables/useImageLibrary.js';
 import { STICKER_MAX_PX, comprimirAdesivo, lerImagem, recortar } from '../../lib/image.js';
 import '../../styles/modal.css';
 
@@ -8,12 +8,18 @@ import '../../styles/modal.css';
 // imagem for maior, deixa escolher entre REDUZIR (imagem inteira) e CORTAR.
 const props = defineProps({
   open: { type: Boolean, default: false },
-  tipo: { type: String, default: 'adesivo' }, // 'adesivo' | 'lacre': decide a galeria e os textos
+  tipo: { type: String, default: 'adesivo' }, // 'adesivo' | 'lacre' | 'marca' | 'estampa': decide a galeria e os textos
 });
 const emit = defineEmits(['close', 'select']);
 
-const { add } = (props.tipo === 'lacre' ? useSealLibrary : useStickerLibrary)();
-const NOME = props.tipo === 'lacre' ? { novo: 'Novo lacre', lista: 'meus lacres', o: 'O lacre' } : { novo: 'Novo adesivo', lista: 'meus adesivos', o: 'O adesivo' };
+const TIPOS = {
+  adesivo: { lib: useStickerLibrary, nome: { novo: 'Novo adesivo', lista: 'meus adesivos', o: 'O adesivo' } },
+  lacre: { lib: useSealLibrary, nome: { novo: 'Novo lacre', lista: 'meus lacres', o: 'O lacre' } },
+  marca: { lib: useMarkLibrary, nome: { novo: 'Nova marca d\'água', lista: 'minhas marcas d\'água', o: 'A marca d\'água' } },
+  estampa: { lib: usePatternLibrary, nome: { novo: 'Nova estampa', lista: 'minhas estampas', o: 'A estampa' } },
+};
+const { add } = (TIPOS[props.tipo] || TIPOS.adesivo).lib();
+const NOME = (TIPOS[props.tipo] || TIPOS.adesivo).nome;
 const PREVIA = 240;
 
 const img = ref(null); // { bmp, w, h }

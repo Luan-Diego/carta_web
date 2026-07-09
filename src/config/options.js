@@ -109,3 +109,16 @@ export const ESTAMPAS = [
 // Imagens do usuário (data URL ou https) e tamanho do adesivo próprio, em %
 export const STICKER_SIZE = { min: 50, max: 200, padrao: 100 };
 export const LACRE_SIZE = { min: 60, max: 160, padrao: 100 }; // tamanho do lacre, em %
+
+// Aba Papel: texturas do papel, marca d'água e decorações arrastáveis
+export const TEXTURAS = [
+  { id: '', nome: 'Lisa' },
+  { id: 'pautado', nome: 'Pautado' },
+  { id: 'quadriculado', nome: 'Quadriculado' },
+  { id: 'pontilhado', nome: 'Pontilhado' },
+];
+export const MARCA_OP = { min: 5, max: 60, padrao: 18 }; // opacidade da marca d'água, em %
+export const MARCA_TAM = { min: 20, max: 100, padrao: 60 }; // largura da marca, em % do papel
+export const DECOR_TAM = { min: 6, max: 60, padrao: 18 }; // largura da decoração, em % da superfície
+export const DECOR_MAX = 12; // decorações por superfície (papel ou envelope)
+export const DECOR_IMGS_MAX = 4; // imagens próprias diferentes usadas nas decorações

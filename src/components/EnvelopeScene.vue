@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import DecorLayer from './DecorLayer.vue';
 import LetterContent from './LetterContent.vue';
+import PaperMarks from './PaperMarks.vue';
 import SealMark from './SealMark.vue';
 import { useFit } from '../composables/useFit.js';
 import { useOrbit } from '../composables/useOrbit.js';
@@ -139,7 +141,9 @@ defineExpose({
               <div class="carta">
                 <div class="sheet">
                   <div class="paper front">
+                    <PaperMarks :visual="visual" />
                     <div class="texto"><LetterContent :letter="letter" /></div>
+                    <DecorLayer :itens="visual.decor" :imgs="visual.decorImgs" />
                   </div>
                   <div class="paper rear"></div>
                 </div>
@@ -150,7 +154,8 @@ defineExpose({
                 <i class="f-left"></i>
                 <i class="f-right"></i>
                 <i class="f-bottom"></i>
-                <i v-if="visual.estampa" class="f-estampa" :class="`est-${visual.estampa}`" aria-hidden="true"></i>
+                <i v-if="visual.estampaImg" class="f-estampa f-estampa-img" :style="{ '--est-img': `url(${visual.estampaImg})` }" aria-hidden="true"></i>
+                <i v-else-if="visual.estampa" class="f-estampa" :class="`est-${visual.estampa}`" aria-hidden="true"></i>
                 <div v-if="visual.postal" class="selo-postal" aria-hidden="true">{{ visual.postal }}</div>
                 <div v-if="visual.para" class="dedicatoria" :class="{ 'com-postal': visual.postal }">{{ visual.para }}</div>
                 <img
@@ -169,6 +174,7 @@ defineExpose({
                 >
                   {{ visual.adesivo }}
                 </div>
+                <DecorLayer :itens="visual.envDecor" :imgs="visual.decorImgs" />
               </div>
 
               <!-- aba + lacre em coração -->

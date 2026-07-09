@@ -41,3 +41,5 @@ function criarGaleria(chave, max, opcoes) {
 export const useImageLibrary = criarGaleria('carta:imagens', 24, {});
 export const useSealLibrary = criarGaleria('carta:lacres', 40, { url: false });
 export const useStickerLibrary = criarGaleria('carta:adesivos', 40, { url: false });
+export const useMarkLibrary = criarGaleria('carta:marcas', 24, { url: false });
+export const usePatternLibrary = criarGaleria('carta:estampas', 24, { url: false });

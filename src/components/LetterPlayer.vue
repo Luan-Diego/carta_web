@@ -121,6 +121,6 @@ function toggleSound() {
       @zoom-out="zoomOut"
     />
 
-    <ReadingMode :open="reading" :letter="config.carta" @close="closeReader" />
+    <ReadingMode :open="reading" :letter="config.carta" :visual="config.visual" @close="closeReader" />
   </div>
 </template>

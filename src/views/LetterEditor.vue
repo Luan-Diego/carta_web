@@ -7,6 +7,7 @@ import PanelCores from '../components/editor/PanelCores.vue';
 import PanelAdesivo from '../components/editor/PanelAdesivo.vue';
 import PanelEnvelope from '../components/editor/PanelEnvelope.vue';
 import PanelFundo from '../components/editor/PanelFundo.vue';
+import PanelPapel from '../components/editor/PanelPapel.vue';
 import PanelLacre from '../components/editor/PanelLacre.vue';
 import PanelLink from '../components/editor/PanelLink.vue';
 import PanelMensagem from '../components/editor/PanelMensagem.vue';
@@ -25,6 +26,7 @@ const SECOES = [
   { id: 'cores', nome: 'Cores', painel: PanelCores },
   { id: 'fundo', nome: 'Fundo', painel: PanelFundo },
   { id: 'lacre', nome: 'Lacre', painel: PanelLacre },
+  { id: 'papel', nome: 'Papel', painel: PanelPapel },
   { id: 'envelope', nome: 'Envelope', curto: 'Capa', painel: PanelEnvelope },
   { id: 'adesivo', nome: 'Adesivo', painel: PanelAdesivo },
   { id: 'link', nome: 'Link', painel: PanelLink },
