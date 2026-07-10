@@ -4,6 +4,7 @@ import DecorLayer from './DecorLayer.vue';
 import LetterContent from './LetterContent.vue';
 import PaperMarks from './PaperMarks.vue';
 import SealMark from './SealMark.vue';
+import { t } from '../i18n/index.js';
 import { useFit } from '../composables/useFit.js';
 import { useOrbit } from '../composables/useOrbit.js';
 import { useSound } from '../composables/useSound.js';
@@ -113,7 +114,7 @@ defineExpose({
     tabindex="0"
     role="button"
     :aria-pressed="open ? 'true' : 'false'"
-    aria-label="Envelope em 3D. Toque para abrir ou fechar. Arraste ou use as setas para girar. Use a roda do mouse, a pinça ou + e - para o zoom."
+    :aria-label="t('stage')"
     @pointerdown="onPointerDown"
     @pointermove="mover"
     @pointerup="onPointerEnd"

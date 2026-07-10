@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../i18n/index.js';
 import '../styles/ui.css';
 
 defineProps({
@@ -9,13 +10,13 @@ defineEmits(['toggle-auto', 'reset', 'toggle-sound', 'zoom-in', 'zoom-out']);
 </script>
 
 <template>
-  <nav class="toolbar" aria-label="Controles">
+  <nav class="toolbar" :aria-label="t('controls')">
     <button
       class="tool btn-auto"
       type="button"
       :aria-pressed="auto ? 'true' : 'false'"
-      :aria-label="auto ? 'Parar giro' : 'Girar automaticamente'"
-      :title="auto ? 'Parar giro' : 'Girar automaticamente'"
+      :aria-label="auto ? t('autoOff') : t('autoOn')"
+      :title="auto ? t('autoOff') : t('autoOn')"
       @click="$emit('toggle-auto')"
     >
       <svg viewBox="0 0 24 24">
@@ -24,18 +25,18 @@ defineEmits(['toggle-auto', 'reset', 'toggle-sound', 'zoom-in', 'zoom-out']);
       </svg>
     </button>
 
-    <button class="tool btn-zoom" type="button" aria-label="Diminuir o zoom" title="Diminuir o zoom" @click="$emit('zoom-out')">
+    <button class="tool btn-zoom" type="button" :aria-label="t('zoomOut')" :title="t('zoomOut')" @click="$emit('zoom-out')">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" /><path d="M15.5 15.5L20 20M8.5 11h5" /></svg>
     </button>
-    <button class="tool btn-zoom" type="button" aria-label="Aumentar o zoom" title="Aumentar o zoom" @click="$emit('zoom-in')">
+    <button class="tool btn-zoom" type="button" :aria-label="t('zoomIn')" :title="t('zoomIn')" @click="$emit('zoom-in')">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" /><path d="M15.5 15.5L20 20M8.5 11h5M11 8.5v5" /></svg>
     </button>
 
     <button
       class="tool btn-reset"
       type="button"
-      aria-label="Voltar ao início e guardar a carta"
-      title="Voltar ao início e guardar a carta"
+      :aria-label="t('reset')"
+      :title="t('reset')"
       @click="$emit('reset')"
     >
       <svg viewBox="0 0 24 24">
@@ -48,8 +49,8 @@ defineEmits(['toggle-auto', 'reset', 'toggle-sound', 'zoom-in', 'zoom-out']);
       class="tool btn-sound"
       type="button"
       :aria-pressed="soundOn ? 'true' : 'false'"
-      aria-label="Som"
-      title="Som"
+      :aria-label="t('sound')"
+      :title="t('sound')"
       @click="$emit('toggle-sound')"
     >
       <svg viewBox="0 0 24 24">

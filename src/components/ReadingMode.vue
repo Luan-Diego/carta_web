@@ -1,6 +1,7 @@
 <script setup>
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import DecorLayer from './DecorLayer.vue';
+import { t } from '../i18n/index.js';
 import LetterContent from './LetterContent.vue';
 import PaperMarks from './PaperMarks.vue';
 import '../styles/reader.css';
@@ -38,8 +39,8 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
 </script>
 
 <template>
-  <div v-if="open" class="leitura" role="dialog" aria-modal="true" aria-label="Leitura da carta" @click.self="emit('close')">
-    <button ref="closeBtn" class="leitura-fechar" type="button" aria-label="Fechar leitura" @click="emit('close')">&#10005;</button>
+  <div v-if="open" class="leitura" role="dialog" aria-modal="true" :aria-label="t('reading')" @click.self="emit('close')">
+    <button ref="closeBtn" class="leitura-fechar" type="button" :aria-label="t('closeReading')" @click="emit('close')">&#10005;</button>
     <article ref="card" class="leitura-card" tabindex="-1">
       <div class="leitura-folha">
         <PaperMarks :visual="visual" />

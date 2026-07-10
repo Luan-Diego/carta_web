@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../../i18n/index.js';
 import '../../styles/dock.css';
 
 // Dock de vidro: um botão por opção de personalização.
@@ -10,12 +11,12 @@ defineEmits(['select']);
 </script>
 
 <template>
-  <nav class="ed-dock" aria-label="Personalizar a carta">
+  <nav class="ed-dock" :aria-label="t('customize')">
     <button
       v-for="s in secoes"
       class="ed-app"
       :data-id="s.id"
-      :aria-label="s.nome"
+      :aria-label="t('s_' + s.id)"
       :key="s.id"
       type="button"
       :aria-expanded="ativa === s.id ? 'true' : 'false'"
@@ -60,7 +61,7 @@ defineEmits(['select']);
           <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
         </template>
       </svg></span>
-      <span class="ed-app-name" aria-hidden="true">{{ s.curto ?? s.nome }}</span>
+      <span class="ed-app-name" aria-hidden="true">{{ s.curto ? t('s_' + s.id + '_c') : t('s_' + s.id) }}</span>
     </button>
   </nav>
 </template>

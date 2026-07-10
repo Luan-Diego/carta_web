@@ -145,3 +145,10 @@ The Mensagem panel has a Fonte section: 10 app fonts (from `@fontsource` package
 - **Decorações**: emojis ou "Meus adesivos" colocados numa mesa plana (`PlaceBoard.vue`) e arrastados para qualquer ponto. Posições em % (`decor` / `envDecor` em `visual`), então aparecem no mesmo lugar no papel 3D, no modo leitura e no editor. Limites: 12 por superfície, 4 imagens próprias diferentes (`config/options.js`).
 - **Envelope** (aba Capa): "Minhas estampas" (imagem repetida na frente) e adesivos soltos arrastáveis.
 - Imagens próprias só cabem no link longo se forem pequenas; use o link curto para cartas com várias.
+
+## Idiomas e "Criar a minha carta"
+
+- Seletor no canto superior direito (`components/TopBar.vue`): Português, English, Español, Italiano, 中文, 日本語, 한국어, हिन्दी. A escolha fica salva no navegador; na primeira visita usa o idioma do navegador.
+- Textos da interface em `src/i18n/<codigo>.js` (mesmas chaves em todos; o português é o reserva). Para acrescentar um idioma, crie o arquivo e registre-o em `src/i18n/index.js`.
+- Na página da carta aparece também o botão **Criar a minha carta**, que leva ao editor (`criar/`).
+- O texto da carta é de quem a escreve e nunca é traduzido. Os painéis do editor ainda estão só em português (a dock e os títulos já são traduzidos).

@@ -11,6 +11,8 @@ import PanelPapel from '../components/editor/PanelPapel.vue';
 import PanelLacre from '../components/editor/PanelLacre.vue';
 import PanelLink from '../components/editor/PanelLink.vue';
 import PanelMensagem from '../components/editor/PanelMensagem.vue';
+import TopBar from '../components/TopBar.vue';
+import { t } from '../i18n/index.js';
 import { provideLetterDraft } from '../composables/useLetterDraft.js';
 import { useSound } from '../composables/useSound.js';
 import '../styles/controls.css';
@@ -73,11 +75,12 @@ onBeforeUnmount(() => {
   observador?.disconnect();
 });
 
-const titulo = computed(() => ultima.value.nome);
+const titulo = computed(() => t('s_' + ultima.value.id));
 </script>
 
 <template>
   <div ref="raiz" class="ed">
+    <TopBar />
     <main class="ed-stage">
       <LetterPlayer :config="config" compact />
     </main>

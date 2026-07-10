@@ -7,6 +7,8 @@ import ReadingMode from './ReadingMode.vue';
 import { useEnvelope } from '../composables/useEnvelope.js';
 import { useSound } from '../composables/useSound.js';
 import { themeVars, toneOf } from '../config/theme.js';
+import TopBar from './TopBar.vue';
+import { t } from '../i18n/index.js';
 import { carregarFonte } from '../lib/fonts.js';
 import '../styles/player.css';
 
@@ -29,11 +31,7 @@ const scene = ref(null);
 const auto = ref(false);
 const reading = ref(false);
 
-const hint = computed(() =>
-  isOpen.value
-    ? 'Toque na carta para ler · arraste para girar'
-    : 'Toque no envelope para abrir · arraste para girar',
-);
+const hint = computed(() => t(isOpen.value ? 'hintOpen' : 'hintClosed'));
 
 // toque no envelope: abre/fecha; toque no papel já aberto: modo leitura
 function onTap({ onPaper }) {
@@ -108,6 +106,8 @@ function toggleSound() {
       @toggle="toggle"
       @read="onReadKey"
     />
+
+    <TopBar v-if="!compact" criar />
 
     <p v-if="!compact" class="hint" aria-live="polite">{{ hint }}</p>
 
