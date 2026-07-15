@@ -50,3 +50,9 @@ html, body{
   z-index: 10;
 }
 .ed-bottom > *{ width: 100%; max-width: 560px; pointer-events: auto; }
+
+/* transição da folha em destaque */
+.foco-enter-active, .foco-leave-active{ transition: opacity .3s ease, transform .4s var(--spring, ease); }
+.foco-enter-from, .foco-leave-to{ opacity: 0; transform: scale(.94); }
+/* enquanto a folha está em destaque, o envelope 3D fica atrás, apagado */
+.ed:has(.ed-foco) .ed-stage{ opacity: .15; transition: opacity .3s; pointer-events: none; }

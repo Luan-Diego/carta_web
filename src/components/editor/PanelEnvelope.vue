@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import DecorPicker from './DecorPicker.vue';
-import PlaceBoard from './PlaceBoard.vue';
 import StickerPicker from './StickerPicker.vue';
 import { useLetterDraft } from '../../composables/useLetterDraft.js';
 import { ESTAMPAS, POSTAIS } from '../../config/options.js';
@@ -71,7 +70,6 @@ function excluir(i) {
     </div>
 
     <h3 class="ed-sub">Adesivos soltos no envelope</h3>
-    <PlaceBoard alvo="env" />
     <DecorPicker alvo="env" />
     <p class="ed-foot">O adesivo único fica na aba Adesivo; aqui você pode colar vários e arrastar para onde quiser.</p>
     <StickerPicker :open="picker" tipo="estampa" @close="picker = false" @select="usarMeu" />

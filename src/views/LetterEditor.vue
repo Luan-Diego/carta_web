@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import LetterPlayer from '../components/LetterPlayer.vue';
+import PaperFocus from '../components/editor/PaperFocus.vue';
 import GlassDock from '../components/editor/GlassDock.vue';
 import GlassSheet from '../components/editor/GlassSheet.vue';
 import PanelCores from '../components/editor/PanelCores.vue';
@@ -75,6 +76,8 @@ onBeforeUnmount(() => {
   observador?.disconnect();
 });
 
+// aba Papel ou Capa aberta: a folha (ou a frente do envelope) vem para a frente, em plano
+const foco = computed(() => (ativa.value === 'papel' ? 'papel' : ativa.value === 'envelope' ? 'env' : ''));
 const titulo = computed(() => t('s_' + ultima.value.id));
 </script>
 
@@ -84,6 +87,8 @@ const titulo = computed(() => t('s_' + ultima.value.id));
     <main class="ed-stage">
       <LetterPlayer :config="config" compact />
     </main>
+
+    <PaperFocus :open="Boolean(foco)" :alvo="foco || 'papel'" />
 
     <div ref="baixo" class="ed-bottom">
       <GlassSheet :open="ativa !== null" :title="titulo" @close="fechar">

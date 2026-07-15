@@ -112,16 +112,16 @@ Feel free to explore the project, customize it, and make it your own.
 - The Adesivo panel has two tabs: **Do app** (about 636 emojis in categories, including 🍥) and **Meus adesivos** (your own images, kept only in your browser). Stickers are stored at up to 128x128 px; a larger image can be reduced (whole image) or cropped (pick the part) before it is added.
 - Images travel inside the link, so very large ones make long links; a database would remove that limit.
 
-## Link curto (Vercel + MongoDB)
+## Short link (Vercel + Redis)
 
-The normal link carries the whole letter after the `#` and works with no server. The **Link curto** button in the editor instead saves the letter in MongoDB and gives `site/#i=<id>`.
+The normal link carries the whole letter after the `#` and works with no server. The **Link curto** button in the editor instead saves the letter in Redis (Upstash) and gives `site/#i=<id>`.
 
-1. Create a free cluster on MongoDB Atlas and a database user; allow access from anywhere (`0.0.0.0/0`), since Vercel IPs change.
-2. Import the project on Vercel (framework: Vite). `api/carta.js` becomes the serverless function `/api/carta`.
-3. In Vercel > Settings > Environment Variables set `MONGODB_URI` (and optionally `MONGODB_DB`, default `carta`), see `.env.example`.
+1. Create a free Redis database on Upstash (or through the Vercel Marketplace) and copy the REST URL and token.
+2. Import the project on Vercel (framework: Vite). `api/carta.js` becomes the serverless function `/api/carta` (no extra dependency: it uses the Upstash REST API).
+3. In Vercel > Settings > Environment Variables set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (the `KV_REST_API_*` names from the Marketplace also work), see `.env.example`.
 4. Locally, `npm run dev` only serves the front end; use `vercel dev` to test the API.
 
-The letter is stored as JSON text (max 1 MB) and is re-validated by the viewer when opened. Anyone with the id can read it, so it is not private.
+Letters are **temporary**: the creator picks 1, 7 (suggested) or 30 days and Redis deletes the letter by itself when it expires (`EX`). Limits: 5 own images per letter (422 otherwise) and 800 KB of JSON. The letter is re-validated by the viewer when opened. Anyone with the id can read it, so it is not private.
 
 ## Water
 

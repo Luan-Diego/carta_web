@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
 import DecorPicker from './DecorPicker.vue';
-import PlaceBoard from './PlaceBoard.vue';
 import StickerPicker from './StickerPicker.vue';
 import { useLetterDraft } from '../../composables/useLetterDraft.js';
 import { useMarkLibrary } from '../../composables/useImageLibrary.js';
@@ -104,7 +103,6 @@ function excluir(i) {
     </template>
 
     <template v-else>
-      <PlaceBoard alvo="papel" />
       <DecorPicker alvo="papel" />
     </template>
   </div>

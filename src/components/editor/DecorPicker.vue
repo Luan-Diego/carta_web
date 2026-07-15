@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
+import DecorControls from './DecorControls.vue';
 import StickerPicker from './StickerPicker.vue';
 import { useLetterDraft } from '../../composables/useLetterDraft.js';
 import { useStickerLibrary } from '../../composables/useImageLibrary.js';
@@ -27,6 +28,7 @@ function adicionar(dado) {
 
 <template>
   <div class="ed-panel-in">
+    <DecorControls :alvo="alvo" />
     <div class="ed-seg" role="tablist">
       <button type="button" role="tab" :aria-selected="aba === 'app'" :class="{ on: aba === 'app' }" @click="aba = 'app'">Do app</button>
       <button type="button" role="tab" :aria-selected="aba === 'meus'" :class="{ on: aba === 'meus' }" @click="aba = 'meus'">Meus adesivos</button>

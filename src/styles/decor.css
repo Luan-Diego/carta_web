@@ -13,16 +13,16 @@
 
 .pd-textura{ position: absolute; inset: 0; }
 .tx-pautado{
-  background: repeating-linear-gradient(to bottom, transparent 0 25px, color-mix(in srgb, var(--txt-color, #3f3b33) 16%, transparent) 25px 26px);
+  background: repeating-linear-gradient(to bottom, transparent 0 9.26cqw, color-mix(in srgb, var(--txt-color, #3f3b33) 16%, transparent) 9.26cqw 9.63cqw);
 }
 .tx-quadriculado{
   background:
-    repeating-linear-gradient(to bottom, transparent 0 17px, color-mix(in srgb, var(--txt-color, #3f3b33) 12%, transparent) 17px 18px),
-    repeating-linear-gradient(to right, transparent 0 17px, color-mix(in srgb, var(--txt-color, #3f3b33) 12%, transparent) 17px 18px);
+    repeating-linear-gradient(to bottom, transparent 0 6.3cqw, color-mix(in srgb, var(--txt-color, #3f3b33) 12%, transparent) 6.3cqw 6.67cqw),
+    repeating-linear-gradient(to right, transparent 0 6.3cqw, color-mix(in srgb, var(--txt-color, #3f3b33) 12%, transparent) 6.3cqw 6.67cqw);
 }
 .tx-pontilhado{
   background-image: radial-gradient(circle, color-mix(in srgb, var(--txt-color, #3f3b33) 22%, transparent) 1px, transparent 1.4px);
-  background-size: 14px 14px;
+  background-size: 5.2cqw 5.2cqw;
 }
 
 /* marca d'água: centralizada, discreta e sempre atrás do texto */
@@ -68,5 +68,6 @@
 /* no editor os itens recebem toque e mostram qual está selecionado */
 .pd-edit{ pointer-events: none; overflow: visible; }
 .pd-edit .pd-item{ pointer-events: auto; cursor: grab; touch-action: none; }
+.pd-edit .pd-item::before{ content: ""; position: absolute; inset: -12px; } /* área de toque maior para dedos */
 .pd-edit .pd-item:active{ cursor: grabbing; }
 .pd-edit .pd-item.sel{ outline: 2px dashed rgba(60, 130, 255, .9); outline-offset: 3px; border-radius: 6px; }

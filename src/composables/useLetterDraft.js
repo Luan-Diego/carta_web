@@ -147,24 +147,26 @@ export function createLetterDraft() {
     copiedTimer = setTimeout(() => (copied.value = false), 1800);
   }
 
-  // link curto: a carta fica guardada no servidor (MongoDB) e o link leva só o id
+  // link curto: a carta fica guardada no servidor (Redis, com validade) e o link leva só o id
   const linkCurto = ref('');
   const curtoErro = ref('');
   const curtoOcupado = ref(false);
+  const curtoDias = ref(7); // validade do link curto: 1, 7 ou 30 dias
   async function gerarCurto() {
     curtoOcupado.value = true;
     curtoErro.value = '';
     try {
-      linkCurto.value = viewerUrl() + '#i=' + (await salvarCarta(config.value));
+      linkCurto.value = viewerUrl() + '#i=' + (await salvarCarta(config.value, curtoDias.value));
     } catch (e) {
       curtoErro.value = e.message;
     } finally {
       curtoOcupado.value = false;
     }
   }
-  watch(config, () => (linkCurto.value = ''), { deep: true }); // carta mudou: o link curto antigo não vale mais
+  watch([config, curtoDias], () => (linkCurto.value = ''), { deep: true }); // carta mudou: o link curto antigo não vale mais
 
   /* ---- decorações arrastáveis: 'papel' (form.decor) ou 'env' (form.envDecor) ---- */
+  const decorSel = ref(-1); // decoração selecionada (índice na lista da superfície aberta)
   const listaDe = (alvo) => (alvo === 'env' ? form.envDecor : form.decor);
   const novaPos = (alvo, n) => ({ x: 30 + ((n * 17) % 40), y: (alvo === 'env' ? 62 : 25) + ((n * 13) % 30), s: DECOR_TAM.padrao, r: 0 });
   // devolve o índice da imagem no conjunto compartilhado (-1 = conjunto cheio)
@@ -186,6 +188,7 @@ export function createLetterDraft() {
       if (i < 0) return -1;
       lista.push({ i, ...pos });
     } else lista.push({ e, ...pos });
+    decorSel.value = lista.length - 1;
     return lista.length - 1;
   }
   // tira imagens do conjunto que ninguém mais usa e reindexa as decorações
@@ -197,6 +200,7 @@ export function createLetterDraft() {
   }
   function removeDecor(alvo, idx) {
     listaDe(alvo).splice(idx, 1);
+    decorSel.value = -1;
     podarImgs();
   }
 
@@ -218,7 +222,7 @@ export function createLetterDraft() {
     clearTimeout(copiedTimer);
   });
 
-  return { form, config, totalChars, paletaAtual, link, linkError, copied, copy, linkCurto, curtoErro, curtoOcupado, gerarCurto, restaurar, aplicarPaleta, escolherFundo, padrao, restaurarCarta, addDecor, removeDecor };
+  return { form, config, totalChars, paletaAtual, link, linkError, copied, copy, linkCurto, curtoErro, curtoOcupado, curtoDias, gerarCurto, restaurar, aplicarPaleta, escolherFundo, padrao, restaurarCarta, addDecor, removeDecor, decorSel };
 }
 
 export function provideLetterDraft() {

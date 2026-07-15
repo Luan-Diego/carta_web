@@ -19,7 +19,6 @@
     "@fontsource/playfair-display": "^5.1.0",
     "@fontsource/quicksand": "^5.1.0",
     "@fontsource/satisfy": "^5.1.0",
-    "mongodb": "^6.10.0",
     "vue": "^3.5.0"
   },
   "devDependencies": {
