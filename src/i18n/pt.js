@@ -25,5 +25,12 @@ export default {
   "s_envelope_c": "Capa",
   "s_adesivo": "Adesivo",
   "s_link": "Link",
-  "customize": "Personalizar a carta"
+  "customize": "Personalizar a carta",
+  save: "Salvar",
+  saveTitle: "Salvar como imagem",
+  saveDo: "Salvar imagem",
+  saveClose: "Fechar",
+  saveMaking: "Gerando imagem…",
+  saveError: "Não foi possível gerar a imagem.",
+  saveHint: "No celular abre as opções do aparelho; no computador baixa um arquivo PNG."
 };

@@ -25,5 +25,12 @@ export default {
   "s_envelope_c": "Copertina",
   "s_adesivo": "Adesivo",
   "s_link": "Link",
-  "customize": "Personalizza la lettera"
+  "customize": "Personalizza la lettera",
+  save: "Salva",
+  saveTitle: "Salva come immagine",
+  saveDo: "Salva immagine",
+  saveClose: "Chiudi",
+  saveMaking: "Creazione immagine…",
+  saveError: "Impossibile creare l'immagine.",
+  saveHint: "Su telefono apre le opzioni del dispositivo; su computer scarica un file PNG."
 };

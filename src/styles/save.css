@@ -1,0 +1,81 @@
+/* Janela "Salvar como imagem" (dentro do modo leitura) */
+.sv{
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(20, 24, 32, .55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  animation: leitura-in .2s ease-out;
+}
+.sv-box{
+  width: min(380px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 26px;
+  background: rgba(255,255,255,.78);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(24px) saturate(1.8);
+  box-shadow: 0 24px 60px rgba(10,20,40,.4), inset 0 1px 1px rgba(255,255,255,.9);
+  color: #26323f;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans CJK SC", "Noto Sans JP", "Noto Sans KR", "Noto Sans Devanagari", sans-serif;
+}
+.sv-titulo{ margin: 0; font-size: 17px; font-weight: 700; text-align: center; }
+.sv-prev{
+  flex: 1;
+  min-height: 140px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: rgba(0,0,0,.06);
+}
+.sv-prev img{ display: block; max-width: 100%; max-height: min(52vh, 420px); object-fit: contain; }
+.sv-msg{ margin: 0; padding: 20px; font-size: 14px; text-align: center; }
+.sv-dica{ margin: 0; font-size: 12px; line-height: 1.4; color: #55697a; text-align: center; }
+.sv-acoes{ display: flex; gap: 10px; }
+.sv-btn{
+  flex: 1;
+  height: 46px;
+  border: 0;
+  border-radius: 23px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sv-btn:disabled{ opacity: .5; cursor: default; }
+.sv-sec{ background: rgba(255,255,255,.8); color: #26323f; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+.sv-main{ background: linear-gradient(180deg, #4aa3ff, #0a84ff); color: #fff; box-shadow: 0 6px 16px rgba(10,132,255,.4), inset 0 1px 1px rgba(255,255,255,.5); }
+.sv-btn:focus-visible{ outline: 2px solid #0a84ff; outline-offset: 2px; }
+
+/* botão "Salvar" no modo leitura, ao lado do X */
+.leitura-salvar{
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  right: 64px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .85);
+  color: #2f2b22;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans CJK SC", "Noto Sans JP", "Noto Sans KR", "Noto Sans Devanagari", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(40, 34, 22, .15);
+}
+.leitura-salvar svg{ width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.leitura-salvar:focus-visible{ outline: 2px solid #2f2b22; outline-offset: 2px; }

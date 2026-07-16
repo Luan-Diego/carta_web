@@ -25,5 +25,12 @@ export default {
   "s_envelope_c": "封面",
   "s_adesivo": "贴纸",
   "s_link": "链接",
-  "customize": "自定义信件"
+  "customize": "自定义信件",
+  save: "保存",
+  saveTitle: "保存为图片",
+  saveDo: "保存图片",
+  saveClose: "关闭",
+  saveMaking: "正在生成图片…",
+  saveError: "无法生成图片。",
+  saveHint: "在手机上会打开系统选项；在电脑上会下载 PNG 文件。"
 };

@@ -25,5 +25,12 @@ export default {
   "s_envelope_c": "표지",
   "s_adesivo": "스티커",
   "s_link": "링크",
-  "customize": "편지 꾸미기"
+  "customize": "편지 꾸미기",
+  save: "저장",
+  saveTitle: "이미지로 저장",
+  saveDo: "이미지 저장",
+  saveClose: "닫기",
+  saveMaking: "이미지 만드는 중…",
+  saveError: "이미지를 만들 수 없습니다.",
+  saveHint: "휴대폰에서는 기기의 저장 옵션이 열리고, 컴퓨터에서는 PNG 파일이 다운로드됩니다."
 };

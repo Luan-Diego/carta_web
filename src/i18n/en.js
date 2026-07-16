@@ -25,5 +25,12 @@ export default {
   "s_envelope_c": "Cover",
   "s_adesivo": "Sticker",
   "s_link": "Link",
-  "customize": "Customize the letter"
+  "customize": "Customize the letter",
+  save: "Save",
+  saveTitle: "Save as image",
+  saveDo: "Save image",
+  saveClose: "Close",
+  saveMaking: "Creating image…",
+  saveError: "Could not create the image.",
+  saveHint: "On a phone it opens the device options; on a computer it downloads a PNG file."
 };

@@ -25,5 +25,12 @@ export default {
   "s_envelope_c": "Portada",
   "s_adesivo": "Pegatina",
   "s_link": "Enlace",
-  "customize": "Personalizar la carta"
+  "customize": "Personalizar la carta",
+  save: "Guardar",
+  saveTitle: "Guardar como imagen",
+  saveDo: "Guardar imagen",
+  saveClose: "Cerrar",
+  saveMaking: "Creando imagen…",
+  saveError: "No se pudo crear la imagen.",
+  saveHint: "En el móvil abre las opciones del dispositivo; en el ordenador descarga un archivo PNG."
 };

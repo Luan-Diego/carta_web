@@ -25,5 +25,12 @@ export default {
   "s_envelope_c": "表紙",
   "s_adesivo": "ステッカー",
   "s_link": "リンク",
-  "customize": "手紙をカスタマイズ"
+  "customize": "手紙をカスタマイズ",
+  save: "保存",
+  saveTitle: "画像として保存",
+  saveDo: "画像を保存",
+  saveClose: "閉じる",
+  saveMaking: "画像を作成中…",
+  saveError: "画像を作成できませんでした。",
+  saveHint: "スマートフォンでは端末の保存メニューが開き、パソコンではPNGファイルがダウンロードされます。"
 };

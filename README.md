@@ -152,3 +152,11 @@ The Mensagem panel has a Fonte section: 10 app fonts (from `@fontsource` package
 - Textos da interface em `src/i18n/<codigo>.js` (mesmas chaves em todos; o português é o reserva). Para acrescentar um idioma, crie o arquivo e registre-o em `src/i18n/index.js`.
 - Na página da carta aparece também o botão **Criar a minha carta**, que leva ao editor (`criar/`).
 - O texto da carta é de quem a escreve e nunca é traduzido. Os painéis do editor ainda estão só em português (a dock e os títulos já são traduzidos).
+
+## Salvar como imagem
+
+No modo leitura, o botão **Salvar** (ao lado do X) gera um PNG do que importa: o fundo (o quadro atual da animação, a imagem ou o degradê) e a folha com texto, textura, marca d'água e decorações. A imagem tem o tamanho da tela de quem está vendo (celular ou computador), com até 2x de nitidez.
+
+- Mostra uma prévia e o botão **Salvar imagem**: no celular abre o menu do aparelho (Web Share, com "Salvar imagem"/Fotos); no computador baixa `carta.png`.
+- Tudo é desenhado em `<canvas>` (`src/lib/exportImage.js`), sem biblioteca extra. Fundos com imagem de endereço https de outro site só entram se o site permitir (CORS); senão a imagem sai com o degradê.
+- O envelope 3D não entra na imagem: ele não aparece no modo leitura.

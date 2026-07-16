@@ -25,5 +25,12 @@ export default {
   "s_envelope_c": "आवरण",
   "s_adesivo": "स्टिकर",
   "s_link": "लिंक",
-  "customize": "पत्र को सजाएँ"
+  "customize": "पत्र को सजाएँ",
+  save: "सहेजें",
+  saveTitle: "चित्र के रूप में सहेजें",
+  saveDo: "चित्र सहेजें",
+  saveClose: "बंद करें",
+  saveMaking: "चित्र बन रहा है…",
+  saveError: "चित्र नहीं बन सका।",
+  saveHint: "फ़ोन पर यह डिवाइस के विकल्प खोलता है; कंप्यूटर पर PNG फ़ाइल डाउनलोड होती है।"
 };
