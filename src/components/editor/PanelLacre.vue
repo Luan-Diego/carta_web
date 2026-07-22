@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../../i18n/index.js';
 import { computed, ref } from 'vue';
 import SealMark from '../SealMark.vue';
 import StickerPicker from './StickerPicker.vue';
@@ -40,16 +41,16 @@ const formaAtiva = (id) => form.lacre === id && !form.lacreEmoji && !form.lacreI
   <!-- os desenhos usam a cor de lacre escolhida -->
   <div class="ed-panel" :style="{ '--heart-color': form.cores.lacre }">
     <div class="ed-seg" role="tablist">
-      <button type="button" role="tab" :aria-selected="aba === 'app'" :class="{ on: aba === 'app' }" @click="aba = 'app'">Do app</button>
-      <button type="button" role="tab" :aria-selected="aba === 'meus'" :class="{ on: aba === 'meus' }" @click="aba = 'meus'">Meus lacres</button>
+      <button type="button" role="tab" :aria-selected="aba === 'app'" :class="{ on: aba === 'app' }" @click="aba = 'app'">{{ t('Do app') }}</button>
+      <button type="button" role="tab" :aria-selected="aba === 'meus'" :class="{ on: aba === 'meus' }" @click="aba = 'meus'">{{ t('Meus lacres') }}</button>
     </div>
 
     <template v-if="aba === 'app'">
-      <div class="ed-strip" role="tablist" aria-label="Categorias de lacres">
-        <button type="button" role="tab" class="ed-cat" :class="{ on: categoria === 'formas' }" :aria-selected="categoria === 'formas'" title="Desenhos" @click="categoria = 'formas'">
+      <div class="ed-strip" role="tablist" :aria-label="t('Categorias de lacres')">
+        <button type="button" role="tab" class="ed-cat" :class="{ on: categoria === 'formas' }" :aria-selected="categoria === 'formas'" :title="t('Desenhos')" @click="categoria = 'formas'">
           <span>💟</span>
         </button>
-        <button v-for="c in ADESIVO_CATEGORIAS" :key="c.id" type="button" role="tab" class="ed-cat" :class="{ on: categoria === c.id }" :aria-selected="categoria === c.id" :title="c.nome" @click="categoria = c.id">
+        <button v-for="c in ADESIVO_CATEGORIAS" :key="c.id" type="button" role="tab" class="ed-cat" :class="{ on: categoria === c.id }" :aria-selected="categoria === c.id" :title="t(c.nome)" @click="categoria = c.id">
           <span>{{ c.icone }}</span>
         </button>
       </div>
@@ -61,13 +62,13 @@ const formaAtiva = (id) => form.lacre === id && !form.lacreEmoji && !form.lacreI
             <span class="pv pv-lacre">
               <SealMark :forma="o.id" :inicial="o.id === 'inicial' ? form.inicial || 'A' : ''" />
             </span>
-            <span>{{ o.nome }}</span>
+            <span>{{ t(o.nome) }}</span>
           </span>
         </label>
       </div>
       <template v-else>
-        <h3 class="ed-sub">{{ emojis.nome }}</h3>
-        <div class="ed-stickers" role="radiogroup" :aria-label="emojis.nome">
+        <h3 class="ed-sub">{{ t(emojis.nome) }}</h3>
+        <div class="ed-stickers" role="radiogroup" :aria-label="t(emojis.nome)">
           <label v-for="e in emojis.itens" :key="e" class="ed-sticker">
             <input type="radio" name="lacre-emoji" :aria-label="e" :checked="form.lacreEmoji === e && !form.lacreImg" @change="usarEmoji(e)" />
             <span>{{ e }}</span>
@@ -77,8 +78,8 @@ const formaAtiva = (id) => form.lacre === id && !form.lacreEmoji && !form.lacreI
 
       <div v-if="categoria === 'formas' && form.lacre === 'inicial' && !form.lacreEmoji && !form.lacreImg" class="ed-group">
         <label class="ed-row">
-          <span class="lbl">Letra(s)</span>
-          <input v-model="form.inicial" type="text" :maxlength="LIMITS.inicial" placeholder="M" />
+          <span class="lbl">{{ t('Letra(s)') }}</span>
+          <input v-model="form.inicial" type="text" :maxlength="LIMITS.inicial" :placeholder="t('M')" />
         </label>
       </div>
     </template>
@@ -86,22 +87,22 @@ const formaAtiva = (id) => form.lacre === id && !form.lacreEmoji && !form.lacreI
     <template v-else>
       <ul class="ed-lib">
         <li>
-          <button type="button" class="ed-thumb ed-add" aria-label="Adicionar lacre" @click="picker = true">＋</button>
+          <button type="button" class="ed-thumb ed-add" :aria-label="t('Adicionar lacre')" @click="picker = true">＋</button>
         </li>
         <li v-for="i in items" :key="i.id">
-          <button type="button" class="ed-thumb ed-thumb-sticker" :class="{ on: form.lacreImg === i.src }" :aria-pressed="form.lacreImg === i.src ? 'true' : 'false'" aria-label="Usar este lacre" @click="usarMeu(i.src)">
+          <button type="button" class="ed-thumb ed-thumb-sticker" :class="{ on: form.lacreImg === i.src }" :aria-pressed="form.lacreImg === i.src ? 'true' : 'false'" :aria-label="t('Usar este lacre')" @click="usarMeu(i.src)">
             <img :src="i.src" alt="" />
           </button>
-          <button type="button" class="ed-thumb-x" aria-label="Excluir lacre" @click="excluir(i)">✕</button>
+          <button type="button" class="ed-thumb-x" :aria-label="t('Excluir lacre')" @click="excluir(i)">✕</button>
         </li>
       </ul>
-      <p v-if="!items.length" class="ed-empty">Você ainda não tem lacres. Toque no ＋ para adicionar um PNG seu; ele fica guardado aqui, separado dos lacres do app.</p>
+      <p v-if="!items.length" class="ed-empty">{{ t('Você ainda não tem lacres. Toque no ＋ para adicionar um PNG seu; ele fica guardado aqui, separado dos lacres do app.') }}</p>
     </template>
 
     <div class="ed-group">
       <label class="ed-row">
-        <span class="lbl">Tamanho</span>
-        <input v-model.number="form.lacreTam" class="ed-range" type="range" :min="LACRE_SIZE.min" :max="LACRE_SIZE.max" step="5" aria-label="Tamanho do lacre" />
+        <span class="lbl">{{ t('Tamanho') }}</span>
+        <input v-model.number="form.lacreTam" class="ed-range" type="range" :min="LACRE_SIZE.min" :max="LACRE_SIZE.max" step="5" :aria-label="t('Tamanho do lacre')" />
         <span class="ed-val">{{ form.lacreTam }}%</span>
       </label>
     </div>

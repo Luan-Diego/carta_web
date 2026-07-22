@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../../i18n/index.js';
 import { nextTick, ref, watch } from 'vue';
 import { useImageLibrary } from '../../composables/useImageLibrary.js';
 import { LIMITS, safeImage } from '../../config/schema.js';
@@ -91,37 +92,37 @@ async function usarUrl() {
   <Teleport to=".ed">
     <Transition name="modal">
       <div v-if="open" class="ed-modal" @click.self="emit('close')" @keydown.esc.stop="emit('close')">
-        <div ref="dialog" class="ed-dialog" role="dialog" aria-modal="true" aria-label="Minha imagem" tabindex="-1">
+        <div ref="dialog" class="ed-dialog" role="dialog" aria-modal="true" :aria-label="t('Minha imagem')" tabindex="-1">
           <header class="ed-dialog-head">
-            <h2>Minha imagem</h2>
-            <button type="button" class="ed-done" @click="emit('close')">OK</button>
+            <h2>{{ t('Minha imagem') }}</h2>
+            <button type="button" class="ed-done" @click="emit('close')">{{ t('OK') }}</button>
           </header>
 
           <div class="ed-seg" role="tablist">
-            <button type="button" role="tab" :aria-selected="aba === 'arquivo'" :class="{ on: aba === 'arquivo' }" @click="aba = 'arquivo'">Do computador</button>
-            <button type="button" role="tab" :aria-selected="aba === 'url'" :class="{ on: aba === 'url' }" @click="aba = 'url'">Endereço (URL)</button>
+            <button type="button" role="tab" :aria-selected="aba === 'arquivo'" :class="{ on: aba === 'arquivo' }" @click="aba = 'arquivo'">{{ t('Do computador') }}</button>
+            <button type="button" role="tab" :aria-selected="aba === 'url'" :class="{ on: aba === 'url' }" @click="aba = 'url'">{{ t('Endereço (URL)') }}</button>
           </div>
 
           <label v-if="aba === 'arquivo'" class="ed-drop" @dragover.prevent @drop.prevent="onDrop">
             <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" @change="onFile" />
-            <strong>{{ ocupado ? 'Preparando…' : 'Escolher uma imagem' }}</strong>
-            <small>ou arraste um arquivo até aqui</small>
+            <strong>{{ t(ocupado ? 'Preparando…' : 'Escolher uma imagem') }}</strong>
+            <small>{{ t('ou arraste um arquivo até aqui') }}</small>
           </label>
 
           <div v-else class="ed-urlbox">
             <div class="ed-group">
               <label class="ed-row">
-                <input v-model="url" type="url" :maxlength="LIMITS.url" placeholder="https://…" aria-label="Endereço da imagem" @keydown.enter.prevent="usarUrl" />
+                <input v-model="url" type="url" :maxlength="LIMITS.url" :placeholder="t('https://…')" :aria-label="t('Endereço da imagem')" @keydown.enter.prevent="usarUrl" />
               </label>
             </div>
             <button type="button" class="ed-aqua" :disabled="ocupado || !url" @click="usarUrl">
-              {{ ocupado ? 'Verificando…' : 'Usar este endereço' }}
+              {{ t(ocupado ? 'Verificando…' : 'Usar este endereço') }}
             </button>
           </div>
-          <p v-if="erro" class="ed-error" role="alert">{{ erro }}</p>
+          <p v-if="erro" class="ed-error" role="alert">{{ t(erro) }}</p>
 
-          <h3 class="ed-sub">Minhas imagens</h3>
-          <p v-if="!items.length" class="ed-empty">Nenhuma imagem ainda. Adicione uma acima e ela fica guardada aqui.</p>
+          <h3 class="ed-sub">{{ t('Minhas imagens') }}</h3>
+          <p v-if="!items.length" class="ed-empty">{{ t('Nenhuma imagem ainda. Adicione uma acima e ela fica guardada aqui.') }}</p>
           <ul v-else class="ed-lib">
             <li v-for="i in items" :key="i.id">
               <button
@@ -129,11 +130,11 @@ async function usarUrl() {
                 class="ed-thumb"
                 :class="{ on: atual === i.src }"
                 :style="{ backgroundImage: `url(${i.src})` }"
-                :aria-label="atual === i.src ? 'Imagem em uso' : 'Usar esta imagem'"
+                :aria-label="t(atual === i.src ? 'Imagem em uso' : 'Usar esta imagem')"
                 :aria-pressed="atual === i.src ? 'true' : 'false'"
                 @click="escolher(i.src)"
               ></button>
-              <button type="button" class="ed-thumb-x" aria-label="Excluir imagem" @click="remove(i.id)">✕</button>
+              <button type="button" class="ed-thumb-x" :aria-label="t('Excluir imagem')" @click="remove(i.id)">✕</button>
             </li>
           </ul>
         </div>

@@ -40,7 +40,11 @@ export function setLocale(code) {
   }
 }
 
-// t('chave'): reativo (troca na hora) e cai para o português se faltar a tradução
-export const t = (chave) => DICIONARIOS[locale.value]?.[chave] ?? pt[chave] ?? chave;
+// t('chave', { n: 3 }): reativo (troca na hora). Para os textos do editor a própria frase em
+// português é a chave: se não houver tradução, aparece o português. {n} vira o valor dado.
+export const t = (chave, vars) => {
+  const txt = DICIONARIOS[locale.value]?.[chave] ?? pt[chave] ?? chave;
+  return vars ? txt.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m)) : txt;
+};
 
 export const useI18n = () => ({ t, locale, setLocale, idiomas: IDIOMAS });

@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../../i18n/index.js';
 import { computed, ref } from 'vue';
 import DecorControls from './DecorControls.vue';
 import StickerPicker from './StickerPicker.vue';
@@ -15,14 +16,14 @@ const { items, remove } = useStickerLibrary();
 const aba = ref('app');
 const categoria = ref(ADESIVO_CATEGORIAS[0].id);
 const picker = ref(false);
-const aviso = ref('');
+const aviso = ref(null); // { k: texto, p: variáveis }
 const atual = computed(() => ADESIVO_CATEGORIAS.find((c) => c.id === categoria.value));
 const lista = computed(() => (props.alvo === 'env' ? form.envDecor : form.decor));
 
 function adicionar(dado) {
-  aviso.value = '';
-  if (lista.value.length >= DECOR_MAX) aviso.value = `Limite de ${DECOR_MAX} decorações. Tire alguma para pôr outra.`;
-  else if (addDecor(props.alvo, dado) < 0) aviso.value = `Você já usa ${DECOR_IMGS_MAX} imagens diferentes nas decorações. Tire uma para usar outra.`;
+  aviso.value = null;
+  if (lista.value.length >= DECOR_MAX) aviso.value = { k: 'Limite de {n} decorações. Tire alguma para pôr outra.', p: { n: DECOR_MAX } };
+  else if (addDecor(props.alvo, dado) < 0) aviso.value = { k: 'Você já usa {n} imagens diferentes nas decorações. Tire uma para usar outra.', p: { n: DECOR_IMGS_MAX } };
 }
 </script>
 
@@ -30,13 +31,13 @@ function adicionar(dado) {
   <div class="ed-panel-in">
     <DecorControls :alvo="alvo" />
     <div class="ed-seg" role="tablist">
-      <button type="button" role="tab" :aria-selected="aba === 'app'" :class="{ on: aba === 'app' }" @click="aba = 'app'">Do app</button>
-      <button type="button" role="tab" :aria-selected="aba === 'meus'" :class="{ on: aba === 'meus' }" @click="aba = 'meus'">Meus adesivos</button>
+      <button type="button" role="tab" :aria-selected="aba === 'app'" :class="{ on: aba === 'app' }" @click="aba = 'app'">{{ t('Do app') }}</button>
+      <button type="button" role="tab" :aria-selected="aba === 'meus'" :class="{ on: aba === 'meus' }" @click="aba = 'meus'">{{ t('Meus adesivos') }}</button>
     </div>
 
     <template v-if="aba === 'app'">
-      <div class="ed-strip" role="tablist" aria-label="Categorias">
-        <button v-for="c in ADESIVO_CATEGORIAS" :key="c.id" type="button" role="tab" class="ed-cat" :class="{ on: categoria === c.id }" :aria-selected="categoria === c.id" :title="c.nome" @click="categoria = c.id">
+      <div class="ed-strip" role="tablist" :aria-label="t('Categorias')">
+        <button v-for="c in ADESIVO_CATEGORIAS" :key="c.id" type="button" role="tab" class="ed-cat" :class="{ on: categoria === c.id }" :aria-selected="categoria === c.id" :title="t(c.nome)" @click="categoria = c.id">
           <span>{{ c.icone }}</span>
         </button>
       </div>
@@ -48,15 +49,15 @@ function adicionar(dado) {
     </template>
     <template v-else>
       <ul class="ed-lib">
-        <li><button type="button" class="ed-thumb ed-add" aria-label="Adicionar adesivo" @click="picker = true">＋</button></li>
+        <li><button type="button" class="ed-thumb ed-add" :aria-label="t('Adicionar adesivo')" @click="picker = true">＋</button></li>
         <li v-for="i in items" :key="i.id">
-          <button type="button" class="ed-thumb ed-thumb-sticker" aria-label="Adicionar este adesivo" @click="adicionar({ src: i.src })"><img :src="i.src" alt="" /></button>
-          <button type="button" class="ed-thumb-x" aria-label="Excluir adesivo" @click="remove(i.id)">✕</button>
+          <button type="button" class="ed-thumb ed-thumb-sticker" :aria-label="t('Adicionar este adesivo')" @click="adicionar({ src: i.src })"><img :src="i.src" alt="" /></button>
+          <button type="button" class="ed-thumb-x" :aria-label="t('Excluir adesivo')" @click="remove(i.id)">✕</button>
         </li>
       </ul>
-      <p v-if="!items.length" class="ed-empty">Toque no ＋ para adicionar um PNG seu; ele fica guardado aqui.</p>
+      <p v-if="!items.length" class="ed-empty">{{ t('Toque no ＋ para adicionar um PNG seu; ele fica guardado aqui.') }}</p>
     </template>
-    <p v-if="aviso" class="ed-foot" role="status">{{ aviso }}</p>
+    <p v-if="aviso" class="ed-foot" role="status">{{ t(aviso.k, aviso.p) }}</p>
 
     <StickerPicker :open="picker" @close="picker = false" @select="(src) => adicionar({ src })" />
   </div>

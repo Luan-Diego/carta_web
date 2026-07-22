@@ -9,7 +9,7 @@
 
   --shadow-color: rgba(60, 50, 30, 0.18);
   --ease: cubic-bezier(.45, 0, .2, 1);
-  --font: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  --font: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', 'Noto Sans', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans', 'Yu Gothic', 'Malgun Gothic', 'Noto Sans Devanagari', 'Nirmala UI', sans-serif;
 }
 
 /* Tons do envelope derivados da cor base. Ficam em .player também: assim a cor

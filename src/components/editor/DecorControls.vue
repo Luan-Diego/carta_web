@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../../i18n/index.js';
 import { computed } from 'vue';
 import { useLetterDraft } from '../../composables/useLetterDraft.js';
 import { DECOR_TAM } from '../../config/options.js';
@@ -13,16 +14,16 @@ const atual = computed(() => lista.value[decorSel.value]);
 <template>
   <div v-if="atual" class="ed-group">
     <label class="ed-row">
-      <span class="lbl">Tamanho</span>
-      <input v-model.number="atual.s" class="ed-range" type="range" :min="DECOR_TAM.min" :max="DECOR_TAM.max" step="1" aria-label="Tamanho da decoração" />
+      <span class="lbl">{{ t('Tamanho') }}</span>
+      <input v-model.number="atual.s" class="ed-range" type="range" :min="DECOR_TAM.min" :max="DECOR_TAM.max" step="1" :aria-label="t('Tamanho da decoração')" />
     </label>
     <label class="ed-row">
-      <span class="lbl">Giro</span>
-      <input v-model.number="atual.r" class="ed-range" type="range" min="-180" max="180" step="5" aria-label="Giro da decoração" />
+      <span class="lbl">{{ t('Giro') }}</span>
+      <input v-model.number="atual.r" class="ed-range" type="range" min="-180" max="180" step="5" :aria-label="t('Giro da decoração')" />
     </label>
-    <button type="button" class="ed-row ed-action" @click="removeDecor(alvo, decorSel)">Tirar esta decoração</button>
+    <button type="button" class="ed-row ed-action" @click="removeDecor(alvo, decorSel)">{{ t('Tirar esta decoração') }}</button>
   </div>
   <p v-else class="ed-foot">
-    {{ lista.length ? 'Arraste as decorações na folha, em cima. Toque numa para mudar o tamanho e o giro.' : 'Toque numa decoração: ela aparece na folha, em cima, e você a arrasta para o lugar.' }}
+    {{ t(lista.length ? 'Arraste as decorações na folha, em cima. Toque numa para mudar o tamanho e o giro.' : 'Toque numa decoração: ela aparece na folha, em cima, e você a arrasta para o lugar.') }}
   </p>
 </template>

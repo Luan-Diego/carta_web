@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../../i18n/index.js';
 import { computed, nextTick, ref, watch } from 'vue';
 import { useMarkLibrary, usePatternLibrary, useSealLibrary, useStickerLibrary } from '../../composables/useImageLibrary.js';
 import { STICKER_MAX_PX, comprimirAdesivo, lerImagem, recortar } from '../../lib/image.js';
@@ -138,53 +139,52 @@ watch(
   <Teleport to=".ed">
     <Transition name="modal">
       <div v-if="open" class="ed-modal" @click.self="fechar" @keydown.esc.stop="fechar">
-        <div ref="dialog" class="ed-dialog" role="dialog" aria-modal="true" :aria-label="NOME.novo" tabindex="-1">
+        <div ref="dialog" class="ed-dialog" role="dialog" aria-modal="true" :aria-label="t(NOME.novo)" tabindex="-1">
           <header class="ed-dialog-head">
-            <h2>{{ NOME.novo }}</h2>
-            <button type="button" class="ed-done" @click="fechar">Cancelar</button>
+            <h2>{{ t(NOME.novo) }}</h2>
+            <button type="button" class="ed-done" @click="fechar">{{ t('Cancelar') }}</button>
           </header>
 
           <template v-if="!img">
             <label class="ed-drop" @dragover.prevent @drop.prevent="abrirArquivo($event.dataTransfer?.files?.[0])">
               <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" @change="onFile" />
-              <strong>Escolher uma imagem</strong>
-              <small>ou arraste um arquivo até aqui</small>
+              <strong>{{ t('Escolher uma imagem') }}</strong>
+              <small>{{ t('ou arraste um arquivo até aqui') }}</small>
             </label>
             <p class="ed-foot">
-              {{ NOME.o }} é guardado em até {{ STICKER_MAX_PX }}×{{ STICKER_MAX_PX }} pixels, para caber no link. O ideal é um
-              PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.
+              {{ t('{o} é guardado em até {n}×{n} pixels, para caber no link. O ideal é um PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.', { o: t(NOME.o), n: STICKER_MAX_PX }) }}
             </p>
           </template>
 
           <template v-else>
             <p class="ed-info">
-              Sua imagem tem <strong>{{ img.w }}×{{ img.h }} px</strong>. O limite é de
+              {{ t('Sua imagem tem') }} <strong>{{ img.w }}×{{ img.h }} px</strong>{{ t('. O limite é de') }}
               <strong>{{ STICKER_MAX_PX }}×{{ STICKER_MAX_PX }} px</strong>.
-              <template v-if="cabe"> Ela já cabe, sem ajustes.</template>
+              <template v-if="cabe"> {{ t('Ela já cabe, sem ajustes.') }}</template>
             </p>
 
             <div v-if="!cabe" class="ed-seg" role="tablist">
-              <button type="button" role="tab" :aria-selected="modo === 'reduzir'" :class="{ on: modo === 'reduzir' }" @click="modo = 'reduzir'">Reduzir</button>
-              <button type="button" role="tab" :aria-selected="modo === 'cortar'" :class="{ on: modo === 'cortar' }" @click="modo = 'cortar'">Cortar</button>
+              <button type="button" role="tab" :aria-selected="modo === 'reduzir'" :class="{ on: modo === 'reduzir' }" @click="modo = 'reduzir'">{{ t('Reduzir') }}</button>
+              <button type="button" role="tab" :aria-selected="modo === 'cortar'" :class="{ on: modo === 'cortar' }" @click="modo = 'cortar'">{{ t('Cortar') }}</button>
             </div>
             <p v-if="!cabe" class="ed-foot">
-              <template v-if="modo === 'reduzir'">Reduzir mantém a imagem inteira, só menor{{ quadrada ? '' : ' (continua com a mesma proporção)' }}.</template>
-              <template v-else>Cortar usa só um pedaço quadrado: arraste a imagem e use o zoom para escolher a parte.</template>
+              <template v-if="modo === 'reduzir'">{{ t(quadrada ? 'Reduzir mantém a imagem inteira, só menor.' : 'Reduzir mantém a imagem inteira, só menor (continua com a mesma proporção).') }}</template>
+              <template v-else>{{ t('Cortar usa só um pedaço quadrado: arraste a imagem e use o zoom para escolher a parte.') }}</template>
             </p>
 
             <canvas ref="canvas" class="ed-crop" :class="{ mover: modo === 'cortar' }" :width="PREVIA" :height="PREVIA" @pointerdown="down" @pointermove="move" @pointerup="up" @pointercancel="up"></canvas>
 
             <div v-if="modo === 'cortar' && !cabe" class="ed-group">
               <label class="ed-row">
-                <span class="lbl">Zoom</span>
-                <input v-model.number="zoom" class="ed-range" type="range" min="1" max="4" step="0.05" aria-label="Zoom do corte" />
+                <span class="lbl">{{ t('Zoom') }}</span>
+                <input v-model.number="zoom" class="ed-range" type="range" min="1" max="4" step="0.05" :aria-label="t('Zoom do corte')" />
               </label>
             </div>
 
-            <button type="button" class="ed-aqua" :disabled="ocupado" @click="adicionar">{{ ocupado ? 'Preparando…' : `Adicionar a ${NOME.lista}` }}</button>
-            <button type="button" class="ed-glassbtn" @click="reiniciar">Escolher outra imagem</button>
+            <button type="button" class="ed-aqua" :disabled="ocupado" @click="adicionar">{{ ocupado ? t('Preparando…') : t('Adicionar a {lista}', { lista: t(NOME.lista) }) }}</button>
+            <button type="button" class="ed-glassbtn" @click="reiniciar">{{ t('Escolher outra imagem') }}</button>
           </template>
-          <p v-if="erro" class="ed-error" role="alert">{{ erro }}</p>
+          <p v-if="erro" class="ed-error" role="alert">{{ t(erro) }}</p>
         </div>
       </div>
     </Transition>

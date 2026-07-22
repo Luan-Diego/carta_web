@@ -139,24 +139,26 @@ The envelope zooms from 60% to 240%: mouse wheel, two-finger pinch, the + and - 
 
 The Mensagem panel has a Fonte section: 10 app fonts (from `@fontsource` packages, bundled by Vite so every viewer sees the same font without installing anything) and **Minha fonte** to import a .woff2/.woff/.ttf/.otf (max 250 KB). An imported font travels inside the letter data (`fonteArq`), so it is too big for the `#c=` link and needs the short link. Only import fonts you are allowed to share. Run `npm install` after pulling, to fetch the new font packages.
 
-## Aba Papel
+## Paper tab
 
-- **Marca d'água**: texturas do papel (pautado, quadriculado, pontilhado), emojis do app ou imagem própria (`Minhas marcas d'água`, guardadas só neste navegador), com opacidade e tamanho. Fica atrás do texto.
-- **Decorações**: emojis ou "Meus adesivos" colocados numa mesa plana (`PlaceBoard.vue`) e arrastados para qualquer ponto. Posições em % (`decor` / `envDecor` em `visual`), então aparecem no mesmo lugar no papel 3D, no modo leitura e no editor. Limites: 12 por superfície, 4 imagens próprias diferentes (`config/options.js`).
-- **Envelope** (aba Capa): "Minhas estampas" (imagem repetida na frente) e adesivos soltos arrastáveis.
-- Imagens próprias só cabem no link longo se forem pequenas; use o link curto para cartas com várias.
+- **Watermark**: paper textures (ruled, grid, dotted), app emojis or your own image (**My watermarks**, kept only in your browser), with opacity and size sliders. It sits behind the text, so it never hides it.
+- **Decorations**: pick an emoji or one of **My stickers**. When the Paper tab (or the Cover tab, for the envelope) is open, the flat sheet is brought to the front and big, and you drag each decoration straight on it with your finger or mouse (touch-friendly hit areas). Tap a decoration to change its size and rotation. Positions are stored as percentages (`decor` / `envDecor` inside `visual`), so they show in the same place on the 3D paper, in reading mode and in the editor. Limits: 12 per surface and 4 different own images (`config/options.js`).
+- **Envelope** (Cover tab): **My patterns** (your own image tiled on the front of the envelope) and loose draggable stickers.
+- Own images only fit in the long link when they are small; use the short link for letters with several of them.
 
-## Idiomas e "Criar a minha carta"
+## Languages and "Create my own letter"
 
-- Seletor no canto superior direito (`components/TopBar.vue`): Português, English, Español, Italiano, 中文, 日本語, 한국어, हिन्दी. A escolha fica salva no navegador; na primeira visita usa o idioma do navegador.
-- Textos da interface em `src/i18n/<codigo>.js` (mesmas chaves em todos; o português é o reserva). Para acrescentar um idioma, crie o arquivo e registre-o em `src/i18n/index.js`.
-- Na página da carta aparece também o botão **Criar a minha carta**, que leva ao editor (`criar/`).
-- O texto da carta é de quem a escreve e nunca é traduzido. Os painéis do editor ainda estão só em português (a dock e os títulos já são traduzidos).
+- A language switcher sits in the top-right corner (`components/TopBar.vue`): Português, English, Español, Italiano, 中文, 日本語, 한국어, हिन्दी. The choice is saved in the browser; on the first visit the browser language is used.
+- The whole interface is translated, including the editor (dock, tabs, buttons, hints, error messages and the names of backgrounds, seals and palettes). The letter text itself belongs to its author and is never translated.
+- UI texts live in `src/i18n/<code>.js`. The dock and viewer texts use short keys (`t('create')`); in the editor panels the Portuguese phrase itself is the key (`t('Do app')`). For phrases with values use `t('Limite de {n} decorações', { n: 12 })`. A missing translation falls back to the Portuguese text instead of breaking.
+- To add a language, create `src/i18n/<code>.js` with the same keys and register it in `src/i18n/index.js`. To add a new text, write it with `t('...')` and add its translation to every language file.
+- System fonts that cover Chinese, Japanese, Korean and Devanagari are part of the `--font` stack; letters with a custom font use the chosen font.
+- The viewer page also shows a **Create my own letter** button that leads to the editor (`criar/`).
 
-## Salvar como imagem
+## Save as image
 
-No modo leitura, o botão **Salvar** (ao lado do X) gera um PNG do que importa: o fundo (o quadro atual da animação, a imagem ou o degradê) e a folha com texto, textura, marca d'água e decorações. A imagem tem o tamanho da tela de quem está vendo (celular ou computador), com até 2x de nitidez.
+In reading mode, the **Save** button (next to the X) renders a PNG of what matters: the background (the current animation frame, the image or the gradient) and the sheet with its text, texture, watermark and decorations. The image has the size of the viewer's screen (phone or computer), at up to 2x sharpness.
 
-- Mostra uma prévia e o botão **Salvar imagem**: no celular abre o menu do aparelho (Web Share, com "Salvar imagem"/Fotos); no computador baixa `carta.png`.
-- Tudo é desenhado em `<canvas>` (`src/lib/exportImage.js`), sem biblioteca extra. Fundos com imagem de endereço https de outro site só entram se o site permitir (CORS); senão a imagem sai com o degradê.
-- O envelope 3D não entra na imagem: ele não aparece no modo leitura.
+- It shows a preview and a **Save image** button: on a phone it opens the device share sheet (Web Share, with "Save image" / Photos); on a computer it downloads `carta.png`.
+- Everything is drawn on a `<canvas>` (`src/lib/exportImage.js`), with no extra library. Background images loaded from another site's https address are only included if that site allows it (CORS); otherwise the image falls back to the gradient.
+- The 3D envelope is not part of the image, because it is not shown in reading mode.

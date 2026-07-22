@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../../i18n/index.js';
 import { computed, ref } from 'vue';
 import ImagePicker from './ImagePicker.vue';
 import { useLetterDraft } from '../../composables/useLetterDraft.js';
@@ -37,8 +38,8 @@ function excluir(i) {
 <template>
   <div class="ed-panel">
     <div class="ed-seg" role="tablist">
-      <button type="button" role="tab" :aria-selected="aba === 'app'" :class="{ on: aba === 'app' }" @click="aba = 'app'">Do app</button>
-      <button type="button" role="tab" :aria-selected="aba === 'meus'" :class="{ on: aba === 'meus' }" @click="aba = 'meus'">Minhas imagens</button>
+      <button type="button" role="tab" :aria-selected="aba === 'app'" :class="{ on: aba === 'app' }" @click="aba = 'app'">{{ t('Do app') }}</button>
+      <button type="button" role="tab" :aria-selected="aba === 'meus'" :class="{ on: aba === 'meus' }" @click="aba = 'meus'">{{ t('Minhas imagens') }}</button>
     </div>
 
     <template v-if="aba === 'app'">
@@ -47,7 +48,7 @@ function excluir(i) {
           <input type="radio" name="fundo" :value="o.id" :checked="form.fundo === o.id" @change="escolherFundo(o)" />
           <span class="ed-tile-body">
             <span class="pv pv-fundo" :style="gradienteDe(o)"><span class="pv-icone">{{ o.icone }}</span></span>
-            <span>{{ o.nome }}</span>
+            <span>{{ t(o.nome) }}</span>
           </span>
         </label>
       </div>
@@ -55,42 +56,42 @@ function excluir(i) {
       <!-- cor da animação (matiz) para os fundos que aceitam -->
       <div v-if="atual?.cor" class="ed-group">
         <label class="ed-row">
-          <span class="lbl">Cor da animação</span>
+          <span class="lbl">{{ t('Cor da animação') }}</span>
           <input
             class="ed-range ed-hue"
             type="range"
             min="0"
             max="359"
             :value="form.matiz < 0 ? 0 : form.matiz"
-            aria-label="Cor da animação"
+            :aria-label="t('Cor da animação')"
             @input="form.matiz = Number($event.target.value)"
           />
         </label>
-        <button v-if="form.matiz >= 0" type="button" class="ed-row ed-action" @click="form.matiz = -1">Voltar às cores originais</button>
+        <button v-if="form.matiz >= 0" type="button" class="ed-row ed-action" @click="form.matiz = -1">{{ t('Voltar às cores originais') }}</button>
       </div>
 
       <!-- cores do fundo (não afetam a carta) -->
       <div v-if="form.fundo !== 'imagem'" class="ed-group">
         <label class="ed-row">
-          <span class="lbl">Cor do centro</span>
-          <span class="ed-chip" :style="{ background: form.cores.fundo1 }"><input v-model="form.cores.fundo1" type="color" aria-label="Cor do centro do fundo" /></span>
+          <span class="lbl">{{ t('Cor do centro') }}</span>
+          <span class="ed-chip" :style="{ background: form.cores.fundo1 }"><input v-model="form.cores.fundo1" type="color" :aria-label="t('Cor do centro do fundo')" /></span>
         </label>
         <label class="ed-row">
-          <span class="lbl">Cor das bordas</span>
-          <span class="ed-chip" :style="{ background: form.cores.fundo2 }"><input v-model="form.cores.fundo2" type="color" aria-label="Cor das bordas do fundo" /></span>
+          <span class="lbl">{{ t('Cor das bordas') }}</span>
+          <span class="ed-chip" :style="{ background: form.cores.fundo2 }"><input v-model="form.cores.fundo2" type="color" :aria-label="t('Cor das bordas do fundo')" /></span>
         </label>
-        <button v-if="coresMudaram" type="button" class="ed-row ed-action" @click="escolherFundo(atual)">Voltar às cores deste fundo</button>
+        <button v-if="coresMudaram" type="button" class="ed-row ed-action" @click="escolherFundo(atual)">{{ t('Voltar às cores deste fundo') }}</button>
       </div>
 
       <p v-if="form.fundo !== 'imagem' && form.fundo !== 'gradiente'" class="ed-foot">
-        {{ atual.nome }}: passe o mouse ou o dedo por cima e toque para interagir.
+        {{ t('{nome}: passe o mouse ou o dedo por cima e toque para interagir.', { nome: t(atual.nome) }) }}
       </p>
     </template>
 
     <template v-else>
       <ul class="ed-lib">
         <li>
-          <button type="button" class="ed-thumb ed-add" aria-label="Adicionar imagem (do computador ou por endereço)" @click="picker = true">＋</button>
+          <button type="button" class="ed-thumb ed-add" :aria-label="t('Adicionar imagem (do computador ou por endereço)')" @click="picker = true">＋</button>
         </li>
         <li v-for="i in items" :key="i.id">
           <button
@@ -99,14 +100,14 @@ function excluir(i) {
             :class="{ on: emUso(i.src) }"
             :style="{ backgroundImage: `url(${i.src})` }"
             :aria-pressed="emUso(i.src) ? 'true' : 'false'"
-            aria-label="Usar esta imagem como fundo"
+            :aria-label="t('Usar esta imagem como fundo')"
             @click="usarImagem(i.src)"
           ></button>
-          <button type="button" class="ed-thumb-x" aria-label="Excluir imagem" @click="excluir(i)">✕</button>
+          <button type="button" class="ed-thumb-x" :aria-label="t('Excluir imagem')" @click="excluir(i)">✕</button>
         </li>
       </ul>
-      <p v-if="!items.length" class="ed-empty">Você ainda não tem imagens. Toque no ＋ para escolher uma foto do computador ou colar o endereço (URL) de uma imagem; ela fica guardada aqui, separada dos fundos do app.</p>
-      <p v-else class="ed-foot">Toque em uma imagem para usá-la como fundo. O ＋ adiciona outra, do computador ou por endereço.</p>
+      <p v-if="!items.length" class="ed-empty">{{ t('Você ainda não tem imagens. Toque no ＋ para escolher uma foto do computador ou colar o endereço (URL) de uma imagem; ela fica guardada aqui, separada dos fundos do app.') }}</p>
+      <p v-else class="ed-foot">{{ t('Toque em uma imagem para usá-la como fundo. O ＋ adiciona outra, do computador ou por endereço.') }}</p>
     </template>
 
     <ImagePicker :open="picker" :atual="form.imagem" @close="picker = false" @select="usarImagem" />

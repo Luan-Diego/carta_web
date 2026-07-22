@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '../../i18n/index.js';
 import { computed } from 'vue';
 import { useLetterDraft } from '../../composables/useLetterDraft.js';
 import { PALETAS } from '../../config/options.js';
@@ -22,7 +23,7 @@ const desfazer = () => CAMPOS_COR.forEach(([k], i) => (form.cores[k] = antes[i])
 
 <template>
   <div class="ed-panel">
-    <div class="ed-presets" role="group" aria-label="Paletas prontas da carta">
+    <div class="ed-presets" role="group" :aria-label="t('Paletas prontas da carta')">
       <button
         v-for="p in PALETAS"
         :key="p.id"
@@ -35,23 +36,23 @@ const desfazer = () => CAMPOS_COR.forEach(([k], i) => (form.cores[k] = antes[i])
         <span class="ed-preset-pv" :style="{ background: p.cores.papel }">
           <i :style="{ background: p.cores.envelope }"><b :style="{ background: p.cores.lacre }"></b></i>
         </span>
-        <span>{{ p.nome }}</span>
+        <span>{{ t(p.nome) }}</span>
       </button>
     </div>
 
     <div class="ed-swatches ed-swatches-4">
       <label v-for="[chave, nome] in CAMPOS_COR" :key="chave" class="ed-swatch">
         <span class="ed-dot" :style="{ background: form.cores[chave] }">
-          <input v-model="form.cores[chave]" type="color" :aria-label="nome" />
+          <input v-model="form.cores[chave]" type="color" :aria-label="t(nome)" />
         </span>
-        <span>{{ nome }}</span>
+        <span>{{ t(nome) }}</span>
       </label>
     </div>
 
     <div class="ed-group">
-      <button type="button" class="ed-row ed-action" :disabled="!mudou" @click="desfazer">Desfazer alterações</button>
-      <button type="button" class="ed-row ed-action" :disabled="noPadrao" @click="restaurarCarta">Voltar ao padrão</button>
+      <button type="button" class="ed-row ed-action" :disabled="!mudou" @click="desfazer">{{ t('Desfazer alterações') }}</button>
+      <button type="button" class="ed-row ed-action" :disabled="noPadrao" @click="restaurarCarta">{{ t('Voltar ao padrão') }}</button>
     </div>
-    <p class="ed-foot">Estas cores mudam só a carta e o envelope. O fundo é escolhido na aba Fundo.</p>
+    <p class="ed-foot">{{ t('Estas cores mudam só a carta e o envelope. O fundo é escolhido na aba Fundo.') }}</p>
   </div>
 </template>
