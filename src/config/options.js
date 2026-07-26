@@ -18,6 +18,15 @@ export const FUNDOS = [
   { id: 'petalas', nome: 'Pétalas', icone: '🌸', cores: ['#fff1f3', '#f8d5dc'], cor: true },
   { id: 'coracoes', nome: 'Corações', icone: '💕', cores: ['#fff0f3', '#ffd0dc'], cor: true },
   { id: 'estrelas', nome: 'Chuva de estrelas', icone: '🌟', cores: ['#1d2540', '#0c1020'], cor: true },
+  { id: 'paris', nome: 'Paris', icone: '🗼', cores: ['#2a2a6a', '#0b1030'], cor: true },
+  { id: 'japao', nome: 'Japão', icone: '⛩️', cores: ['#4a3a7c', '#14143e'], cor: true },
+  { id: 'gramado', nome: 'Gramado no Natal', icone: '🎄', cores: ['#1c3868', '#08122e'], cor: true },
+  { id: 'passaros', nome: 'Pássaros ao pôr do sol', icone: '🕊️', cores: ['#7a3a7a', '#2a1c52'], cor: true },
+  { id: 'cidade', nome: 'Cidade à noite', icone: '🌃', cores: ['#0c1838', '#03061a'], cor: true },
+  { id: 'rio', nome: 'Rio de Janeiro', icone: '🏖️', cores: ['#7a5aa0', '#243a78'], cor: true },
+  { id: 'vale', nome: 'Vila japonesa', icone: '🏮', cores: ['#5a9ad8', '#c9885a'], cor: true },
+  { id: 'inverno', nome: 'Vila de inverno', icone: '🏔️', cores: ['#6a78b8', '#e6d6d4'], cor: true },
+  { id: 'recife', nome: 'Recife encantado', icone: '🐚', cores: ['#1ea8cc', '#124e8c'], cor: true },
   { id: 'imagem', nome: 'Minha imagem', icone: '🖼️', cores: null },
 ];
 

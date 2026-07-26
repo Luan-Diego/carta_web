@@ -256,5 +256,14 @@ export default {
   "{nome}: passe o mouse ou o dedo por cima e toque para interagir.": "{nome}: pasa el mouse o el dedo por encima y toca para interactuar.",
   "{n} caracteres. Quem abrir só vê a carta e não pode alterá-la. O rascunho fica salvo neste navegador.": "{n} caracteres. Quien la abra solo ve la carta y no puede modificarla. El borrador queda guardado en este navegador.",
   "{o} é guardado em até {n}×{n} pixels, para caber no link. O ideal é um PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.": "{o} se guarda en hasta {n}×{n} píxeles, para caber en el enlace. Lo ideal es un PNG cuadrado con fondo transparente. Las imágenes más grandes se pueden reducir o recortar aquí mismo.",
-  "Água cristalina": "Agua cristalina"
+  "Água cristalina": "Agua cristalina",
+  "Paris": "París",
+  "Japão": "Japón",
+  "Gramado no Natal": "Gramado en Navidad",
+  "Pássaros ao pôr do sol": "Pájaros al atardecer",
+  "Cidade à noite": "Ciudad de noche",
+  "Rio de Janeiro": "Río de Janeiro",
+  "Vila japonesa": "Aldea japonesa",
+  "Vila de inverno": "Aldea de invierno",
+  "Recife encantado": "Arrecife encantado"
 };

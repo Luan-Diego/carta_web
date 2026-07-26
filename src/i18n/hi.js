@@ -256,5 +256,14 @@ export default {
   "{nome}: passe o mouse ou o dedo por cima e toque para interagir.": "{nome}: ऊपर माउस या उँगली ले जाएँ और इंटरैक्ट करने के लिए टैप करें।",
   "{n} caracteres. Quem abrir só vê a carta e não pode alterá-la. O rascunho fica salvo neste navegador.": "{n} अक्षर। खोलने वाला सिर्फ़ पत्र देख सकता है, बदल नहीं सकता। ड्राफ़्ट इसी ब्राउज़र में सेव रहता है।",
   "{o} é guardado em até {n}×{n} pixels, para caber no link. O ideal é um PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.": "{o} को {n}×{n} पिक्सेल तक सेव किया जाता है, ताकि लिंक में समा सके। सबसे अच्छा है चौकोर PNG, पारदर्शी बैकग्राउंड के साथ। बड़ी तस्वीरें यहीं छोटी या काटी जा सकती हैं।",
-  "Água cristalina": "साफ़ पानी"
+  "Água cristalina": "साफ़ पानी",
+  "Paris": "पेरिस",
+  "Japão": "जापान",
+  "Gramado no Natal": "क्रिसमस पर ग्रामाडो",
+  "Pássaros ao pôr do sol": "सूर्यास्त के पक्षी",
+  "Cidade à noite": "रात का शहर",
+  "Rio de Janeiro": "रियो दे जनेरो",
+  "Vila japonesa": "जापानी गाँव",
+  "Vila de inverno": "सर्दियों का गाँव",
+  "Recife encantado": "जादुई प्रवाल भित्ति"
 };

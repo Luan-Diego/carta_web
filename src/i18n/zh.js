@@ -256,5 +256,14 @@ export default {
   "{nome}: passe o mouse ou o dedo por cima e toque para interagir.": "{nome}：将鼠标或手指移到上面并点按即可互动。",
   "{n} caracteres. Quem abrir só vê a carta e não pode alterá-la. O rascunho fica salvo neste navegador.": "{n} 个字符。打开的人只能查看信件，无法修改。草稿保存在此浏览器中。",
   "{o} é guardado em até {n}×{n} pixels, para caber no link. O ideal é um PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.": "{o}最大以 {n}×{n} 像素保存，以便放入链接。最好是透明背景的正方形 PNG。较大的图片可以直接在这里缩小或裁剪。",
-  "Água cristalina": "清澈水面"
+  "Água cristalina": "清澈水面",
+  "Paris": "巴黎",
+  "Japão": "日本",
+  "Gramado no Natal": "圣诞的格拉马多",
+  "Pássaros ao pôr do sol": "日落时的飞鸟",
+  "Cidade à noite": "夜晚的城市",
+  "Rio de Janeiro": "里约热内卢",
+  "Vila japonesa": "日式村庄",
+  "Vila de inverno": "冬日村庄",
+  "Recife encantado": "魔法珊瑚礁"
 };

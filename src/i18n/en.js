@@ -256,5 +256,14 @@ export default {
   "{nome}: passe o mouse ou o dedo por cima e toque para interagir.": "{nome}: hover or slide your finger over it and tap to interact.",
   "{n} caracteres. Quem abrir só vê a carta e não pode alterá-la. O rascunho fica salvo neste navegador.": "{n} characters. Whoever opens it can only view the letter, not change it. The draft is saved in this browser.",
   "{o} é guardado em até {n}×{n} pixels, para caber no link. O ideal é um PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.": "{o} is stored at up to {n}×{n} pixels, to fit in the link. Ideally use a square PNG with a transparent background. Larger images can be shrunk or cropped right here.",
-  "Água cristalina": "Crystal-clear water"
+  "Água cristalina": "Crystal-clear water",
+  "Paris": "Paris",
+  "Japão": "Japan",
+  "Gramado no Natal": "Gramado at Christmas",
+  "Pássaros ao pôr do sol": "Birds at sunset",
+  "Cidade à noite": "City at night",
+  "Rio de Janeiro": "Rio de Janeiro",
+  "Vila japonesa": "Japanese village",
+  "Vila de inverno": "Winter village",
+  "Recife encantado": "Enchanted reef"
 };

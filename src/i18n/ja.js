@@ -256,5 +256,14 @@ export default {
   "{nome}: passe o mouse ou o dedo por cima e toque para interagir.": "{nome}：マウスや指を重ねてタップすると操作できます。",
   "{n} caracteres. Quem abrir só vê a carta e não pode alterá-la. O rascunho fica salvo neste navegador.": "{n}文字。開いた人は手紙を見るだけで、編集はできません。下書きはこのブラウザに保存されます。",
   "{o} é guardado em até {n}×{n} pixels, para caber no link. O ideal é um PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.": "{o}はリンクに収まるよう、最大{n}×{n}ピクセルで保存されます。背景透過の正方形PNGが最適です。大きい画像はここで縮小または切り抜きできます。",
-  "Água cristalina": "透きとおる水"
+  "Água cristalina": "透きとおる水",
+  "Paris": "パリ",
+  "Japão": "日本",
+  "Gramado no Natal": "クリスマスのグラマド",
+  "Pássaros ao pôr do sol": "夕暮れの鳥たち",
+  "Cidade à noite": "夜の街",
+  "Rio de Janeiro": "リオデジャネイロ",
+  "Vila japonesa": "日本の村",
+  "Vila de inverno": "冬の村",
+  "Recife encantado": "魔法のサンゴ礁"
 };

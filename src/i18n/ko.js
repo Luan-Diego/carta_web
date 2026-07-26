@@ -256,5 +256,14 @@ export default {
   "{nome}: passe o mouse ou o dedo por cima e toque para interagir.": "{nome}: 마우스나 손가락을 올리고 눌러서 상호작용하세요.",
   "{n} caracteres. Quem abrir só vê a carta e não pode alterá-la. O rascunho fica salvo neste navegador.": "{n}자. 열어 보는 사람은 편지만 볼 수 있으며 수정할 수 없습니다. 초안은 이 브라우저에 저장됩니다.",
   "{o} é guardado em até {n}×{n} pixels, para caber no link. O ideal é um PNG quadrado com fundo transparente. Imagens maiores podem ser reduzidas ou cortadas aqui mesmo.": "{o}: 링크에 담기 위해 최대 {n}×{n}픽셀로 저장됩니다. 배경이 투명한 정사각형 PNG를 권장합니다. 더 큰 이미지는 여기서 바로 축소하거나 자를 수 있습니다.",
-  "Água cristalina": "맑은 물"
+  "Água cristalina": "맑은 물",
+  "Paris": "파리",
+  "Japão": "일본",
+  "Gramado no Natal": "크리스마스의 그라마두",
+  "Pássaros ao pôr do sol": "노을 속 새들",
+  "Cidade à noite": "밤의 도시",
+  "Rio de Janeiro": "리우데자네이루",
+  "Vila japonesa": "일본 마을",
+  "Vila de inverno": "겨울 마을",
+  "Recife encantado": "마법의 산호초"
 };

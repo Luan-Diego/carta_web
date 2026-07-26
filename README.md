@@ -112,6 +112,26 @@ Feel free to explore the project, customize it, and make it your own.
 - The Adesivo panel has two tabs: **Do app** (about 636 emojis in categories, including 🍥) and **Meus adesivos** (your own images, kept only in your browser). Stickers are stored at up to 128x128 px; a larger image can be reduced (whole image) or cropped (pick the part) before it is added.
 - Images travel inside the link, so very large ones make long links; a database would remove that limit.
 
+## Landscape backgrounds
+
+Nine illustrated scenes, all canvas 2D (no library), with static layers pre-rendered once and only light, water, birds and particles animated each frame (about 2 ms per frame in a software-rendered test). All of them accept the hue slider and follow the pointer with a soft parallax. Shared helpers (baked layers, noise, mountain ridges, painted clouds, water glitter) are in `lib/scenes/paisagem.js`.
+
+| Scene | What it shows | Interaction |
+| --- | --- | --- |
+| `paris` | Eiffel Tower of lit lattice at dusk, rooftops, the Seine with its reflection, a river boat, rotating beacon | Tower sparkles on its own and when tapped; pointer ripples the water |
+| `japao` | Mount Fuji, a five-story pagoda, a torii standing in the water, stone lanterns, maple branches, petals, fireflies | Tap releases paper lanterns; petals dodge the pointer |
+| `gramado` | Serra with pines, half-timbered chalets with glowing windows and chimney smoke, stone church, a huge Christmas tree, light strings, snow | Pointer is the wind; tap makes all lights flash |
+| `passaros` | Sunset over a lake, painted clouds, a flock that flies together plus a distant flock | Birds flee the pointer; tap scatters the flock, which regroups |
+| `cidade` | Night skyline in three layers with thousands of windows, neon signs, antenna beacons, traffic, a plane | Pointer lights nearby windows; tap launches fireworks |
+| `rio` | Christ the Redeemer on Corcovado, Sugarloaf with its cable car, the bay with sailboats, palms and shore lights | Tap makes the statue glow |
+| `vale` | Original Japanese-style village at dusk: multi-storey timber buildings with curved eaves and glowing shoji windows, a pagoda, a canal with a red arched bridge and a boat, ramen / gyoza / dango / tea stalls with noren curtains and Japanese signs, paper lanterns, cherry trees, a cliff with a waterfall | Pointer blows the petals and lights nearby lanterns; tap makes a gust of petals and brightens every lantern |
+| `inverno` | Original winter town at sunrise: green mountains with snowy peaks, sun rays, detailed chalets and shops with dormers, shutters and glowing windows, chimney smoke, a clock tower, street lamps, snowy pines, a blank wooden sign with an envelope emblem | Pointer is the wind for the snow; tap throws a burst of snowflakes |
+| `recife` | Original undersea town: turquoise water with light rays, coral tower houses, a spiral-shell house, a scallop-shell house, glass domes joined by a tube, a distant shipwreck, glowing street lamps, anemones, starfish, seaweed, jellyfish, fish schools | Fish flee the pointer; tap releases bubbles and makes the windows glow |
+
+The last three are original designs made as a mood tribute to animated worlds; they deliberately do not reproduce any existing show, character, logo or landmark.
+
+To add a scene: create `lib/scenes/<id>.js` following the contract at the top of `lib/scenes/index.js`, register it there, and add an entry to `FUNDOS` in `config/options.js` (and its name to `src/i18n/*.js`).
+
 ## Short link (Vercel + Redis)
 
 The normal link carries the whole letter after the `#` and works with no server. The **Link curto** button in the editor instead saves the letter in Redis (Upstash) and gives `site/#i=<id>`.
