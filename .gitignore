@@ -1,5 +1,11 @@
 node_modules
 dist
+# segredos: nunca vão para o GitHub (o modelo .env.example é a exceção)
 .env
-.env.local
+.env.*
+!.env.example
+*.pem
+*.key
 .vercel
+.DS_Store
+*.log

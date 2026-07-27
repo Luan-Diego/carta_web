@@ -141,7 +141,7 @@ The normal link carries the whole letter after the `#` and works with no server.
 3. In Vercel > Settings > Environment Variables set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (the `KV_REST_API_*` names from the Marketplace also work), see `.env.example`.
 4. Locally, `npm run dev` only serves the front end; use `vercel dev` to test the API.
 
-Letters are **temporary**: the creator picks 1, 7 (suggested) or 30 days and Redis deletes the letter by itself when it expires (`EX`). Limits: 5 own images per letter (422 otherwise) and 800 KB of JSON. The letter is re-validated by the viewer when opened. Anyone with the id can read it, so it is not private.
+Letters are **temporary**: the creator picks 1, 7 (suggested) or 30 days and Redis deletes the letter by itself when it expires (`EX`). Limits: 5 own images per letter (422 otherwise), 800 KB of JSON, and per-IP rate limits (8 letters/hour, 30/day, 120 reads/minute; 429 otherwise). The server validates and cleans the letter before saving it, and the viewer validates it again when opened. Ids have 12 characters (72 random bits). Anyone with the id can read it, so it is not private.
 
 ## Water
 
@@ -182,3 +182,7 @@ In reading mode, the **Save** button (next to the X) renders a PNG of what matte
 - It shows a preview and a **Save image** button: on a phone it opens the device share sheet (Web Share, with "Save image" / Photos); on a computer it downloads `carta.png`.
 - Everything is drawn on a `<canvas>` (`src/lib/exportImage.js`), with no extra library. Background images loaded from another site's https address are only included if that site allows it (CORS); otherwise the image falls back to the gradient.
 - The 3D envelope is not part of the image, because it is not shown in reading mode.
+
+## Security
+
+See [SECURITY.md](SECURITY.md). In short: user text is always escaped, every letter is validated (in the browser and again on the server), the API is rate limited and same-origin only, `vercel.json` sets a strict Content-Security-Policy and other headers, secrets live only in Vercel environment variables, and Dependabot plus a CI job (`npm audit` + build) watch the dependencies. Before going public, run `npm audit`, commit `package-lock.json`, and never commit a `.env` file.

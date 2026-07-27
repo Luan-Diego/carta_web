@@ -6,7 +6,7 @@ export const ID_RE = /^[A-Za-z0-9_-]{6,20}$/;
 export async function salvarCarta(config, dias = 7) {
   const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ config, dias }) });
   if (!r.ok) {
-    const msg = { 413: 'A carta é grande demais para salvar.', 422: 'Use no máximo 5 imagens próprias na carta para gerar o link curto.' }[r.status];
+    const msg = { 413: 'A carta é grande demais para salvar.', 422: 'Use no máximo 5 imagens próprias na carta para gerar o link curto.', 429: 'Muitos links criados em pouco tempo. Tente de novo mais tarde.' }[r.status];
     throw new Error(msg || 'Não foi possível salvar a carta agora.');
   }
   return (await r.json()).id;
