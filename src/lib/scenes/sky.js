@@ -1,8 +1,8 @@
-import { TAU, clamp, rand } from './util.js';
+import { TAU, clamp, hslToRgb, rand, rgbStr, semMatiz } from './util.js';
 
 // Céu estrelado: três camadas de estrelas que cintilam e se movem com o ponteiro
 // (paralaxe), uma faixa da Via Láctea e estrelas cadentes. Toque: lança uma estrela cadente.
-export default function sky(w, h, dark) {
+export default function sky(w, h, dark, hue) {
   let t = 0, par = 0, parY = 0, timer = 2, stars = [];
   const shots = [];
   const LAYERS = [
@@ -40,7 +40,7 @@ export default function sky(w, h, dark) {
       while (shots.length && shots[0].life <= 0) shots.shift();
     },
     draw(ctx) {
-      const rgb = dark ? '255,255,255' : '50,70,140';
+      const rgb = !semMatiz(hue) ? rgbStr(hslToRgb(hue, dark ? 0.75 : 0.6, dark ? 0.88 : 0.4)) : dark ? '255,255,255' : '50,70,140';
       ctx.save();
       ctx.translate(w / 2, h / 2);
       ctx.rotate(-0.5);

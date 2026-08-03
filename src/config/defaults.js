@@ -19,6 +19,7 @@ export const DEFAULTS = {
   // opções válidas em config/options.js
   visual: {
     fundo: 'gradiente', // ver FUNDOS em options.js
+    matiz: -1, // cor da animação do fundo (0-359); -1 = cores originais da cena
     imagem: '', // fundo = 'imagem': endereço https ou data URL da foto
     lacre: 'coracao', // ver LACRES em options.js
     inicial: '', // letra(s) do lacre, quando lacre = 'inicial'

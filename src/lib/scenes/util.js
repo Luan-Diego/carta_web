@@ -61,3 +61,40 @@ export function starPath(ctx, r) {
   }
   ctx.closePath();
 }
+
+/* ---- cor da animação: o usuário escolhe um matiz (0-359) e a paleta inteira
+   da cena gira até ele, mantendo a variação entre as cores ---- */
+export const semMatiz = (hue) => hue == null || hue < 0;
+export const tintDelta = (hue, ref) => (semMatiz(hue) ? 0 : hue - ref);
+
+export function hexToRgb(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+export function rotRgb([r, g, b], delta) {
+  if (!delta) return [r, g, b];
+  r /= 255; g /= 255; b /= 255;
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn;
+  let h = 0, s = 0;
+  if (d) {
+    s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+    h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h *= 60;
+  }
+  return hslToRgb(h + delta, s, l);
+}
+
+export function hslToRgb(h, s, l) {
+  h = (((h % 360) + 360) % 360) / 360;
+  const f = (n) => {
+    const k = (n + h * 12) % 12;
+    const a = s * Math.min(l, 1 - l);
+    return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))));
+  };
+  return [f(0), f(8), f(4)];
+}
+
+export const rgbStr = (c) => `${c[0]},${c[1]},${c[2]}`;
+export const rotStr = (c, d) => rgbStr(rotRgb(c, d)); // [r,g,b] → "r,g,b" girado
+export const rotHex = (hex, d) => `rgb(${rotStr(hexToRgb(hex), d)})`; // '#rrggbb' → css girado

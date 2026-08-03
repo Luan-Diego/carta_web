@@ -283,3 +283,39 @@
 .ed-strip .ed-sticker span{ height: 46px; font-size: 22px; }
 
 .ed-tiles-sm{ grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); }
+
+/* cor da animação: faixa de matiz */
+.ed-hue::-webkit-slider-runnable-track{ height: 8px; border-radius: 4px; background: linear-gradient(90deg, #f33, #fb3, #cf3, #3f6, #3ee, #36f, #b3f, #f3b, #f33); }
+.ed-hue::-moz-range-track{ height: 8px; border-radius: 4px; background: linear-gradient(90deg, #f33, #fb3, #cf3, #3f6, #3ee, #36f, #b3f, #f3b, #f33); }
+.ed-hue::-webkit-slider-thumb{ margin-top: -9px; }
+
+/* abas de categoria (ícones) */
+.ed-cat{
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: rgba(255,255,255,.55);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.ed-cat.on{ border-color: var(--aqua); background: rgba(255,255,255,.95); }
+.ed-cat:focus-visible{ outline: 2px solid var(--aqua); outline-offset: 2px; }
+.ed-strip .ed-cat{ width: 44px; }
+
+/* galeria de adesivos próprios */
+.ed-thumb-sticker{ display: grid; place-items: center; background-image: conic-gradient(rgba(23,50,63,.08) 25%, transparent 0 50%, rgba(23,50,63,.08) 0 75%, transparent 0); background-size: 12px 12px; }
+.ed-thumb-sticker img{ width: 70%; height: 70%; object-fit: contain; }
+.ed-add{ display: grid; place-items: center; color: var(--aqua); font-size: 28px; border: 2px dashed rgba(26,163,240,.6); background: rgba(255,255,255,.6); }
+
+/* texto de informação */
+.ed-info{ margin: 0 4px; color: var(--ink-2); font-size: 13.5px; line-height: 1.45; }
+.ed-info strong{ color: var(--ink); }
+
+/* prévia do recorte */
+.ed-crop{ align-self: center; width: 240px; height: 240px; max-width: 100%; border-radius: 18px; border: 1px solid rgba(255,255,255,.9); touch-action: none; background-image: conic-gradient(rgba(23,50,63,.1) 25%, transparent 0 50%, rgba(23,50,63,.1) 0 75%, transparent 0); background-size: 16px 16px; }
+.ed-crop.mover{ cursor: grab; }

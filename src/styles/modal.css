@@ -29,7 +29,7 @@
 .ed-dialog:focus{ outline: none; }
 .ed-dialog-head{ position: relative; display: flex; justify-content: center; align-items: center; min-height: 28px; }
 .ed-dialog-head h2{ margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
-.ed-dialog-head .ed-done{ position: absolute; right: -4px; top: 50%; transform: translateY(-50%); }
+.ed-dialog-head .ed-done{ position: absolute; right: -4px; font-size: 14px; top: 50%; transform: translateY(-50%); }
 
 /* controle segmentado */
 .ed-seg{ display: flex; padding: 2px; border-radius: 12px; background: rgba(23, 50, 63, .1); }

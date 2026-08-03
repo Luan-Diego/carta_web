@@ -38,6 +38,7 @@ function sanitizeVisual(v) {
   const tam = Number.isFinite(v.adesivoTam) ? v.adesivoTam : STICKER_SIZE.padrao;
   return {
     fundo: FUNDOS.some((o) => o.id === fundoId) ? fundoId : DEFAULTS.visual.fundo,
+    matiz: Number.isFinite(v.matiz) && v.matiz >= 0 && v.matiz < 360 ? Math.round(v.matiz) : -1,
     imagem: safeImage(v.imagem),
     lacre: lacre === 'inicial' && !inicial ? DEFAULTS.visual.lacre : lacre, // inicial sem letra: coração
     inicial,

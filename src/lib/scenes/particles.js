@@ -1,9 +1,11 @@
-import { TAU, blend, density, glow, near, rand } from './util.js';
+import { TAU, blend, density, glow, near, rand, rotStr, tintDelta } from './util.js';
 
 // Partículas flutuantes: orbes luminosos que sobem devagar, fogem do dedo/mouse
 // e se ligam por linhas finas quando ficam perto. Toque: explosão de partículas.
-export default function particles(w, h, dark) {
-  const rgbs = dark ? ['190,225,255', '255,210,255', '200,255,240'] : ['60,160,225', '110,140,235', '50,190,190'];
+export default function particles(w, h, dark, hue) {
+  const d = tintDelta(hue, 200);
+  const base = dark ? [[190, 225, 255], [255, 210, 255], [200, 255, 240]] : [[60, 160, 225], [110, 140, 235], [50, 190, 190]];
+  const rgbs = base.map((c) => rotStr(c, d));
   const total = () => Math.round(100 * density(w, h));
   let list = [];
   let t = 0;

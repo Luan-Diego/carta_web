@@ -10,12 +10,13 @@ const props = defineProps({
   tipo: { type: String, default: 'gradiente' }, // id de FUNDOS (options.js)
   imagem: { type: String, default: '' }, // endereço https ou data URL
   dark: { type: Boolean, default: false }, // fundo escuro? (escolhe cores das luzes)
+  matiz: { type: Number, default: -1 }, // cor da animação (0-359); -1 = original
 });
 
 const canvas = ref(null);
 const animado = computed(() => hasScene(props.tipo));
 const comImagem = computed(() => props.tipo === 'imagem' && props.imagem);
-useScene(canvas, toRef(props, 'tipo'), toRef(props, 'dark'));
+useScene(canvas, toRef(props, 'tipo'), toRef(props, 'dark'), toRef(props, 'matiz'));
 </script>
 
 <template>

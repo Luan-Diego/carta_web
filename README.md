@@ -52,7 +52,7 @@ npm run preview    # serve dist/ locally to check the build
 
 - **Default letter** (shown when the site is opened without a link): edit `src/config/carta.config.js` (title, greeting, paragraphs, signature, colors, sound).
 - **Personalized links**: open `/criar/` (a glass, iOS-style editor): the letter sits in an "aquarium" with a live preview and a dock below, one option per customization (Message, Colors, Background, Seal, Envelope, Link). Tapping an option opens a sheet with only its controls; copy the link in the last one.
-- Look & feel lives in the `visual` block (`fundo`, `imagem`, `lacre`, `inicial`, `para`, `adesivo`, `adesivoImg`, `adesivoTam`). The accepted values are listed in `src/config/options.js`. To add a background, write a scene in `src/lib/scenes/` (`create(w, h, dark)` returning `{ resize, step, draw, tap }`), register it in `scenes/index.js` and add it to `FUNDOS`.
+- Look & feel lives in the `visual` block (`fundo`, `imagem`, `lacre`, `inicial`, `para`, `adesivo`, `adesivoImg`, `adesivoTam`, `matiz`, `estampa`, `postal`). The accepted values are listed in `src/config/options.js`. To add a background, write a scene in `src/lib/scenes/` (`create(w, h, dark, hue)` returning `{ resize, step, draw, tap }`), register it in `scenes/index.js` and add it to `FUNDOS`.
 - Your own images travel inside the link: stickers are shrunk to ~100px WebP and backgrounds to a small JPEG so they fit (link limit ~22,000 characters; some chat apps cut very long links). For a sharp background, host the image and paste its `https://` address instead.
 - Invalid or missing fields fall back to the defaults in `src/config/defaults.js`. Values outside the lists in `options.js` are ignored.
 - About 400 characters fit on the paper; the full text (up to 8 paragraphs of 800 characters) appears in reading mode.
@@ -103,3 +103,10 @@ Feel free to explore the project, customize it, and make it your own.
 <p align="center">
   Made with a fury of the <b>Hawk</b>.
 </p>
+
+## Backgrounds, colors and stickers
+
+- Animated backgrounds are canvas 2D scenes: realistic water (`waves.js`, reacts to the pointer), volumetric fire with embers (`fire.js`), a detailed garden with butterflies (`garden.js`) and faint cherry trees behind the petals (`sakura.js`).
+- Scenes marked `cor: true` in `FUNDOS` accept a hue (`visual.matiz`, 0-359; -1 = original colors) chosen with the rainbow slider in the Fundo panel.
+- The Adesivo panel has two tabs: **Do app** (about 636 emojis in categories, including 🍥) and **Meus adesivos** (your own images, kept only in your browser). Stickers are stored at up to 128x128 px; a larger image can be reduced (whole image) or cropped (pick the part) before it is added.
+- Images travel inside the link, so very large ones make long links; a database would remove that limit.

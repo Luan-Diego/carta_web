@@ -45,6 +45,23 @@ function usarImagem(src) {
       </template>
     </div>
 
+    <!-- cor da animação (matiz) para os fundos que aceitam -->
+    <div v-if="atual?.cor" class="ed-group">
+      <label class="ed-row">
+        <span class="lbl">Cor da animação</span>
+        <input
+          class="ed-range ed-hue"
+          type="range"
+          min="0"
+          max="359"
+          :value="form.matiz < 0 ? 0 : form.matiz"
+          aria-label="Cor da animação"
+          @input="form.matiz = Number($event.target.value)"
+        />
+      </label>
+      <button v-if="form.matiz >= 0" type="button" class="ed-row ed-action" @click="form.matiz = -1">Voltar às cores originais</button>
+    </div>
+
     <!-- cores do fundo (não afetam a carta) -->
     <div v-if="form.fundo !== 'imagem'" class="ed-group">
       <label class="ed-row">

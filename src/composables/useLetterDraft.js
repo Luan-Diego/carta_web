@@ -32,6 +32,7 @@ const toConfig = (f) => ({
   som: f.som,
   visual: {
     fundo: f.fundo,
+    matiz: f.matiz,
     imagem: f.imagem,
     lacre: f.lacre,
     inicial: f.inicial,
@@ -140,6 +141,7 @@ export function createLetterDraft() {
   // escolher um fundo ajusta só as cores do fundo (a carta não muda)
   const escolherFundo = (o) => {
     form.fundo = o.id;
+    form.matiz = -1; // cada fundo começa com as cores originais da animação
     if (o.cores) [form.cores.fundo1, form.cores.fundo2] = o.cores;
   };
 

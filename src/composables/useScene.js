@@ -6,7 +6,7 @@ import { createScene, hasScene } from '../lib/scenes/index.js';
 const MAX_DPR = 2;
 const IGNORE = 'button, a, input, textarea, select, [role="dialog"]';
 
-export function useScene(canvas, tipo, dark) {
+export function useScene(canvas, tipo, dark, matiz) {
   const ptr = { x: -9999, y: -9999, vx: 0, vy: 0 };
   let ctx = null, scene = null, host = null, ro = null;
   let raf = 0, last = 0, w = 0, h = 0, dpr = 1, token = 0, px = 0, py = 0, pt = 0;
@@ -65,7 +65,7 @@ export function useScene(canvas, tipo, dark) {
     if (!canvas.value || !hasScene(tipo.value)) return;
     size();
     try {
-      const s = await createScene(tipo.value, w || 1, h || 1, dark.value);
+      const s = await createScene(tipo.value, w || 1, h || 1, dark.value, matiz ? matiz.value : -1);
       if (my !== token) return;
       scene = s;
       size(); // o canvas pode ter ficado visível só agora: mede de novo
@@ -120,7 +120,7 @@ export function useScene(canvas, tipo, dark) {
     load();
   });
 
-  watch([tipo, dark], load, { flush: 'post' }); // depois do DOM: o canvas já está visível
+  watch([tipo, dark, matiz || dark], load, { flush: 'post' }); // depois do DOM: o canvas já está visível
 
   onBeforeUnmount(() => {
     token++;

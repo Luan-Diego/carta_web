@@ -1,13 +1,14 @@
-import { TAU, blend, clamp, rand } from './util.js';
+import { TAU, blend, clamp, rand, rotStr, tintDelta } from './util.js';
 
 // Aurora boreal: três cortinas de luz ondulantes. O ponteiro desloca as ondas;
 // um toque faz a aurora brilhar mais por um instante.
-export default function aurora(w, h, dark) {
+export default function aurora(w, h, dark, hue) {
+  const d = tintDelta(hue, 150);
   let t = 0, glowK = 0, par = 0, stars = [];
   const bands = [
-    { c: '60,255,170', k: 0, a: 0.6 },
-    { c: '70,190,255', k: 1, a: 0.45 },
-    { c: '180,110,255', k: 2, a: 0.4 },
+    { c: rotStr([60, 255, 170], d), k: 0, a: 0.6 },
+    { c: rotStr([70, 190, 255], d), k: 1, a: 0.45 },
+    { c: rotStr([180, 110, 255], d), k: 2, a: 0.4 },
   ];
   const build = () => {
     const n = Math.round(clamp((w * h) / 12000, 40, 120));

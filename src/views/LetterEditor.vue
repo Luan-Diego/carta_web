@@ -4,6 +4,7 @@ import LetterPlayer from '../components/LetterPlayer.vue';
 import GlassDock from '../components/editor/GlassDock.vue';
 import GlassSheet from '../components/editor/GlassSheet.vue';
 import PanelCores from '../components/editor/PanelCores.vue';
+import PanelAdesivo from '../components/editor/PanelAdesivo.vue';
 import PanelEnvelope from '../components/editor/PanelEnvelope.vue';
 import PanelFundo from '../components/editor/PanelFundo.vue';
 import PanelLacre from '../components/editor/PanelLacre.vue';
@@ -24,6 +25,7 @@ const SECOES = [
   { id: 'fundo', nome: 'Fundo', painel: PanelFundo },
   { id: 'lacre', nome: 'Lacre', painel: PanelLacre },
   { id: 'envelope', nome: 'Envelope', painel: PanelEnvelope },
+  { id: 'adesivo', nome: 'Adesivo', painel: PanelAdesivo },
   { id: 'link', nome: 'Link', painel: PanelLink },
 ];
 

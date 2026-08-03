@@ -1,9 +1,10 @@
-import { TAU, clamp, rand } from './util.js';
+import { TAU, clamp, rand, rotRgb, tintDelta } from './util.js';
 
 // Nebulosa cósmica: nuvens de gás pré-desenhadas em baixa resolução (leve), que
 // derivam devagar e acompanham o ponteiro (paralaxe), com estrelas ao fundo.
 // Toque: onda de choque luminosa.
-export default function nebula(w, h, dark) {
+export default function nebula(w, h, dark, hue) {
+  const d = tintDelta(hue, 265);
   let t = 0, par = 0, off = null, stars = [];
   const novas = [];
 
@@ -15,7 +16,7 @@ export default function nebula(w, h, dark) {
     off.width = ow; off.height = oh;
     const c = off.getContext('2d');
     c.globalCompositeOperation = dark ? 'lighter' : 'source-over';
-    const cols = [[130, 70, 255], [255, 80, 170], [50, 150, 255], [255, 170, 70], [90, 230, 210]];
+    const cols = [[130, 70, 255], [255, 80, 170], [50, 150, 255], [255, 170, 70], [90, 230, 210]].map((c) => rotRgb(c, d));
     const a = dark ? 0.34 : 0.17;
     for (let i = 0; i < 11; i++) {
       const [r, g, b] = cols[i % cols.length];

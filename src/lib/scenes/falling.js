@@ -1,9 +1,11 @@
-import { TAU, density, glow, heartPath, near, petalPath, pick, rand, starPath } from './util.js';
+import { TAU, density, glow, heartPath, near, petalPath, pick, rand, rotHex, starPath, tintDelta } from './util.js';
+import { sakura } from './sakura.js';
 
 // Itens que caem com balanço: pétalas, corações e estrelas. Fogem do dedo/mouse
 // (que também sopra vento ao passar rápido). Toque: explosão de itens.
-function falling({ base, colors, size, shape, speed }) {
-  return (w, h) => {
+function falling({ base, colors: cores, size, shape, speed, ref }) {
+  return (w, h, dark, hue) => {
+    const colors = cores.map((c) => rotHex(c, tintDelta(hue, ref)));
     const total = () => Math.round(base * density(w, h));
     let list = [];
     let t = 0;
@@ -81,15 +83,35 @@ function falling({ base, colors, size, shape, speed }) {
   };
 }
 
-export const petalas = falling({
+const petalasBase = falling({
   base: 36, size: [9, 17], speed: [55, 110], shape: 'petal',
-  colors: ['#f29bb4', '#f6b3c5', '#ee86a5', '#f9c4d2', '#f08fab'],
+  colors: ['#f29bb4', '#f6b3c5', '#ee86a5', '#f9c4d2', '#f08fab'], ref: 345,
 });
 export const coracoes = falling({
   base: 32, size: [9, 19], speed: [60, 120], shape: 'heart',
-  colors: ['#ff6b8b', '#ff8fa6', '#e83e66', '#ffb3c4', '#f25c7e'],
+  colors: ['#ff6b8b', '#ff8fa6', '#e83e66', '#ffb3c4', '#f25c7e'], ref: 345,
 });
 export const estrelas = falling({
   base: 36, size: [5, 11], speed: [70, 140], shape: 'star',
-  colors: ['#fff3b0', '#ffffff', '#ffd86b', '#cfeaff'],
+  colors: ['#fff3b0', '#ffffff', '#ffd86b', '#cfeaff'], ref: 48,
 });
+
+// Pétalas: com cerejeiras bem apagadas ao fundo
+export const petalas = (w, h, dark, hue) => {
+  const chuva = petalasBase(w, h, dark, hue);
+  let arvores = sakura(w, h, tintDelta(hue, 345));
+  let t = 0;
+  return {
+    resize(nw, nh) { chuva.resize(nw, nh); arvores = sakura(nw, nh, tintDelta(hue, 345)); },
+    tap: chuva.tap,
+    step(dt, ptr) { t += dt; chuva.step(dt, ptr); },
+    draw(ctx) {
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+      ctx.translate(Math.sin(t * 0.35) * 2.5, 0); // balanço leve
+      ctx.drawImage(arvores, 0, 0);
+      ctx.restore();
+      chuva.draw(ctx);
+    },
+  };
+};

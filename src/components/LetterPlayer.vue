@@ -79,6 +79,7 @@ function toggleSound() {
     <BackgroundLayer
       :tipo="config.visual.fundo"
       :imagem="config.visual.imagem"
+      :matiz="config.visual.matiz"
       :dark="toneOf(props.config) === 'dark'"
     />
     <EnvelopeScene

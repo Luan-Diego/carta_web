@@ -1,17 +1,18 @@
-import { TAU, blend, density, rand, randInt } from './util.js';
+import { TAU, blend, density, rand, randInt, rotStr, tintDelta } from './util.js';
 
 // Circuitos luminosos: trilhas de placa de circuito e pulsos de luz que correm
 // por elas. Perto do ponteiro as trilhas acendem e disparam pulsos; toque: rajada.
 const DIRS = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
 const G = 28;
 
-export default function circuits(w, h, dark) {
+export default function circuits(w, h, dark, hue) {
+  const d = tintDelta(hue, 172);
   let t = 0, auto = 0, cool = 0;
   let traces = [];
   let pulses = [];
   const flashes = [];
-  const col = dark ? '0,255,220' : '0,120,150';
-  const col2 = dark ? '255,70,210' : '170,20,130';
+  const col = rotStr(dark ? [0, 255, 220] : [0, 120, 150], d);
+  const col2 = rotStr(dark ? [255, 70, 210] : [170, 20, 130], d);
 
   function build() {
     const cols = Math.floor(w / G), rows = Math.floor(h / G);

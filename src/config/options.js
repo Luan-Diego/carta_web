@@ -5,18 +5,18 @@
 // ao escolher a opção; dá para ajustar depois. 'imagem' usa a foto do usuário.
 export const FUNDOS = [
   { id: 'gradiente', nome: 'Liso', icone: '◐', cores: null },
-  { id: 'particulas', nome: 'Partículas', icone: '✨', cores: ['#e8fbff', '#a9e3f5'] },
-  { id: 'nebulosa', nome: 'Nebulosa', icone: '🌌', cores: ['#1b1040', '#07040f'] },
-  { id: 'aurora', nome: 'Aurora', icone: '🌠', cores: ['#0a2236', '#02060d'] },
-  { id: 'estrelado', nome: 'Céu estrelado', icone: '⭐', cores: ['#142046', '#04060f'] },
-  { id: 'ondas', nome: 'Ondas', icone: '🌊', cores: ['#dff4ff', '#8fd0f0'] },
+  { id: 'particulas', nome: 'Partículas', icone: '✨', cores: ['#e8fbff', '#a9e3f5'], cor: true },
+  { id: 'nebulosa', nome: 'Nebulosa', icone: '🌌', cores: ['#1b1040', '#07040f'], cor: true },
+  { id: 'aurora', nome: 'Aurora', icone: '🌠', cores: ['#0a2236', '#02060d'], cor: true },
+  { id: 'estrelado', nome: 'Céu estrelado', icone: '⭐', cores: ['#142046', '#04060f'], cor: true },
+  { id: 'ondas', nome: 'Ondas', icone: '🌊', cores: ['#dff4ff', '#8fd0f0'], cor: true },
   { id: 'chuva', nome: 'Chuva na janela', icone: '🌧️', cores: ['#607080', '#232c36'] },
   { id: 'jardim', nome: 'Jardim', icone: '🌷', cores: ['#eaf7ff', '#d3efd3'] },
-  { id: 'fogo', nome: 'Fogo e brasas', icone: '🔥', cores: ['#2d0f06', '#090302'] },
-  { id: 'circuitos', nome: 'Circuitos', icone: '⚡', cores: ['#07181f', '#020708'] },
-  { id: 'petalas', nome: 'Pétalas', icone: '🌸', cores: ['#fff1f3', '#f8d5dc'] },
-  { id: 'coracoes', nome: 'Corações', icone: '💕', cores: ['#fff0f3', '#ffd0dc'] },
-  { id: 'estrelas', nome: 'Chuva de estrelas', icone: '🌟', cores: ['#1d2540', '#0c1020'] },
+  { id: 'fogo', nome: 'Fogo e brasas', icone: '🔥', cores: ['#2d0f06', '#090302'], cor: true },
+  { id: 'circuitos', nome: 'Circuitos', icone: '⚡', cores: ['#07181f', '#020708'], cor: true },
+  { id: 'petalas', nome: 'Pétalas', icone: '🌸', cores: ['#fff1f3', '#f8d5dc'], cor: true },
+  { id: 'coracoes', nome: 'Corações', icone: '💕', cores: ['#fff0f3', '#ffd0dc'], cor: true },
+  { id: 'estrelas', nome: 'Chuva de estrelas', icone: '🌟', cores: ['#1d2540', '#0c1020'], cor: true },
   { id: 'imagem', nome: 'Minha imagem', icone: '🖼️', cores: null },
 ];
 
@@ -56,16 +56,24 @@ export const PALETAS = [
   { id: 'noite', nome: 'Noite', cores: { envelope: '#2b3a67', papel: '#f5f1e6', texto: '#262a3d', lacre: '#e0b84a' } },
 ];
 
-// '' = sem adesivo. Também usados como imagem do selo postal.
-export const ADESIVOS = [
-  '',
-  '🌹', '🌸', '🌻', '🌷', '🌺', '🌼', '🪻', '🍀', '🍃', '🍂', '🍁', '🌴', '🌵',
-  '🦋', '🐝', '🐞', '🕊️', '🐰', '🦊', '🐼', '🐻', '🦄', '🐱', '🐶', '🐢', '🐬', '🐠',
-  '⭐', '🌟', '💫', '🌙', '✨', '☀️', '⛅', '🌈', '🌊', '🪐', '🚀',
-  '💌', '✉️', '💖', '💝', '❤️', '🧡', '💛', '💚', '💙', '💜', '🤍', '🎀', '🎁', '🎈', '🎉',
-  '☕', '🍓', '🍒', '🍑', '🍉', '🍰', '🍩', '🍫', '🍪', '🍦', '🥂', '🍷',
-  '🎵', '🎧', '📷', '📖', '💍', '🔑', '🧿', '🪄', '🔥', '💎', '🧸', '😍', '🥰', '😘',
+// Adesivos do app, em categorias. '' = sem adesivo. Todos (emojis) também servem de selo postal.
+const lista = (s) => s.split(/\s+/).filter(Boolean);
+export const ADESIVO_CATEGORIAS = [
+  { id: 'anime', nome: 'Anime e Japão', icone: '🍥', itens: lista('🍥 🍙 🍘 🍚 🍜 🍣 🍤 🍢 🍡 🍱 🍵 🍶 🥢 🎎 🎏 🎐 🎑 🎋 🎍 🎌 ⛩️ 🗾 🗻 🏯 🏮 🧧 🎴 🀄 🐉 🐲 🦊 🐱 🌸 💮 🏵️ ⚔️ 🗡️ 🏹 🔥 💥 ⚡ 🌀 👺 👹 🎭 🎆 🎇 🧿') },
+  { id: 'rostos', nome: 'Rostos', icone: '😍', itens: lista('😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 😉 😊 😇 🥰 😍 🤩 😘 😗 😚 😙 😋 😛 😜 🤪 😝 🤑 🤗 🤭 🤫 🤔 🤐 🤨 😐 😑 😶 😏 😒 🙄 😬 😌 😔 😪 😴 😷 🤒 🤕 🤢 🤮 🥵 🥶 🥴 😵 🤯 🤠 🥳 😎 🤓 🧐 😕 😟 🙁 😮 😯 😲 😳 🥺 😦 😧 😨 😰 😥 😢 😭 😱 😖 😣 😞 😓 😩 😫 🥱 😤 😡 😠 🤬 😈 👿 💀 💩 🤡 👻 👽 👾 🤖 😺 😸 😹 😻 😼 😽 🙀 😿 😾 🙈 🙉 🙊') },
+  { id: 'amor', nome: 'Amor e gestos', icone: '💖', itens: lista('💋 💌 💘 💝 💖 💗 💓 💞 💕 💟 ❣️ 💔 ❤️ 🧡 💛 💚 💙 💜 🤎 🖤 🤍 💯 💢 💥 💫 💦 💨 💤 👋 🤚 ✋ 🖖 👌 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 👍 👎 ✊ 👊 👏 🙌 👐 🤲 🤝 🙏 💅 💪 👀 👅 👄 🧠') },
+  { id: 'animais', nome: 'Animais', icone: '🐱', itens: lista('🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐮 🐷 🐸 🐵 🐔 🐧 🐦 🐤 🦆 🦅 🦉 🦇 🐺 🐗 🐴 🦄 🐝 🐛 🦋 🐌 🐞 🐜 🦗 🕷️ 🦂 🐢 🐍 🦎 🦖 🦕 🐙 🦑 🦐 🦞 🦀 🐡 🐠 🐟 🐬 🐳 🐋 🦈 🐊 🐅 🐆 🦓 🦍 🐘 🦏 🦛 🐪 🐫 🦒 🦘 🐃 🐂 🐄 🐎 🐖 🐏 🐑 🦙 🐐 🦌 🐕 🐩 🐈 🐓 🦃 🦚 🦜 🦢 🕊️ 🐇 🦝 🦨 🦡 🦦 🦥 🐁 🐀 🐿️ 🦔 🐾 🐉 🐲') },
+  { id: 'natureza', nome: 'Natureza', icone: '🌸', itens: lista('🌵 🎄 🌲 🌳 🌴 🌱 🌿 ☘️ 🍀 🍃 🍂 🍁 🍄 🌾 💐 🌷 🌹 🥀 🌺 🌸 🌼 🌻 🪻 🌞 🌝 🌛 🌜 🌚 🌕 🌖 🌗 🌘 🌑 🌒 🌓 🌔 🌙 🌎 🌍 🌏 🪐 ⭐ 🌟 ✨ ☄️ 🌪️ 🌈 ☀️ 🌤️ ⛅ 🌥️ ☁️ 🌦️ 🌧️ ⛈️ 🌩️ 🌨️ ❄️ ☃️ ⛄ 🌬️ 💧 ☔ 🌊 🌫️') },
+  { id: 'comida', nome: 'Comida', icone: '🍓', itens: lista('🍏 🍎 🍐 🍊 🍋 🍌 🍉 🍇 🍓 🍈 🍒 🍑 🥭 🍍 🥥 🥝 🍅 🍆 🥑 🥦 🥬 🥒 🌶️ 🌽 🥕 🧄 🧅 🥔 🍠 🥐 🥯 🍞 🥖 🥨 🧀 🥚 🍳 🥞 🧇 🥓 🥩 🍗 🍖 🌭 🍔 🍟 🍕 🥪 🌮 🌯 🥗 🍝 🍲 🍛 🥟 🥠 🍧 🍨 🍦 🥧 🧁 🍰 🎂 🍮 🍭 🍬 🍫 🍿 🍩 🍪 🌰 🥜 🍯 🥛 🍼 ☕ 🧃 🥤 🍺 🍻 🥂 🍷 🥃 🍸 🍹 🧉 🧊') },
+  { id: 'festa', nome: 'Festa e jogos', icone: '🎉', itens: lista('🎈 🎉 🎊 🎀 🎁 🎂 🎃 🧨 🏆 🥇 🥈 🥉 🏅 🎖️ ⚽ 🏀 🏈 ⚾ 🎾 🏐 🏉 🎱 🏓 🏸 🥊 🥋 ⛳ 🎣 🎯 🎮 🕹️ 🎲 🧩 🎰 🎳 🎨 🎬 🎤 🎧 🎼 🎹 🥁 🎷 🎺 🎸 🎻 🎵 🎶 🎪 🎡 🎢 🎠') },
+  { id: 'objetos', nome: 'Objetos', icone: '💎', itens: lista('✉️ 📩 📨 📦 📮 📬 📜 📃 📄 📖 📚 📓 📒 📝 ✏️ 🖊️ 🖋️ 🖌️ 🖍️ 📌 📍 📎 ✂️ 🔑 🗝️ 🔒 🔓 🔔 🔮 🪄 💎 💍 👑 🎩 🎓 👓 🕶️ 🌂 ☂️ 👜 👛 🎒 👒 🧢 👗 👚 👕 👖 👠 💄 🧸 📷 📸 🎥 📱 💻 🖥️ ⌚ ⏰ ⏳ 💡 🔦 🕯️ 🔭 🔬 🧪 💊 🧬 🔧 🔨 ⚙️ 🧲 💰 💳 🛒 🕰️ 🧭 🗺️ 🧳') },
+  { id: 'viagem', nome: 'Viagem e lugares', icone: '🚀', itens: lista('🚗 🚕 🚙 🚌 🚎 🏎️ 🚓 🚑 🚒 🚚 🚜 🚲 🛴 🏍️ 🚂 🚆 🚇 🚊 🚀 🛸 ✈️ 🛫 🛬 🚁 ⛵ 🚤 🛥️ 🚢 ⚓ 🗿 🏔️ ⛰️ 🌋 🏝️ 🏖️ 🏜️ 🌅 🌄 🌇 🌆 🌃 🌌 🌉 ⛺ 🏠 🏡 🏰 🗼 🗽 ⛪ 🕌') },
 ];
+
+export const ADESIVOS = ['', ...new Set(ADESIVO_CATEGORIAS.flatMap((c) => c.itens))];
+
+// Sugestões para o selo postal (qualquer emoji de ADESIVOS é aceito)
+export const POSTAIS = ['🌹', '🌸', '🦋', '🕊️', '⭐', '🌙', '💌', '❤️', '🎀', '☕', '🍥', '🏰', '🌍', '🚂', '⛵', '🐱', '🐶', '🦊', '🌻', '🍀', '🎵', '💎'];
 
 // Estampas do envelope: desenhadas em CSS (styles/envelope.css), usam a cor do lacre
 export const ESTAMPAS = [
