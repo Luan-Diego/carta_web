@@ -19,7 +19,7 @@
     "@fontsource/playfair-display": "^5.1.0",
     "@fontsource/quicksand": "^5.1.0",
     "@fontsource/satisfy": "^5.1.0",
-    "vue": "^3.5.0"
+    "vue": "^3.5.46"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.11",
